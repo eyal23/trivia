@@ -1,5 +1,10 @@
 import socket
 
+"""
+    usage: the function creates the client socket
+    in: no
+    out: the socket
+"""
 def createSocket():
     port = 0
 
@@ -22,10 +27,9 @@ def main():
         print("the server is currently down...")
 
     if isConnected:
-        while True:
-            response = sock.recv(1024)
-            if response == "Hello":
-                sock.sendall(response)
+        response = sock.recv(1024)
+        if response == "Hello":
+            sock.sendall(response)
 
 if __name__ == '__main__':
     main()
