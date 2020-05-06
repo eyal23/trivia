@@ -120,8 +120,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
 
-	cout << "aaa";
-
 	thread clientThread(clientThread, ref(*this), ref(clientSocket));
 	clientThread.detach();
 }
