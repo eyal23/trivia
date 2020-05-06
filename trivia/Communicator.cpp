@@ -80,7 +80,7 @@ void Communicator::startHandleRequests()
 	while (true)
 	{
 		Communicator::handleNewClient(Communicator::accept());
-	}                           
+	}
 }
 
 /*
@@ -91,7 +91,7 @@ void Communicator::startHandleRequests()
 	input: none.
 	output: none.
 */
-void Communicator::bindAndListen()
+void Communicator::bindAndListen() const
 {
 	struct sockaddr_in socketAddress = { 0 };
 	socketAddress.sin_port = htons(PORT);
@@ -109,10 +109,6 @@ void Communicator::bindAndListen()
 	}
 }
 
-// overload operator () (Socket){
-//		call handle new client(socket)
-// }
-
 /*
 	this method gets the client socket and add the socket tot the 
 	map and creates a new thread & detaches him.
@@ -120,9 +116,11 @@ void Communicator::bindAndListen()
 	input: the client socket.
 	output: none.
 */
-void Communicator::handleNewClient(SOCKET clientSocket)
+void Communicator::handleNewClient(SOCKET clientSocket) 
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
+
+	cout << "aaa";
 
 	thread clientThread(clientThread, ref(*this), ref(clientSocket));
 	clientThread.detach();
@@ -136,9 +134,10 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	input: none
 	output: the client socket.
 */
-SOCKET Communicator::accept()
+SOCKET Communicator::accept() const
 {
 	SOCKET clientSocket = ::accept(this->_listeningSocket, NULL, NULL);
+
 	if (clientSocket == INVALID_SOCKET)
 	{
 		throw exception(__FUNCTION__);

@@ -17,9 +17,9 @@ public:
 	void startHandleRequests();
 
 private:
-	void bindAndListen();
+	void bindAndListen() const;
 	void handleNewClient(SOCKET clientSocket);
-    SOCKET accept();
+    SOCKET accept() const;
 
 private:
 	map<SOCKET, IRequestHandler*> m_clients;
