@@ -13,7 +13,6 @@ class Communicator
 public:
 	void startHandleRequests();
 
-
 private:
 	void bindAndListen();
 	void handleNewClient();
