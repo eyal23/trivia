@@ -9,32 +9,15 @@
 #define BYTES_AMOUNT 5
 
 using std::exception;
-using std::cout;
-using std::string;
-using std::endl;
 using std::thread;
+using std::string;
+using std::cout;
+using std::endl;
 using std::ref;
 
 static const unsigned short PORT = 8826;
 static const unsigned int INTERFACE = 0;
 
-void clientThread(Communicator& communicator, SOCKET& clientSocket)
-{
-	if (send(clientSocket, "Hello", BYTES_AMOUNT, 0) == INVALID_SOCKET)
-	{
-		throw exception("Error while sending message to client");
-	}
-
-	char* data = new char[BYTES_AMOUNT];
-
-	if (recv(clientSocket, data, BYTES_AMOUNT, 0) == INVALID_SOCKET)
-	{
-		throw exception("Error while reciving message from client");
-	}
-
-	cout << string(data) << endl;
-	system("pause");
-}
 
 Communicator::Communicator()
 {
@@ -55,6 +38,41 @@ Communicator::~Communicator()
 	catch (...) {}
 }
 
+/*
+	this method sends the massage to the client (Hello) 
+	and receives a message back,
+	in case of an error in the process there's an exception 
+	that can be throne
+
+	input: the communicator and the client socket.
+	output: none.
+*/
+void clientThread(Communicator& communicator, SOCKET& clientSocket)
+{
+	if (send(clientSocket, "Hello", BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	{
+		throw exception("Error while sending message to client");
+	}
+
+	char* data = new char[BYTES_AMOUNT];
+
+	if (recv(clientSocket, data, BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	{
+		throw exception("Error while reciving message from client");
+	}
+
+	cout << string(data) << endl;
+	system("pause");
+}
+
+/*
+	this method starts the binding and listening process
+	and then she starts accepting clients by calling
+	the handleNewClient method.
+
+	input: none.
+	output: none.
+*/
 void Communicator::startHandleRequests()
 {
 	bindAndListen();
@@ -65,6 +83,14 @@ void Communicator::startHandleRequests()
 	}                           
 }
 
+/*
+	this method is meant for binding & listening procces.
+	the method starts with binding and then listening and 
+	if something went wrong then the an exception is being thrown.
+
+	input: none.
+	output: none.
+*/
 void Communicator::bindAndListen()
 {
 	struct sockaddr_in socketAddress = { 0 };
@@ -83,6 +109,17 @@ void Communicator::bindAndListen()
 	}
 }
 
+// overload operator () (Socket){
+//		call handle new client(socket)
+// }
+
+/*
+	this method gets the client socket and add the socket tot the 
+	map and creates a new thread & detaches him.
+
+	input: the client socket.
+	output: none.
+*/
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
@@ -91,6 +128,14 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	clientThread.detach();
 }
 
+/*
+	this method accepts a new client and 
+	creates a socket for the client and 
+	returns the socket.
+
+	input: none
+	output: the client socket.
+*/
 SOCKET Communicator::accept()
 {
 	SOCKET clientSocket = ::accept(this->_listeningSocket, NULL, NULL);
