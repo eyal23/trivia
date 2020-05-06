@@ -27,9 +27,9 @@ def main():
         print("the server is currently down...")
 
     if isConnected:
-        response = sock.recv(1024)
+        response = sock.recv(1024).decode()
         if response == "Hello":
-            sock.sendall(response)
+            sock.sendall(response.encode())
 
 if __name__ == '__main__':
     main()

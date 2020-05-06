@@ -47,21 +47,23 @@ Communicator::~Communicator()
 	input: the communicator and the client socket.
 	output: none.
 */
-void clientThread(Communicator& communicator, SOCKET& clientSocket)
+void clientThread(Communicator communicator, SOCKET clientSocket)
 {
 	if (send(clientSocket, "Hello", BYTES_AMOUNT, 0) == INVALID_SOCKET)
 	{
 		throw exception("Error while sending message to client");
 	}
 
-	char* data = new char[BYTES_AMOUNT];
+	char* data = new char[BYTES_AMOUNT + 1];
 
 	if (recv(clientSocket, data, BYTES_AMOUNT, 0) == INVALID_SOCKET)
 	{
 		throw exception("Error while reciving message from client");
 	}
 
-	cout << string(data) << endl;
+	data[BYTES_AMOUNT] = 0;
+
+	cout << data << endl;
 	system("pause");
 }
 
@@ -120,7 +122,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
 
-	thread clientThread(clientThread, ref(*this), ref(clientSocket));
+	thread clientThread(clientThread, *this, clientSocket);
 	clientThread.detach();
 }
 
