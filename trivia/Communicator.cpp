@@ -6,21 +6,43 @@
 #include <exception>
 #include <thread>
 
+#define BYTES_AMOUNT 5
+
+using std::exception;
+using std::cout;
+using std::string;
+using std::endl;
+using std::thread;
+using std::ref;
+
 static const unsigned short PORT = 8826;
 static const unsigned int INTERFACE = 0;
 
-void clientThread(Communicator& communicator)
+void clientThread(Communicator& communicator, SOCKET& clientSocket)
 {
-	
+	if (send(clientSocket, "Hello", BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	{
+		throw exception("Error while sending message to client");
+	}
+
+	char* data = new char[BYTES_AMOUNT];
+
+	if (recv(clientSocket, data, BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	{
+		throw exception("Error while reciving message from client");
+	}
+
+	cout << string(data) << endl;
+	system("pause");
 }
 
 Communicator::Communicator()
 {
-	_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	this->_listeningSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-	if (_socket == INVALID_SOCKET)
+	if (this->_listeningSocket == INVALID_SOCKET)
 	{
-		throw std::exception(__FUNCTION__ " - socket");
+		throw exception(__FUNCTION__ " - socket");
 	}
 }
 
@@ -28,7 +50,7 @@ Communicator::~Communicator()
 {
 	try
 	{
-		::closesocket(_socket);
+		::closesocket(this->_listeningSocket);
 	}
 	catch (...) {}
 }
@@ -50,14 +72,14 @@ void Communicator::bindAndListen()
 	socketAddress.sin_family = AF_INET;
 	socketAddress.sin_addr.s_addr = INTERFACE;
 
-	if (::bind(_socket, (struct sockaddr*) & socketAddress, sizeof(socketAddress)) == SOCKET_ERROR)
+	if (::bind(this->_listeningSocket, (struct sockaddr*) & socketAddress, sizeof(socketAddress)) == SOCKET_ERROR)
 	{
-		throw std::exception(__FUNCTION__ " - bind");
+		throw exception(__FUNCTION__ " - bind");
 	}
 
-	if (::listen(_socket, SOMAXCONN) == SOCKET_ERROR)
+	if (::listen(this->_listeningSocket, SOMAXCONN) == SOCKET_ERROR)
 	{
-		throw std::exception(__FUNCTION__ " - listen");
+		throw exception(__FUNCTION__ " - listen");
 	}
 }
 
@@ -65,16 +87,16 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
 
-	std::thread clientThread(clientThread, std::ref(*this));
+	thread clientThread(clientThread, ref(*this), ref(clientSocket));
 	clientThread.detach();
 }
 
 SOCKET Communicator::accept()
 {
-	SOCKET clientSocket = ::accept(_socket, NULL, NULL);
+	SOCKET clientSocket = ::accept(this->_listeningSocket, NULL, NULL);
 	if (clientSocket == INVALID_SOCKET)
 	{
-		throw std::exception(__FUNCTION__);
+		throw exception(__FUNCTION__);
 	}
 
 	return clientSocket;

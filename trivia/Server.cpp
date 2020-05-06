@@ -2,6 +2,12 @@
 #include <iostream>
 #include <thread>
 
+using std::string;
+using std::ref;
+using std::thread;
+using std::cout;
+using std::cin;
+
 void communicatorThread(Communicator& communicator)
 {
 	communicator.startHandleRequests();
@@ -9,13 +15,14 @@ void communicatorThread(Communicator& communicator)
 
 void Server::run()
 {
-	std::thread t_connector(communicatorThread, std::ref(this->m_Communicator));
-	t_connector.detach();
+	thread communicatorThread(communicatorThread, ref(this->m_Communicator));
+	communicatorThread.detach();
 
-	std::string exitCommand;
+	string command;
 	
-	while (exitCommand != "EXIT")
+	while (command != "EXIT")
 	{
-		std::cin >> exitCommand;
+		cout << "Enter command: ";
+		cin >> command;
 	}
 }

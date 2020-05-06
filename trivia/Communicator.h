@@ -23,6 +23,6 @@ private:
 
 private:
 	map<SOCKET, IRequestHandler*> m_clients;
-	SOCKET _socket;
+	SOCKET _listeningSocket;
 
 };

@@ -10,7 +10,10 @@ int main()
 
 		server.run();
 	}
-	catch (const std::exception&) {}
+	catch (const std::exception& e) 
+	{
+		e.what();
+	}
 
 	return 0;
 }
