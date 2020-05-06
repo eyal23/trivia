@@ -1,26 +1,21 @@
 #include "Server.h"
-<<<<<<< HEAD
-
-void Server::run()
-{
-=======
+#include <iostream>
 #include <thread>
 
+void communicatorThread(Communicator& communicator)
+{
+	communicator.startHandleRequests();
+}
+
 void Server::run()
 {
-	std::thread t_connector(&Communicator::startHandleRequests);
+	std::thread t_connector(communicatorThread, std::ref(this->m_Communicator));
 	t_connector.detach();
 
 	std::string exitCommand;
 	
-	while (true)
+	while (exitCommand != "EXIT")
 	{
 		std::cin >> exitCommand;
-
-		if (exitCommand == "EXIT")
-		{
-			std::exit(0);
-		}
 	}
->>>>>>> d0b5f8afc1ca5f91675391fca373e65860b8f016
 }
