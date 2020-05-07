@@ -6,9 +6,15 @@
 using std::vector;
 using std::uint8_t;
 
+enum RequestCode
+{
+	SIGN_UP,
+	LOGIN,
+};
+
 typedef struct RequestInfo
 {
-	unsigned int id;
+	RequestCode id;
 	time_t recivalTime;
 	vector<uint8_t> buffer;
 } RequestInfo;
@@ -21,7 +27,8 @@ typedef struct RequestResult
 
 class IRequestHandler
 {
-	bool isRequestRelevant(RequestInfo);
-	RequestResult handleRequest(RequestInfo);
+public:
+	virtual bool isRequestRelevant(RequestInfo requestInfo) const = 0;
+	virtual RequestResult handleRequest(RequestInfo requestInfo) = 0;
 };
 

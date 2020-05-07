@@ -26,4 +26,3 @@ public:
 	static LoginRequest deserializeLoginRequest(vector<uint8_t> buffer);
 	static SignUpRequest deserializeSignUpRequest(vector<uint8_t> buffer);
 };
-
