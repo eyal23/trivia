@@ -24,7 +24,7 @@ def createSocket():
     out: the binary-formated message
 """
 def constructMessage(code, jsonData):
-    binaryJson = json.dumps(jsonData).encode("utf-8")
+    binaryJson = json.dumps(jsonData).encode()
 
     request = bytearray()
     request.append(code)
@@ -42,7 +42,7 @@ def constructMessage(code, jsonData):
 """
 def sendAndRecive(sock, request):
     sock.sendall(request)
-    print(sock.recv(1024).deocde("utf-8"))
+    print(sock.recv(1024).deocde())
 
 """
     usage: the function sends a "login request"
