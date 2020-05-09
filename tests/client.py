@@ -18,23 +18,37 @@ def createSocket():
 
     return sock
 
+"""
+    usage: the function constructs a binary-formated message
+    in: the message code, the json data
+    out: the binary-formated message
+"""
 def constructMessage(code, jsonData):
-    bsonData = json.dumps(jsonData).encode("utf-8")
+    binaryJson = json.dumps(jsonData).encode("utf-8")
 
-    message = bytearray()
-    message.append(code)
-    message.append(len(bsonData))
+    request = bytearray()
+    request.append(code)
+    request.append(len(binaryJson))
 
-    for byte in bsonData:
-        message.append(byte)
+    for byte in binaryJson:
+        request.append(byte)
 
-    return message
+    return request
 
-def sendAndRecive(sock, message):
-    sock.sendall(message)
-    response = sock.recv(1024).deocde("utf-8")
-    print(response)
+"""
+    usage: the function sends a request to the server, and recives it's response
+    in: the socket, the request
+    out: none
+"""
+def sendAndRecive(sock, request):
+    sock.sendall(request)
+    print(sock.recv(1024).deocde("utf-8"))
 
+"""
+    usage: the function sends a "login request"
+    in: the socket
+    out: none
+"""
 def sendLoginRequest(sock):
     jsonData = {
         "username": "user1",
@@ -43,6 +57,11 @@ def sendLoginRequest(sock):
 
     sendAndRecive(sock, constructMessage(1, jsonData))
 
+"""
+    usage: the function sends a "sign up request"
+    in: the socket
+    out: none
+"""
 def sendSingUpRequest(sock):
     jsonData = {
         "username": "user1",
