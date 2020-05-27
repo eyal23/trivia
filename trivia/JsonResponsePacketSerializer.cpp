@@ -12,7 +12,7 @@ using nlohmann::json;
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes)
 {
-	json j = json::parse(std::string("\"{message}\": ") + errorRes.message + std::string(", }"));
+	json j = json::parse(std::string("{\"message\": ") + errorRes.message + std::string(", }"));
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	return bson;
@@ -26,7 +26,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorRespon
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes)
 {
-	json j = json::parse(std::string("\"{status}\": ") + std::to_string(loginRes.status) + std::string(", }"));
+	json j = json::parse(std::string("{\"status\": ") + std::to_string(loginRes.status) + std::string(", }"));
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	return bson;
@@ -40,7 +40,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginRespon
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(SignupResponse signRes)
 {
-	json j = json::parse(std::string("\"{status}\": ") + std::to_string(signRes.status) + std::string(", }"));
+	json j = json::parse(std::string("{\"status\": ") + std::to_string(signRes.status) + std::string(", }"));
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	return bson;
