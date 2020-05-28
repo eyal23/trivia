@@ -1,13 +1,14 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
 #include <stdint.h>
 
-
+using std::vector;
 
 typedef struct LoginResponse
 {
-	unsigned int status = 1 ;
+	unsigned int status = 1;
 };
 
 typedef struct SignupResponse
@@ -23,9 +24,8 @@ typedef struct ErrorResponse
 
 class JsonResponsePacketSerializer
 {
-
 public:
-		std::vector<uint8_t> serializeResponse(ErrorResponse errorRes);
-		std::vector<uint8_t> serializeResponse(LoginResponse loginRes);
-		std::vector<uint8_t> serializeResponse(SignupResponse signRes);
+	static vector<uint8_t> serializeResponse(ErrorResponse errorRes);
+	static vector<uint8_t> serializeResponse(LoginResponse loginRes);
+	static vector<uint8_t> serializeResponse(SignupResponse signRes);
 };

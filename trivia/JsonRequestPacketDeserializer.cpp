@@ -10,11 +10,13 @@ using nlohmann::json;
 */
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8_t> buffer)
 {
-	json data = json::from_bson(buffer);
+	vector<uint8_t> data(buffer.begin() + 6, buffer.end());
+
+	json jsonData = json::from_bson(data);
 
 	return {
-		data["username"],
-		data["password"]
+		jsonData["username"],
+		jsonData["password"]
 	};
 }
 
@@ -25,11 +27,13 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8
 */
 SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(vector<uint8_t> buffer)
 {
-	json data = json::from_bson(buffer);
+	vector<uint8_t> data(buffer.begin() + 6, buffer.end());
+
+	json jsonData = json::from_bson(data);
 
 	return {
-		data["username"],
-		data["password"],
-		data["email"]
+		jsonData["username"],
+		jsonData["password"],
+		jsonData["email"]
 	};
 }

@@ -1,5 +1,9 @@
+#include <vector>
+
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
+
+using std::vector;
 
 /*
 	usage: the methods checks if a request is relevant
@@ -26,4 +30,6 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 	{
 		SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
 	}
+
+	return { {}, nullptr };
 }

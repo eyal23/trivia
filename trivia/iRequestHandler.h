@@ -19,6 +19,8 @@ typedef struct RequestInfo
 	vector<uint8_t> buffer;
 } RequestInfo;
 
+class IRequestHandler;
+
 typedef struct RequestResult
 {
 	vector<uint8_t> buffer;
