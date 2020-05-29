@@ -57,6 +57,9 @@
     <ClCompile Include="JsonResponsePacketSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">

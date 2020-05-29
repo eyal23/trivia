@@ -2,6 +2,8 @@
 
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
+#include "Constants.h"
 
 using std::vector;
 
@@ -12,7 +14,7 @@ using std::vector;
 */
 bool LoginRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 {
-	return requestInfo.id == LOGIN || requestInfo.id == SIGN_UP;
+	return requestInfo.id == LOGIN_REQUEST || requestInfo.id == SIGN_UP_REQUEST;
 }
 
 /*
@@ -22,14 +24,18 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 */
 RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 {
-	if (requestInfo.id == LOGIN)
+	vector<uint8_t> response;
+
+	if (requestInfo.id == LOGIN_REQUEST)
 	{
 		LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
+		response = JsonResponsePacketSerializer::serializeResponse(LoginResponse({ 1 }));
 	}
 	else
 	{
 		SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
+		response = JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 }));
 	}
 
-	return { {}, nullptr };
+	return { response, nullptr };
 }

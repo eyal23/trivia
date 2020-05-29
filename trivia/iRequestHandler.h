@@ -3,18 +3,14 @@
 #include <ctime>
 #include <vector>
 
+#include "Constants.h"
+
 using std::vector;
 using std::uint8_t;
 
-enum RequestCode
-{
-	SIGN_UP,
-	LOGIN,
-};
-
 typedef struct RequestInfo
 {
-	RequestCode id;
+	MessageCode id;
 	time_t recivalTime;
 	vector<uint8_t> buffer;
 } RequestInfo;

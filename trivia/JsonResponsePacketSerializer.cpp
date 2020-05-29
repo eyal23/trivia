@@ -1,8 +1,12 @@
+#include <string>
+#include <vector>
+
 #include "JsonResponsePacketSerializer.h"
 #include "json.hpp"
-#include <string>
+#include "Constants.h"
 
 using nlohmann::json;
+using std::vector;
 
 /**
 * creates and sends the error massage respons.
@@ -12,10 +16,18 @@ using nlohmann::json;
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes)
 {
-	json j = json::parse(std::string("{\"message\": ") + errorRes.message + std::string("}"));
-	std::vector<uint8_t> bson = json::to_bson(j);
+	json j = { {"message", errorRes.message } };
+	vector<uint8_t> bson = json::to_bson(j);
 
-	return bson;
+	int dataSize = bson.size();
+	vector<uint8_t> message = { ERROR_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 /**
@@ -26,10 +38,18 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorRespon
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes)
 {
-	json j = json::parse(std::string("{\"status\": ") + std::to_string(loginRes.status) + std::string("}"));
+	json j = { {"status", loginRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
-	return bson;
+	int dataSize = bson.size();
+	vector<uint8_t> message = { LOGIN_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 /**
@@ -40,8 +60,16 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginRespon
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(SignupResponse signRes)
 {
-	json j = json::parse(std::string("{\"status\": ") + std::to_string(signRes.status) + std::string("}"));
+	json j = { {"status", signRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
-	return bson;
+	int dataSize = bson.size();
+	vector<uint8_t> message = { SIGN_UP_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }

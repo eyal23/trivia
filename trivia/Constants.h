@@ -1,0 +1,10 @@
+#pragma once
+
+enum MessageCode
+{
+	SIGN_UP_REQUEST,
+	LOGIN_REQUEST,
+	ERROR_RESPONSE,
+	SIGN_UP_RESPONSE,
+	LOGIN_RESPONSE
+};

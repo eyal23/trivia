@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="Constants.h" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />

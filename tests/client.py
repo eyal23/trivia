@@ -1,5 +1,6 @@
 import socket
 import json
+import bson
 
 """
     usage: the function creates the client socket
@@ -24,11 +25,14 @@ def createSocket():
     out: the binary-formated message
 """
 def constructMessage(code, jsonData):
-    binaryJson = json.dumps(jsonData).encode()
+    binaryJson = bson.dumps(jsonData)
 
     request = bytearray()
     request.append(code)
-    request.append(len(binaryJson))
+    dataSize = len(binaryJson).to_bytes(4, byteorder = "little");
+
+    for byte in dataSize:
+        request.append(byte)
 
     for byte in binaryJson:
         request.append(byte)
@@ -42,7 +46,11 @@ def constructMessage(code, jsonData):
 """
 def sendAndRecive(sock, request):
     sock.sendall(request)
-    print(sock.recv(1024).deocde())
+    response = sock.recv(1024)
+
+    print("response code: " + str(response[0]))
+    print("data size: " + str(int.from_bytes(response[1 : 5], "little")))
+    print("data: " + str(bson.loads(response[5:])))
 
 """
     usage: the function sends a "login request"
@@ -81,17 +89,14 @@ def main():
         print("the server is currently down...")
 
     if isConnected:
-        response = sock.recv(1024).decode()
-        if response == "Hello":
-            sock.sendall(response.encode())
         while True:
             choice = input("""1. login request
-            2. sign up request
-            enter you choice: """)
+2. sign up request
+enter you choice: """)
 
-            if choice == 1:
+            if choice == "1":
                 sendLoginRequest(sock)
-            elif choice == 2:
+            elif choice == "2":
                 sendSingUpRequest(sock)
             else:
                 print("ilegal choice!")

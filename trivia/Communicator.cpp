@@ -1,12 +1,14 @@
+#include <iostream>
+#include <exception>
+#include <thread>
+#include <ctime>
+#include <vector>
+
 #include "Communicator.h"
 #include "WSAInitializer.h"
 #include "LoginRequestHandler.h"
 
-#include <iostream>
-#include <exception>
-#include <thread>
-
-#define BYTES_AMOUNT 5
+#define MAX_BYTES_AMOUNT 1024
 
 using std::exception;
 using std::thread;
@@ -14,6 +16,8 @@ using std::string;
 using std::cout;
 using std::endl;
 using std::ref;
+using std::time;
+using std::vector;
 
 static const unsigned short PORT = 8826;
 static const unsigned int INTERFACE = 0;
@@ -47,24 +51,24 @@ Communicator::~Communicator()
 	input: the communicator and the client socket.
 	output: none.
 */
-void clientThread(Communicator communicator, SOCKET clientSocket)
+void clientThread(Communicator* communicator, SOCKET clientSocket)
 {
-	if (send(clientSocket, "Hello", BYTES_AMOUNT, 0) == INVALID_SOCKET)
-	{
-		throw exception("Error while sending message to client");
-	}
+	LoginRequestHandler loginRequestHandler;
+	vector<uint8_t> buffer(MAX_BYTES_AMOUNT + 1);
 
-	char* data = new char[BYTES_AMOUNT + 1];
-
-	if (recv(clientSocket, data, BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
 	{
 		throw exception("Error while reciving message from client");
 	}
 
-	data[BYTES_AMOUNT] = 0;
+	RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
 
-	cout << data << endl;
-	system("pause");
+	RequestResult requestResult = loginRequestHandler.handleRequest(requestInfo);
+
+	if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
+	{
+		throw exception("Error while sending message to client");
+	}
 }
 
 /*
@@ -122,7 +126,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = new LoginRequestHandler;
 
-	thread clientThread(clientThread, *this, clientSocket);
+	thread clientThread(clientThread, this, clientSocket);
 	clientThread.detach();
 }
 

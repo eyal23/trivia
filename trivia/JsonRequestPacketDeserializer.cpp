@@ -10,8 +10,8 @@ using nlohmann::json;
 */
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8_t> buffer)
 {
-	vector<uint8_t> data(buffer.begin() + 6, buffer.end());
-
+	int* dataSize = (int*)(&buffer[1]);
+	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
 	json jsonData = json::from_bson(data);
 
 	return {
@@ -27,8 +27,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8
 */
 SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(vector<uint8_t> buffer)
 {
-	vector<uint8_t> data(buffer.begin() + 6, buffer.end());
-
+	int* dataSize = (int*)(&buffer[1]);
+	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
 	json jsonData = json::from_bson(data);
 
 	return {
