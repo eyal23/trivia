@@ -14,7 +14,7 @@ private:
 	vector<LoggedUser> m_loggedUsers;
 
 public:
-	void signup(string username, string password, string email);
-	void login(string username, string password);
-	void logout(string username);
+	bool signup(string username, string password, string email);
+	bool login(string username, string password);
+	bool logout(string username);
 };
