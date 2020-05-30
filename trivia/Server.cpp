@@ -1,6 +1,9 @@
-#include "Server.h"
 #include <iostream>
 #include <thread>
+
+#include "Server.h"
+#include "IDatabase.h"
+#include "RequestHandlerFactory.h"
 
 using std::string;
 using std::thread;
@@ -8,8 +11,9 @@ using std::ref;
 using std::cout;
 using std::cin;
 
+
 /*
-	this function calls the startHandleRequests method 
+	this function calls the startHandleRequests method
 	from the Communicator class.
 
 	input: the communicator.
@@ -18,6 +22,16 @@ using std::cin;
 void communicatorThread(Communicator& communicator)
 {
 	communicator.startHandleRequests();
+}
+
+/*
+	usage: constructor
+	in: the database
+	out: no
+*/
+Server::Server(IDatabase* database) :
+	m_database(database), m_handlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(this->m_handlerFactory))
+{
 }
 
 /*
@@ -31,7 +45,7 @@ void communicatorThread(Communicator& communicator)
 */
 void Server::run()
 {
-	thread communicatorThread(communicatorThread, ref(this->m_Communicator));
+	thread communicatorThread(communicatorThread, ref(this->m_communicator));
 	communicatorThread.detach();
 
 	string command;

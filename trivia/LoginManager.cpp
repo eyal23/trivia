@@ -3,12 +3,22 @@
 #include "IDatabase.h"
 
 
+/*
+	usage: constructor
+	in: the database
+	out: no
+*/
 LoginManager::LoginManager(IDatabase* database) :
 	m_database(database)
 {
 }
 
-bool LoginManager::signup(string username, string password, string email)
+/*
+	usage: the method tries to sign up a user into the db
+	in: the username, the password, the email
+	out: if the signup was succesful
+*/
+bool LoginManager::signup(const string username, const string password, const string email) const
 {
 	if (!this->m_database->doesUserExist(username))
 	{
@@ -20,7 +30,12 @@ bool LoginManager::signup(string username, string password, string email)
 	return true;
 }
 
-bool LoginManager::login(string username, string password)
+/*
+	usage: the method tries to login into user's account
+	in: the username, the password
+	out: if the login was succesful
+*/
+bool LoginManager::login(const string username, const string password)
 {
 	if (!this->m_database->doesPasswordMatch(username, password))
 	{
@@ -40,7 +55,12 @@ bool LoginManager::login(string username, string password)
 	return true;
 }
 
-bool LoginManager::logout(string username)
+/*
+	usage: the method tries to logout from a user's account
+	in: the username
+	out: if the logout was succeful
+*/
+bool LoginManager::logout(const string username)
 {
 	for (int i = 0; i < this->m_loggedUsers.size(); i++)
 	{

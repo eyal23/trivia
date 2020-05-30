@@ -14,7 +14,7 @@ using std::vector;
 * @param errorRes the error respons.
 * @return bson vector of uint8 type respons for error.
 */
-std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes)
+std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const ErrorResponse errorRes)
 {
 	json j = { {"message", errorRes.message } };
 	vector<uint8_t> bson = json::to_bson(j);
@@ -36,7 +36,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(ErrorRespon
 * @param loginRes the log in respons.
 * @return bson vector of uint8 type respons for login.
 */
-std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes)
+std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LoginResponse loginRes)
 {
 	json j = { {"status", loginRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
@@ -58,7 +58,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(LoginRespon
 * @param signRes the sign up respons.
 * @return bson vector of uint8 type respons for signup.
 */
-std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(SignupResponse signRes)
+std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SignupResponse signRes)
 {
 	json j = { {"status", signRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);

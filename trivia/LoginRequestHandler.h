@@ -4,6 +4,8 @@
 #include "RequestHandlerFactory.h"
 #include "LoginManager.h"
 
+class RequestHandlerFactory;
+
 class LoginRequestHandler : public IRequestHandler
 {
 private:
@@ -13,10 +15,10 @@ private:
 public:
 	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
 
-	bool isRequestRelevant(RequestInfo requestInfo) const override;
-	RequestResult handleRequest(RequestInfo requestInfo) override;
+	bool isRequestRelevant(const RequestInfo requestInfo) const override;
+	RequestResult handleRequest(const RequestInfo requestInfo) override;
 
 private:
-	RequestResult login(RequestInfo requestInfo);
-	RequestResult signUp(RequestInfo requestInfo);
+	RequestResult login(const RequestInfo requestInfo) const;
+	RequestResult signup(const RequestInfo requestInfo) const;
 };

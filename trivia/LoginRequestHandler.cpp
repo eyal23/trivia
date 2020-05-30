@@ -23,7 +23,7 @@ LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) 
 	in: the request info
 	out: if the request is relevant
 */
-bool LoginRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo requestInfo) const
 {
 	return requestInfo.id == LOGIN_REQUEST || requestInfo.id == SIGN_UP_REQUEST;
 }
@@ -33,7 +33,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 	in: the request info
 	out: the RequestResult object
 */
-RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 {
 	if (requestInfo.id == LOGIN_REQUEST)
 	{
@@ -41,7 +41,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 	}
 	else
 	{
-		return this->signUp(requestInfo);
+		return this->signup(requestInfo);
 	}
 }
 
@@ -50,7 +50,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 	in: the request info
 	out: if the login was succesful
 */
-RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
+RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 {
 	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
 	
@@ -73,7 +73,7 @@ RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
 	in: the request info
 	out: if the sign up was succesful
 */
-RequestResult LoginRequestHandler::signUp(RequestInfo requestInfo)
+RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 {
 	SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
 

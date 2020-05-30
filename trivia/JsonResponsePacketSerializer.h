@@ -25,7 +25,7 @@ typedef struct ErrorResponse
 class JsonResponsePacketSerializer
 {
 public:
-	static vector<uint8_t> serializeResponse(ErrorResponse errorRes);
-	static vector<uint8_t> serializeResponse(LoginResponse loginRes);
-	static vector<uint8_t> serializeResponse(SignupResponse signRes);
+	static vector<uint8_t> serializeResponse(const ErrorResponse errorRes);
+	static vector<uint8_t> serializeResponse(const LoginResponse loginRes);
+	static vector<uint8_t> serializeResponse(const SignupResponse signRes);
 };

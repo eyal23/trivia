@@ -23,6 +23,6 @@ typedef struct SignUpRequest
 class JsonRequestPacketDeserializer
 {
 public:
-	static LoginRequest deserializeLoginRequest(vector<uint8_t> buffer);
-	static SignUpRequest deserializeSignUpRequest(vector<uint8_t> buffer);
+	static LoginRequest deserializeLoginRequest(const vector<uint8_t> buffer);
+	static SignUpRequest deserializeSignUpRequest(const vector<uint8_t> buffer);
 };

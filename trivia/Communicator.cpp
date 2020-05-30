@@ -6,7 +6,8 @@
 
 #include "Communicator.h"
 #include "WSAInitializer.h"
-#include "LoginRequestHandler.h"
+#include "IRequestHandler.h"
+#include "MenuRequestHandler.h"
 
 #define MAX_BYTES_AMOUNT 1024
 
@@ -23,7 +24,13 @@ static const unsigned short PORT = 8826;
 static const unsigned int INTERFACE = 0;
 
 
-Communicator::Communicator()
+/*
+	usage: constructor
+	in: the handler factory
+	out: no
+*/
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) :
+	m_handlerFactory(handlerFactory)
 {
 	this->_listeningSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -33,6 +40,11 @@ Communicator::Communicator()
 	}
 }
 
+/*
+	usage: destructor
+	in: no
+	out: no
+*/
 Communicator::~Communicator()
 {
 	try
@@ -53,21 +65,32 @@ Communicator::~Communicator()
 */
 void clientThread(Communicator* communicator, SOCKET clientSocket)
 {
-	LoginRequestHandler loginRequestHandler;
-	vector<uint8_t> buffer(MAX_BYTES_AMOUNT + 1);
-
-	if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
+	while (true)
 	{
-		throw exception("Error while reciving message from client");
-	}
+		IRequestHandler* requestHandler = (*communicator)[clientSocket];
+		vector<uint8_t> buffer(MAX_BYTES_AMOUNT + 1);
 
-	RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
+		if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
+		{
+			throw exception("Error while reciving message from client");
+		}
 
-	RequestResult requestResult = loginRequestHandler.handleRequest(requestInfo);
+		RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
 
-	if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
-	{
-		throw exception("Error while sending message to client");
+		if (requestHandler->isRequestRelevant(requestInfo))
+		{
+			RequestResult requestResult = requestHandler->handleRequest(requestInfo);
+			(*communicator)[clientSocket] = requestResult.newHandler;
+
+			if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
+			{
+				throw exception("Error while sending message to client");
+			}
+		}
+		else
+		{
+			throw exception("None relevant request...");
+		}
 	}
 }
 
@@ -87,6 +110,26 @@ void Communicator::startHandleRequests()
 	{
 		Communicator::handleNewClient(Communicator::accept());
 	}
+}
+
+/*
+	usage: the method gets the handler factory
+	in: no
+	out: the handler factory
+*/
+RequestHandlerFactory& Communicator::getHandlerFactory()
+{
+	return this->m_handlerFactory;
+}
+
+/*
+	usage: the operator gets the request handler of socket
+	in: the socket
+	out: the request handler
+*/
+IRequestHandler*& Communicator::operator[](const SOCKET& socket)
+{
+	return this->m_clients[socket];
 }
 
 /*
@@ -124,7 +167,7 @@ void Communicator::bindAndListen() const
 */
 void Communicator::handleNewClient(SOCKET clientSocket) 
 {
-	this->m_clients[clientSocket] = new LoginRequestHandler;
+	this->m_clients[clientSocket] = this->m_handlerFactory.createLoginRequestHandler();
 
 	thread clientThread(clientThread, this, clientSocket);
 	clientThread.detach();

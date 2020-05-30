@@ -3,6 +3,11 @@
 #include "IDatabase.h"
 
 
+/*
+	usage: constructor
+	in: the database
+	out:no
+*/
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) :
 	m_database(database), m_loginManager(LoginManager(database))
 {

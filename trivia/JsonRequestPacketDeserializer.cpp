@@ -8,7 +8,7 @@ using nlohmann::json;
 	in: the buffer
 	out: the LoginRequest object
 */
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8_t> buffer)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector<uint8_t> buffer)
 {
 	int* dataSize = (int*)(&buffer[1]);
 	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
@@ -25,7 +25,7 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(vector<uint8
 	in: the buffer
 	out: the SignUpRequest object
 */
-SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(vector<uint8_t> buffer)
+SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vector<uint8_t> buffer)
 {
 	int* dataSize = (int*)(&buffer[1]);
 	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);

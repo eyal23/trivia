@@ -16,7 +16,7 @@ private:
 public:
 	LoginManager(IDatabase* database);
 
-	bool signup(string username, string password, string email);
-	bool login(string username, string password);
-	bool logout(string username);
+	bool signup(const string username, const string password, const string email) const;
+	bool login(const string username, const string password);
+	bool logout(const string username);
 };

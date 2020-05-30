@@ -1,12 +1,14 @@
 #include "Server.h"
 #include "WSAInitializer.h"
+#include "MongoDatabase.h"
 
 int main()
 {
 	try
 	{
 		WSAInitializer wsaInit;
-		Server server;
+		MongoDatabase mongoDatabase;
+		Server server(&mongoDatabase);
 
 		server.run();
 	}
