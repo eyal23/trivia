@@ -1,11 +1,12 @@
 #include "RequestHandlerFactory.h"
+#include "LoginRequestHandler.h"
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() const
+LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-	return nullptr;
+	return new LoginRequestHandler(*this);
 }
 
-LoginManager& RequestHandlerFactory::getLoginManager() const
+LoginManager& RequestHandlerFactory::getLoginManager()
 {
-	// TODO: insert return statement here
+	return this->m_loginManager;
 }

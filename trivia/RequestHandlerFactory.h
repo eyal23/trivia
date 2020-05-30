@@ -11,7 +11,7 @@ private:
 	IDatabase* m_database;
 
 public:
-	LoginRequestHandler* createLoginRequestHandler() const;
-	LoginManager& getLoginManager() const;
+	LoginRequestHandler* createLoginRequestHandler();
+	LoginManager& getLoginManager();
 };
 
