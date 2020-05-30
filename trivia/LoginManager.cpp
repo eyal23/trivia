@@ -2,6 +2,12 @@
 #include "LoggedUser.h"
 #include "IDatabase.h"
 
+
+LoginManager::LoginManager(IDatabase* database) :
+	m_database(database)
+{
+}
+
 bool LoginManager::signup(string username, string password, string email)
 {
 	if (!this->m_database->doesUserExist(username))

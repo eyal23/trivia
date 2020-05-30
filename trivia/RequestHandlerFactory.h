@@ -11,6 +11,8 @@ private:
 	IDatabase* m_database;
 
 public:
+	RequestHandlerFactory(IDatabase* database);
+
 	LoginRequestHandler* createLoginRequestHandler();
 	LoginManager& getLoginManager();
 };

@@ -14,6 +14,8 @@ private:
 	vector<LoggedUser> m_loggedUsers;
 
 public:
+	LoginManager(IDatabase* database);
+
 	bool signup(string username, string password, string email);
 	bool login(string username, string password);
 	bool logout(string username);

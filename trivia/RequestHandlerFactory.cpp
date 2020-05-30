@@ -1,5 +1,12 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
+#include "IDatabase.h"
+
+
+RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) :
+	m_database(database), m_loginManager(LoginManager(database))
+{
+}
 
 /*
 	usage: the method creates a login request handler
