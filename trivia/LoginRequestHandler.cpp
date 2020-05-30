@@ -8,7 +8,11 @@
 
 using std::vector;
 
-
+/*
+	usage: constructor
+	in: reference to the requestHandlerFactory
+	out: no
+*/
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) :
 	m_handlerFacotry(handlerFactory), m_loginManager(handlerFactory.getLoginManager())
 {
@@ -41,6 +45,11 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 	}
 }
 
+/*
+	usage: the method tries to login into user's account, returns correspondly
+	in: the request info
+	out: if the login was succesful
+*/
 RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
 {
 	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
@@ -59,6 +68,11 @@ RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
 	};
 }
 
+/*
+	usage: the method tries to sign up a user, returns correspondly
+	in: the request info
+	out: if the sign up was succesful
+*/
 RequestResult LoginRequestHandler::signUp(RequestInfo requestInfo)
 {
 	SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
