@@ -1,11 +1,22 @@
 #include <vector>
 
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 #include "Constants.h"
 
 using std::vector;
+
+/*
+	usage: constructor
+	in: reference to the requestHandlerFactory
+	out: no
+*/
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) :
+	m_handlerFacotry(handlerFactory), m_loginManager(handlerFactory.getLoginManager())
+{
+}
 
 /*
 	usage: the methods checks if a request is relevant
@@ -24,18 +35,58 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 */
 RequestResult LoginRequestHandler::handleRequest(RequestInfo requestInfo)
 {
-	vector<uint8_t> response;
-
 	if (requestInfo.id == LOGIN_REQUEST)
 	{
-		LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
-		response = JsonResponsePacketSerializer::serializeResponse(LoginResponse({ 1 }));
+		return this->login(requestInfo);
 	}
 	else
 	{
-		SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
-		response = JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 }));
+		return this->signUp(requestInfo);
+	}
+}
+
+/*
+	usage: the method tries to login into user's account, returns correspondly
+	in: the request info
+	out: if the login was succesful
+*/
+RequestResult LoginRequestHandler::login(RequestInfo requestInfo)
+{
+	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
+	
+	if (this->m_loginManager.login(loginRequest.username, loginRequest.password))
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
+			new MenuRequestHandler()
+		};
+	}
+	
+	return {
+		JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+		this->m_handlerFacotry.createLoginRequestHandler()
+	};
+}
+
+/*
+	usage: the method tries to sign up a user, returns correspondly
+	in: the request info
+	out: if the sign up was succesful
+*/
+RequestResult LoginRequestHandler::signUp(RequestInfo requestInfo)
+{
+	SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
+
+	if (this->m_loginManager.signup(signUpRequest.username, signUpRequest.password, signUpRequest.email))
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
+			new MenuRequestHandler()
+		};
 	}
 
-	return { response, nullptr };
+	return {
+		JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+		this->m_handlerFacotry.createLoginRequestHandler()
+	};
 }
