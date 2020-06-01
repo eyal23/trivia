@@ -1,18 +1,18 @@
 #include "Server.h"
 #include "WSAInitializer.h"
-#include "MongoDatabase.h"
+#include "SqliteDatabase.h"
 
 int main()
 {
 	try
 	{
 		WSAInitializer wsaInit;
-		MongoDatabase mongoDatabase;
-		Server server(&mongoDatabase);
+		SqliteDatabase sqliteDatabase;
+		Server server(&sqliteDatabase);
 
 		server.run();
 	}
-	catch (const std::exception& e) 
+	catch (const std::exception& e)
 	{
 		e.what();
 	}
