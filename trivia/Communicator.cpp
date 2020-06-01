@@ -77,19 +77,22 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 		}
 
 		RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
+		RequestResult requestResult = requestHandler->handleRequest(requestInfo);
 
-		if (requestHandler->isRequestRelevant(requestInfo))
+		if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
 		{
-			RequestResult requestResult = requestHandler->handleRequest(requestInfo);
-			delete (*communicator)[clientSocket];
-			(*communicator)[clientSocket] = requestResult.newHandler;
-
-			if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
-			{
-				communicator->removeClient(clientSocket);
-				break;
-			}
+			communicator->removeClient(clientSocket);
+			break;
 		}
+
+		if (requestResult.newHandler == nullptr)
+		{
+			communicator->removeClient(clientSocket);
+			break;
+		}
+
+		delete (*communicator)[clientSocket];
+		(*communicator)[clientSocket] = requestResult.newHandler;
 	}
 }
 

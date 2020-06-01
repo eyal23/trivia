@@ -52,6 +52,8 @@ def sendAndRecive(sock, request):
     print("data size: " + str(int.from_bytes(response[1 : 5], "little")))
     print("data: " + str(bson.loads(response[5:])))
 
+    return "status" in str(bson.loads(response[5:]))
+
 """
     usage: the function sends a "login request"
     in: the socket
@@ -63,7 +65,7 @@ def sendLoginRequest(sock):
         "password": "1234"
     }
 
-    sendAndRecive(sock, constructMessage(1, jsonData))
+    return sendAndRecive(sock, constructMessage(1, jsonData))
 
 """
     usage: the function sends a "sign up request"
@@ -77,7 +79,7 @@ def sendSingUpRequest(sock):
         "email": "user1@gmail.com"
     }
 
-    sendAndRecive(sock, constructMessage(2, jsonData))
+    return sendAndRecive(sock, constructMessage(0, jsonData))
 
 def main():
     isConnected = True
@@ -95,9 +97,11 @@ def main():
 enter you choice: """)
 
             if choice == "1":
-                sendLoginRequest(sock)
+                if sendLoginRequest(sock) == False:
+                    break
             elif choice == "2":
-                sendSingUpRequest(sock)
+                if sendSingUpRequest(sock) == False:
+                    break
             else:
                 print("ilegal choice!")
 

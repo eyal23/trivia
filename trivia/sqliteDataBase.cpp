@@ -64,11 +64,11 @@ bool SqliteDatabase::doesUserExist(string username)
 		{},
 		{ USERS_USERNAME },
 		{
-			{ USERS_USERNAME, username },
+			{ USERS_USERNAME, string("\"") + username + string("\"") },
 		}
 	};
 
-	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query), callback, &result, nullptr) != SQLITE_OK)
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
 		throw exception("could'nt access database");
 	}
@@ -89,12 +89,12 @@ bool SqliteDatabase::doesPasswordMatch(string username, string password)
 		{},
 		{ USERS_USERNAME },
 		{
-			{ USERS_USERNAME, username },
-			{ USERS_PASSWORD, password }
+			{ USERS_USERNAME, string("\"") + username + string("\"") },
+			{ USERS_PASSWORD, string("\"") + password + string("\"") }
 		}
 	};
 
-	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query), callback, &result, nullptr) != SQLITE_OK)
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
 		throw exception("could'nt access database");
 	}
@@ -112,13 +112,13 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 	InsertQuery query = {
 		"USERS",
 		{
-			username,
-			password,
-			email
+			string("\"") + username + string("\""),
+			string("\"") + password + string("\""),
+			string("\"") + email + string("\"")
 		},
 	};
 
-	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query), nullptr, nullptr, nullptr) != SQLITE_OK)
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), nullptr, nullptr, nullptr) != SQLITE_OK)
 	{
 		throw exception("could'nt access database");
 	}
@@ -141,9 +141,9 @@ bool SqliteDatabase::initDatabase()
 	in: the select query's parameters
 	out: the select query
 */
-const char* SqliteDatabase::constructQuery(SelectQuery query)
+string SqliteDatabase::constructQuery(SelectQuery query)
 {
-	std::string queryStr = "SELECT ";
+	string queryStr = "SELECT ";
 
 	for (int i = 0; i < query.fields.size(); i++)
 	{
@@ -155,19 +155,19 @@ const char* SqliteDatabase::constructQuery(SelectQuery query)
 		queryStr += " ";
 	}
 
-	queryStr += std::string("FROM ") +
+	queryStr += string("FROM ") +
 		query.tables[0] +
-		std::string(" ");
+		string(" ");
 
 	for (int i = 1; i < query.tables.size(); i++)
 	{
 		queryStr += std::string("INNER JOIN ") +
 			query.tables[i] +
-			std::string(" ON ") +
+			string(" ON ") +
 			query.joiners[i - 1].first +
-			std::string(" = ") +
+			string(" = ") +
 			query.joiners[i - 1].second +
-			std::string(" ");
+			string(" ");
 	}
 
 	queryStr += string("WHERE ");
@@ -175,7 +175,7 @@ const char* SqliteDatabase::constructQuery(SelectQuery query)
 	for (int i = 0; i < query.conditions.size(); i++)
 	{
 		queryStr += query.conditions[i].first +
-			std::string(" = ") +
+			string(" = ") +
 			query.conditions[i].second;
 
 		if (i < query.conditions.size() - 1)
@@ -186,7 +186,7 @@ const char* SqliteDatabase::constructQuery(SelectQuery query)
 
 	queryStr += ";";
 
-	return queryStr.c_str();
+	return queryStr;
 }
 
 /*
@@ -194,11 +194,11 @@ const char* SqliteDatabase::constructQuery(SelectQuery query)
 	in: the insert query's parameters
 	out: the insert query
 */
-const char* SqliteDatabase::constructQuery(InsertQuery query)
+string SqliteDatabase::constructQuery(InsertQuery query)
 {
-	std::string queryStr = std::string("INSERT INTO ") +
+	string queryStr = string("INSERT INTO ") +
 		query.table +
-		std::string(" (");
+		string(" (");
 
 	if (query.table == "USERS")
 	{
@@ -218,7 +218,7 @@ const char* SqliteDatabase::constructQuery(InsertQuery query)
 		}
 	}
 
-	return queryStr.c_str();
+	return queryStr;
 }
 
 /*
@@ -226,16 +226,16 @@ const char* SqliteDatabase::constructQuery(InsertQuery query)
 	in: the delete query's parameters
 	out: the delete query
 */
-const char* SqliteDatabase::constructQuery(DeleteQuery query)
+string SqliteDatabase::constructQuery(DeleteQuery query)
 {
-	std::string queryStr = std::string("DELETE FROM ") +
+	string queryStr = string("DELETE FROM ") +
 		query.table +
-		std::string(" WHERE ");
+		string(" WHERE ");
 
 	for (int i = 0; i < query.conditions.size(); i++)
 	{
 		queryStr += query.conditions[i].first +
-			std::string(" = ") +
+			string(" = ") +
 			query.conditions[i].second;
 
 		if (i < query.conditions.size() - 1)
@@ -248,7 +248,7 @@ const char* SqliteDatabase::constructQuery(DeleteQuery query)
 		}
 	}
 
-	return queryStr.c_str();
+	return queryStr;
 }
 
 /*

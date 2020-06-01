@@ -20,7 +20,7 @@ LoginManager::LoginManager(IDatabase* database) :
 */
 bool LoginManager::signup(const string username, const string password, const string email) const
 {
-	if (!this->m_database->doesUserExist(username))
+	if (this->m_database->doesUserExist(username))
 	{
 		return false;
 	}

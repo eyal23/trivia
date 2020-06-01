@@ -35,6 +35,14 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo requestInfo) const
 */
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 {
+	if (!this->isRequestRelevant(requestInfo))
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			nullptr
+		};
+	}
+
 	try
 	{
 		if (requestInfo.id == LOGIN_REQUEST)
@@ -53,7 +61,6 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 			nullptr
 		};
 	}
-	
 }
 
 /*

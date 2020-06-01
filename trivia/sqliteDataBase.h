@@ -31,7 +31,7 @@ class SqliteDatabase: public IDatabase
 	{
 		string table;
 		vector<pair<string, string>> conditions;
-	} DeleteQuery;
+	} DeleteQuery; 
 
 private:
 	sqlite3* m_db;
@@ -46,8 +46,8 @@ public:
 
 private:
 	bool initDatabase();
-	static const char* constructQuery(SelectQuery query);
-	static const char* constructQuery(InsertQuery query);
-	static const char* constructQuery(DeleteQuery query);
+	static string constructQuery(SelectQuery query);
+	static string constructQuery(InsertQuery query);
+	static string constructQuery(DeleteQuery query);
 	static int callback(void* data, int argc, char** argv, char** azColName);
 };
