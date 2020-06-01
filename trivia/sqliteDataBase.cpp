@@ -7,12 +7,20 @@
 #include "sqlite3.h"
 
 #define DATABASE_NAME "triviaDB.sqlite"
+#define USERS_USERNAME "USERNAME"
+#define USERS_PASSWORD "PASSWORD"
+#define USERS_EMAIL "EMAIL"
 
 using std::exception;
 using std::vector;
 using std::map;
 
 
+/*
+	usage: constructor
+	in: no
+	out: no
+*/
 SqliteDatabase::SqliteDatabase()
 {
 	int isExisting = _access(DATABASE_NAME, 0);
@@ -33,20 +41,30 @@ SqliteDatabase::SqliteDatabase()
 	}
 }
 
+/*
+	usage: destructor
+	in: no
+	out: no
+*/
 SqliteDatabase::~SqliteDatabase()
 {
 	sqlite3_close(this->m_db);
 }
 
+/*
+	usage: the method checks if a user exists in the database
+	in: the username
+	out: if the user exists in the database
+*/
 bool SqliteDatabase::doesUserExist(string username)
 {
 	vector<map<string, string>> result;
 	SelectQuery query = {
 		{ "USERS" },
 		{},
-		{ "USERNAME" },
+		{ USERS_USERNAME },
 		{
-			{ "USERNAME", username },
+			{ USERS_USERNAME, username },
 		}
 	};
 
@@ -58,16 +76,21 @@ bool SqliteDatabase::doesUserExist(string username)
 	return result.size() != 0;
 }
 
+/*
+	usage: the method checks if an username and password match
+	in: the username, the password
+	out: if the username and password match
+*/
 bool SqliteDatabase::doesPasswordMatch(string username, string password)
 {
 	vector<map<string, string>> result;
 	SelectQuery query = {
 		{ "USERS" },
 		{},
-		{ "USERNAME" },
+		{ USERS_USERNAME },
 		{
-			{ "USERNAME", username },
-			{ "PASSWORD", password }
+			{ USERS_USERNAME, username },
+			{ USERS_PASSWORD, password }
 		}
 	};
 
@@ -79,6 +102,11 @@ bool SqliteDatabase::doesPasswordMatch(string username, string password)
 	return result.size() != 0;
 }
 
+/*
+	usage: the method adds a new user to the database
+	in: the username, the password, the email
+	out: no
+*/
 void SqliteDatabase::addNewUser(string username, string password, string email)
 {
 	InsertQuery query = {
@@ -96,6 +124,11 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 	}
 }
 
+/*
+	usage: the method initializes the database
+	in: no
+	out: if the initialization was succesful
+*/
 bool SqliteDatabase::initDatabase()
 {
 	const char* createUsersTableQuery = "CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);";
@@ -103,6 +136,11 @@ bool SqliteDatabase::initDatabase()
 	return sqlite3_exec(this->m_db, createUsersTableQuery, nullptr, nullptr, nullptr);
 }
 
+/*
+	usage: the method constructs a select query
+	in: the select query's parameters
+	out: the select query
+*/
 const char* SqliteDatabase::constructQuery(SelectQuery query)
 {
 	std::string queryStr = "SELECT ";
@@ -151,6 +189,11 @@ const char* SqliteDatabase::constructQuery(SelectQuery query)
 	return queryStr.c_str();
 }
 
+/*
+	usage: the method constructs an insert query
+	in: the insert query's parameters
+	out: the insert query
+*/
 const char* SqliteDatabase::constructQuery(InsertQuery query)
 {
 	std::string queryStr = std::string("INSERT INTO ") +
@@ -178,6 +221,11 @@ const char* SqliteDatabase::constructQuery(InsertQuery query)
 	return queryStr.c_str();
 }
 
+/*
+	usage: the method constructs a delete query
+	in: the delete query's parameters
+	out: the delete query
+*/
 const char* SqliteDatabase::constructQuery(DeleteQuery query)
 {
 	std::string queryStr = std::string("DELETE FROM ") +
@@ -203,6 +251,11 @@ const char* SqliteDatabase::constructQuery(DeleteQuery query)
 	return queryStr.c_str();
 }
 
+/*
+	usage: callback function for results from the database
+	in: place to save the results, how many fields are there in the result, the fields, the values of the fields
+	out: 0
+*/
 int SqliteDatabase::callback(void* data, int argc, char** argv, char** azColName)
 {
 	vector<map<string, string>>* pData = (vector<map<string, string>>*)data;
