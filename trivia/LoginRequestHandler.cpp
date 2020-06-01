@@ -35,14 +35,25 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo requestInfo) const
 */
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 {
-	if (requestInfo.id == LOGIN_REQUEST)
+	try
 	{
-		return this->login(requestInfo);
+		if (requestInfo.id == LOGIN_REQUEST)
+		{
+			return this->login(requestInfo);
+		}
+		else
+		{
+			return this->signup(requestInfo);
+		}
 	}
-	else
+	catch (const std::exception& e)
 	{
-		return this->signup(requestInfo);
+		return {
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			nullptr
+		};
 	}
+	
 }
 
 /*
@@ -63,7 +74,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 	}
 	
 	return {
-		JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+		JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 0 })),
 		this->m_handlerFacotry.createLoginRequestHandler()
 	};
 }
@@ -86,7 +97,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 	}
 
 	return {
-		JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+		JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 0 })),
 		this->m_handlerFacotry.createLoginRequestHandler()
 	};
 }

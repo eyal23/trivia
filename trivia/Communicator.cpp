@@ -72,7 +72,8 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 
 		if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
 		{
-			throw exception("Error while reciving message from client");
+			communicator->removeClient(clientSocket);
+			break;
 		}
 
 		RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
@@ -80,16 +81,14 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 		if (requestHandler->isRequestRelevant(requestInfo))
 		{
 			RequestResult requestResult = requestHandler->handleRequest(requestInfo);
+			delete (*communicator)[clientSocket];
 			(*communicator)[clientSocket] = requestResult.newHandler;
 
 			if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
 			{
-				throw exception("Error while sending message to client");
+				communicator->removeClient(clientSocket);
+				break;
 			}
-		}
-		else
-		{
-			throw exception("None relevant request...");
 		}
 	}
 }
@@ -120,6 +119,11 @@ void Communicator::startHandleRequests()
 RequestHandlerFactory& Communicator::getHandlerFactory()
 {
 	return this->m_handlerFactory;
+}
+
+void Communicator::removeClient(SOCKET clientSocket)
+{
+	this->m_clients.erase(clientSocket);
 }
 
 /*
