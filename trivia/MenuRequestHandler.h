@@ -15,7 +15,7 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	MenuRequestHandler(RequestHandlerFactory& handlerFactory);
+	MenuRequestHandler(RequestHandlerFactory& handlerFactory); 
 
 	bool isRequestRelevant(const RequestInfo requestInfo) const override;
 	RequestResult handleRequest(const RequestInfo requestInfo) override;
