@@ -124,6 +124,26 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 	}
 }
 
+float SqliteDatabase::getPlayerAverageAnswerTime(string)
+{
+	return 0.0f;
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(string)
+{
+	return 0;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(string)
+{
+	return 0;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(string)
+{
+	return 0;
+}
+
 /*
 	usage: the method initializes the database
 	in: no

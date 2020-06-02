@@ -37,3 +37,18 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vect
 		jsonData["email"]
 	};
 }
+
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(const vector<uint8_t> buffer)
+{
+	return GetPlayersInRoomRequest();
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const vector<uint8_t> buffer)
+{
+	return JoinRoomRequest();
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(CreateRoomRequest)
+{
+	return CreateRoomRequest();
+}

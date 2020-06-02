@@ -73,3 +73,33 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const Signu
 
 	return message;
 }
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResponse logoutRes)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse getRoomsRes)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse getPlayersInRoomRes)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse joinRoomRes)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse createRoomRes)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatisticsResponse getStatisticsRes)
+{
+	return vector<uint8_t>();
+}

@@ -23,6 +23,11 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return new LoginRequestHandler(*this);
 }
 
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+{
+	return nullptr;
+}
+
 /*
 	usage: the method gets the login manager
 	in: no
@@ -31,4 +36,14 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return this->m_loginManager;
+}
+
+RoomManager& RequestHandlerFactory::getRoomManager()
+{
+	// TODO: insert return statement here
+}
+
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
+{
+	// TODO: insert return statement here
 }

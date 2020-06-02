@@ -43,6 +43,10 @@ public:
 	bool doesUserExist(string username) override;
 	bool doesPasswordMatch(string username, string password) override;
 	void addNewUser(string username, string password, string email) override;
+	float getPlayerAverageAnswerTime(string) override;
+	int getNumOfCorrectAnswers(string) override;
+	int getNumOfTotalAnswers(string) override;
+	int getNumOfPlayerGames(string) override;
 
 private:
 	bool initDatabase();
