@@ -50,3 +50,8 @@ vector<string> Room::getAllUsers() const
 
 	return users;
 }
+
+const RoomData& Room::getMetadata() const
+{
+	return this->m_metadata;
+}

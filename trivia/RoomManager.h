@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "Room.h"
-#include "IDatabase.h"
 #include "LoggedUser.h"
 
 using std::map;
@@ -14,14 +13,14 @@ class RoomManager
 {
 private:
 	map<int, Room> m_rooms;
-	IDatabase* m_database;
 
 public:
-	RoomManager(IDatabase* database);
-
-	bool createRoom(LoggedUser, RoomData);
+	void createRoom(LoggedUser loggedUser, RoomData roomData);
 	bool deleteRoom(int id);
-	unsigned int getRoomState(int id) const;
+	unsigned int getRoomState(int id);
 	vector<RoomData> getRooms() const;
+
+private:
+	int getNextRoomId() const;
 };
 

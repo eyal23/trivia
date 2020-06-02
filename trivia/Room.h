@@ -29,5 +29,6 @@ public:
 	bool addUser(LoggedUser loggedUser);
 	bool removeUser(LoggedUser loggedUser);
 	vector<string> getAllUsers() const;
+	const RoomData& getMetadata() const;
 };
 
