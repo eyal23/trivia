@@ -5,6 +5,10 @@
 using std::vector;
 
 
+Room::Room()
+{
+}
+
 /*
 	usage: constructor
 	in: the room's metadata

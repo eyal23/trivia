@@ -151,9 +151,20 @@ int SqliteDatabase::getNumOfPlayerGames(string)
 */
 bool SqliteDatabase::initDatabase()
 {
-	const char* createUsersTableQuery = "CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);";
+	vector<const char*> tableQueries = {
+		"CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);",
+		"CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT , QUESTION TEXT NOT NULL , CORRECT_ANSWER TEXT NOT NULL , INCORRECT_ANSWER1 TEXT NOT NULL , INCORRECT_ANSWER2 TEXT NOT NULL , INCORRECT_ANSWER3 TEXT NOT NULL);"
+	};
 
-	return sqlite3_exec(this->m_db, createUsersTableQuery, nullptr, nullptr, nullptr);
+	for (int i = 0; i < tableQueries.size(); i++)
+	{
+		if (sqlite3_exec(this->m_db, tableQueries[i], nullptr, nullptr, nullptr))
+		{
+			true;
+		}
+	}
+
+	return false;
 }
 
 /*
