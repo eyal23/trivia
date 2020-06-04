@@ -2,6 +2,7 @@
 #include <exception>
 #include <vector>
 #include <map>
+#include <string>
 
 #include "sqliteDataBase.h"
 #include "sqlite3.h"
@@ -25,6 +26,7 @@
 using std::exception;
 using std::vector;
 using std::map;
+using std::stoi;
 
 
 /*
@@ -137,27 +139,123 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 
 float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 {
-	return 0.0f;
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "STATISTICS" },
+		{},
+		{ string("AVG(") + STATISTICS_TOTAL_TIME + string(") AS AVERAGE_ANSWER_TIME") },
+		{
+			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
+		}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	return result.size() > 0 ? stoi(result[0]["AVERAGE_ANSWER_TIME"]) : 0;
 }
 
 int SqliteDatabase::getNumOfCorrectAnswers(string username)
 {
-	return 0;
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "STATISTICS" },
+		{},
+		{ string("SUM(") + STATISTICS_CORRECT_ANSWERS + string(") AS TOTAL_CORRECT_ANSWERS") },
+		{
+			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
+		}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	return result.size() > 0 ? stoi(result[0]["TOTAL_CORRECT_ANSWERS"]) : 0;
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(string username)
 {
-	return 0;
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "STATISTICS" },
+		{},
+		{ string("SUM(") + STATISTICS_TOTAL_ANSWERS + string(") AS TOTAL_TOTAL_ANSWERS") },
+		{
+			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
+		}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	return result.size() > 0 ? stoi(result[0]["TOTAL_TOTAL_ANSWERS"]) : 0;
 }
 
 int SqliteDatabase::getNumOfPlayerGames(string username)
 {
-	return 0;
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "STATISTICS" },
+		{},
+		{ string("COUNT(") + STATISTICS_TOTAL_ANSWERS + string(") AS PLAYER_GAMES") },
+		{
+			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
+		}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	return result.size() > 0 ? stoi(result[0]["PLAYER_GAMES"]) : 0;
 }
 
 int* SqliteDatabase::getTopScores(string username)
 {
-	return nullptr;
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "STATISTICS" },
+		{},
+		{ STATISTICS_CORRECT_ANSWERS, STATISTICS_TOTAL_TIME },
+		{
+			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
+		}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	int topScores[5] = { 0, 0, 0, 0, 0 };
+
+	for (int i = 0; i < result.size(); i++)
+	{
+		int currentScore = stoi(result[i][STATISTICS_CORRECT_ANSWERS]) + int(100 / stoi(result[i][STATISTICS_TOTAL_TIME]));
+
+		for (int j = 0; j < 5; j++)
+		{
+			if (currentScore > topScores[j])
+			{
+				for (int h = 5; h > j; h--)
+				{
+					topScores[h] = topScores[h - 1];
+				}
+
+				topScores[j] = currentScore;
+				break;
+			}
+		}
+	}
+
+	return topScores;
 }
 
 /*
@@ -169,7 +267,8 @@ bool SqliteDatabase::initDatabase()
 {
 	const vector<const char*> tableQueries = {
 		"CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);",
-		"CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT , QUESTION TEXT NOT NULL , CORRECT_ANSWER TEXT NOT NULL , INCORRECT_ANSWER1 TEXT NOT NULL , INCORRECT_ANSWER2 TEXT NOT NULL , INCORRECT_ANSWER3 TEXT NOT NULL);"
+		"CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT , QUESTION TEXT NOT NULL , CORRECT_ANSWER TEXT NOT NULL , INCORRECT_ANSWER1 TEXT NOT NULL , INCORRECT_ANSWER2 TEXT NOT NULL , INCORRECT_ANSWER3 TEXT NOT NULL);",
+		"CREATE TABLE STATISTICS (USERNAME TEXT FOREIGON KEY REFERENCES USERS(USERNAME) , GAME_ID INTEGER NOT NULL , TOTAL_ANSWERS INTEGER NOT NULL , CORRECT_ANSWERS INTEGER NOT NULL , TOTAL_TIME REAL NOT NULL);"
 	};
 
 	for (int i = 0; i < tableQueries.size(); i++)
@@ -346,6 +445,10 @@ string SqliteDatabase::constructQuery(InsertQuery query)
 	else if (query.table == "QUESTIONS")
 	{
 		queryStr += "QUESTION , CORRECT_ANSWER , INCORRECT_ANSWER1 , INCORRECT_ANSWER2 , INCORRECT_ANSWER3) VALUES (";
+	}
+	else if (query.table == "STATISTICS")
+	{
+		queryStr += "USERNAME , GAME_ID , TOTAL_ANSWERS , CORRECT_ANSWERS , TOTAL_TIME) VALUES (";
 	}
 
 	for (int i = 0; i < query.values.size(); i++)
