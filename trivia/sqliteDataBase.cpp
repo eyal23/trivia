@@ -137,6 +137,11 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 	}
 }
 
+/*
+	usage: the method gets the average answer time of an user
+	in: the username
+	out: the average answer time of the user
+*/
 float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 {
 	vector<map<string, string>> result;
@@ -157,6 +162,11 @@ float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 	return result.size() > 0 ? stoi(result[0]["AVERAGE_ANSWER_TIME"]) : 0;
 }
 
+/*
+	usage: the method gets the number of correct answers of an user
+	in: the username
+	out: the number of correct answers of the user
+*/
 int SqliteDatabase::getNumOfCorrectAnswers(string username)
 {
 	vector<map<string, string>> result;
@@ -177,6 +187,11 @@ int SqliteDatabase::getNumOfCorrectAnswers(string username)
 	return result.size() > 0 ? stoi(result[0]["TOTAL_CORRECT_ANSWERS"]) : 0;
 }
 
+/*
+	usage: the method gets the number of answers of an user
+	in: the username
+	out: the number of answers of the user
+*/
 int SqliteDatabase::getNumOfTotalAnswers(string username)
 {
 	vector<map<string, string>> result;
@@ -197,6 +212,11 @@ int SqliteDatabase::getNumOfTotalAnswers(string username)
 	return result.size() > 0 ? stoi(result[0]["TOTAL_TOTAL_ANSWERS"]) : 0;
 }
 
+/*
+	usage: the method gets the number games a player have played
+	in: the username
+	out: the number games the player have played
+*/
 int SqliteDatabase::getNumOfPlayerGames(string username)
 {
 	vector<map<string, string>> result;
@@ -217,6 +237,11 @@ int SqliteDatabase::getNumOfPlayerGames(string username)
 	return result.size() > 0 ? stoi(result[0]["PLAYER_GAMES"]) : 0;
 }
 
+/*
+	usage: the method gets the top scores of an user
+	in: the username
+	out: the user's top scores
+*/
 int* SqliteDatabase::getTopScores(string username)
 {
 	vector<map<string, string>> result;
