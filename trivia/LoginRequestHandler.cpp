@@ -76,7 +76,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			new MenuRequestHandler()
+			nullptr
 		};
 	}
 	
@@ -99,7 +99,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			new MenuRequestHandler()
+			nullptr
 		};
 	}
 

@@ -5,11 +5,9 @@
 
 #include "sqliteDataBase.h"
 #include "sqlite3.h"
+#include "Constants.h"
 
 #define DATABASE_NAME "triviaDB.sqlite"
-#define USERS_USERNAME "USERNAME"
-#define USERS_PASSWORD "PASSWORD"
-#define USERS_EMAIL "EMAIL"
 
 using std::exception;
 using std::vector;
@@ -151,9 +149,39 @@ int SqliteDatabase::getNumOfPlayerGames(string)
 */
 bool SqliteDatabase::initDatabase()
 {
-	const char* createUsersTableQuery = "CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);";
+	const vector<const char*> tableQueries = {
+		"CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);",
+		"CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT , QUESTION TEXT NOT NULL , CORRECT_ANSWER TEXT NOT NULL , INCORRECT_ANSWER1 TEXT NOT NULL , INCORRECT_ANSWER2 TEXT NOT NULL , INCORRECT_ANSWER3 TEXT NOT NULL);"
+	};
 
-	return sqlite3_exec(this->m_db, createUsersTableQuery, nullptr, nullptr, nullptr);
+	for (int i = 0; i < tableQueries.size(); i++)
+	{
+		if (sqlite3_exec(this->m_db, tableQueries[i], nullptr, nullptr, nullptr) != SQLITE_OK)
+		{
+			true;
+		}
+	}
+
+	for (int i = 0; i < questions.size(); i++)
+	{
+		InsertQuery query = {
+		"QUESTIONS",
+		{
+			questions[i][QUESTIONS_QUESTION],
+			questions[i][QUESTIONS_CORRECT_ANSWER],
+			questions[i][QUESTIONS_INCORRECT_ANSWER_1],
+			questions[i][QUESTIONS_INCORRECT_ANSWER_2],
+			questions[i][QUESTIONS_INCORRECT_ANSWER_3]
+		},
+		};
+
+		if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), nullptr, nullptr, nullptr) != SQLITE_OK)
+		{
+			true;
+		}
+	}
+
+	return false;
 }
 
 /*
@@ -223,6 +251,10 @@ string SqliteDatabase::constructQuery(InsertQuery query)
 	if (query.table == "USERS")
 	{
 		queryStr += "USERNAME , PASSWORD , EMAIL) VALUES (";
+	}
+	else if (query.table == "QUESTIONS")
+	{
+		queryStr += "QUESTION , CORRECT_ANSWER , INCORRECT_ANSWER1 , INCORRECT_ANSWER2 , INCORRECT_ANSWER3) VALUES (";
 	}
 
 	for (int i = 0; i < query.values.size(); i++)

@@ -9,7 +9,7 @@
 	out:no
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) :
-	m_database(database), m_loginManager(LoginManager(database))
+	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
 {
 }
 
@@ -40,10 +40,10 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
-	// TODO: insert return statement here
+	return this->m_roomManager;
 }
 
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
-	// TODO: insert return statement here
+	return this->m_statisticsManager;
 }

@@ -24,6 +24,7 @@ private:
 	vector<LoggedUser> m_users;
 
 public:
+	Room();
 	Room(RoomData metadata);
 
 	bool addUser(LoggedUser loggedUser);

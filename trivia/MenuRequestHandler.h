@@ -6,6 +6,8 @@
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
 
+class RequestHandlerFactory;
+
 class MenuRequestHandler: public IRequestHandler
 {
 private:
@@ -15,7 +17,7 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	MenuRequestHandler(RequestHandlerFactory& handlerFactory); 
+	MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser loggedUser);
 
 	bool isRequestRelevant(const RequestInfo requestInfo) const override;
 	RequestResult handleRequest(const RequestInfo requestInfo) override;
