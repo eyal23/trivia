@@ -9,6 +9,7 @@ typedef struct Statistics
 	int numberOfCorrectAnswers;
 	int numberOfTotalAnswers;
 	int numberOfPlayerGames;
+	int* topScores;
 } Statistics;
 
 class StatisticsManager

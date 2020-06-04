@@ -1,5 +1,12 @@
+#include <map>
+#include <vector>
+#include <iostream>
+
 #include "StatisticsManager.h"
 
+using std::string;
+using std::map;
+using std::vector;
 
 /*
 	usage: constructor
@@ -22,6 +29,7 @@ Statistics StatisticsManager::getStatistics(LoggedUser loggedUser)
 		this->m_database->getPlayerAverageAnswerTime(loggedUser.getUsername()),
 		this->m_database->getNumOfCorrectAnswers(loggedUser.getUsername()),
 		this->m_database->getNumOfTotalAnswers(loggedUser.getUsername()),
-		this->m_database->getNumOfPlayerGames(loggedUser.getUsername())
+		this->m_database->getNumOfPlayerGames(loggedUser.getUsername()),
+		this->m_database->getTopScores(loggedUser.getUsername())
 	};
 }
