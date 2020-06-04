@@ -122,24 +122,29 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 	}
 }
 
-float SqliteDatabase::getPlayerAverageAnswerTime(string)
+float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 {
 	return 0.0f;
 }
 
-int SqliteDatabase::getNumOfCorrectAnswers(string)
+int SqliteDatabase::getNumOfCorrectAnswers(string username)
 {
 	return 0;
 }
 
-int SqliteDatabase::getNumOfTotalAnswers(string)
+int SqliteDatabase::getNumOfTotalAnswers(string username)
 {
 	return 0;
 }
 
-int SqliteDatabase::getNumOfPlayerGames(string)
+int SqliteDatabase::getNumOfPlayerGames(string username)
 {
 	return 0;
+}
+
+int* SqliteDatabase::getTopScores(string username)
+{
+	return nullptr;
 }
 
 /*

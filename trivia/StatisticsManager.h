@@ -1,6 +1,16 @@
 #pragma once
 
 #include "IDatabase.h"
+#include "LoggedUser.h"
+
+typedef struct Statistics
+{
+	float averageAnswerTime;
+	int numberOfCorrectAnswers;
+	int numberOfTotalAnswers;
+	int numberOfPlayerGames;
+	int* topScores;
+} Statistics;
 
 class StatisticsManager
 {
@@ -10,6 +20,6 @@ private:
 public:
 	StatisticsManager(IDatabase* database);
 
-	void getStatistics();
+	Statistics getStatistics(LoggedUser loggedUser);
 };
 
