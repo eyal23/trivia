@@ -56,7 +56,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const Login
 * creates and sends the sign up respons.
 *
 * @param signRes the sign up respons.
-* @return bson vector of uint8 type respons for signup.
+* @return bson vector of uint8 type respons for sign up.
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SignupResponse signRes)
 {
