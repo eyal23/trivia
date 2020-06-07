@@ -45,5 +45,5 @@ public:
 	static SignUpRequest deserializeSignUpRequest(const vector<uint8_t> buffer);
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(const vector<uint8_t> buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(const vector<uint8_t> buffer);
-	static CreateRoomRequest deserializeCreateRoomRequest(CreateRoomRequest);
+	static CreateRoomRequest deserializeCreateRoomRequest(const vector<uint8_t> buffer);
 };
