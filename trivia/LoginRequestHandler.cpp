@@ -4,6 +4,7 @@
 #include "MenuRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
+#include "LoggedUser.h"
 #include "Constants.h"
 
 using std::vector;
@@ -76,7 +77,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			new MenuRequestHandler()
+			this->m_handlerFacotry.createMenuRequestHandler(LoggedUser(loginRequest.username))
 		};
 	}
 	
@@ -99,7 +100,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			new MenuRequestHandler()
+			this->m_handlerFacotry.createMenuRequestHandler(LoggedUser(signUpRequest.username))
 		};
 	}
 
