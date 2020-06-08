@@ -86,7 +86,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResp
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 5 };
+	vector<uint8_t> message = { LOGOUT_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -115,7 +115,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsRe
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 6 };
+	vector<uint8_t> message = { GET_ROOMS_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -137,7 +137,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetPlayers
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 6 };
+	vector<uint8_t> message = { GET_PLAYERS_IN_ROOM_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -159,7 +159,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const JoinRoomRe
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 7 };
+	vector<uint8_t> message = { JOIN_ROOM_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -181,7 +181,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CreateRoom
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 8 };
+	vector<uint8_t> message = { CREATE_ROOM_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -217,7 +217,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
-	vector<uint8_t> message = { 6 };
+	vector<uint8_t> message = { GET_STATISTICS_RESPONSE };
 	message.resize(5);
 
 	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
@@ -225,4 +225,24 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 	message.insert(message.end(), bson.begin(), bson.end());
 
 	return message;
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse closeRoomResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameResponse startGameResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse getRoomStateResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse leaveRoomResponse)
+{
+	return vector<uint8_t>();
 }
