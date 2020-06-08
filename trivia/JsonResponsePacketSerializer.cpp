@@ -227,6 +227,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 	return message;
 }
 
+/*
+	usage: the method serializes a close room response
+	in: the close room response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse closeRoomResponse)
 {
 	json j = { {"status", closeRoomResponse.status } };
@@ -243,6 +248,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomR
 	return message;
 }
 
+/*
+	usage: the method serializes a start game response
+	in: the start game response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameResponse startGameResponse)
 {
 	json j = { {"status", startGameResponse.status } };
@@ -259,6 +269,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameR
 	return message;
 }
 
+/*
+	usage: the method serializes a get room state response
+	in: the get room state response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse getRoomStateResponse)
 {
 	json j = { 
@@ -282,6 +297,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomSta
 	return message;
 }
 
+/*
+	usage: the method serializes a leave room response
+	in: the leave room response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse leaveRoomResponse)
 {
 	json j = { {"status", leaveRoomResponse.status } };
