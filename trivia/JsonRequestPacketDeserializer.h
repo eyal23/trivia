@@ -38,6 +38,7 @@ typedef struct CreateRoomRequest
 	unsigned int answerTimout;
 } CreateRoomRequest;
 
+
 class JsonRequestPacketDeserializer
 {
 public:

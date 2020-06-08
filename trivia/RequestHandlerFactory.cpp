@@ -29,6 +29,16 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser l
 	return new MenuRequestHandler(*this, loggedUser);
 }
 
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, Room room)
+{
+	return nullptr;
+}
+
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, Room room)
+{
+	return nullptr;
+}
+
 /*
 	usage: the method gets the login manager
 	in: no
