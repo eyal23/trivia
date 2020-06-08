@@ -229,20 +229,71 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse closeRoomResponse)
 {
-	return vector<uint8_t>();
+	json j = { {"status", closeRoomResponse.status } };
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { CLOSE_ROOM_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameResponse startGameResponse)
 {
-	return vector<uint8_t>();
+	json j = { {"status", startGameResponse.status } };
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { START_GAME_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse getRoomStateResponse)
 {
-	return vector<uint8_t>();
+	json j = { 
+		{"status", getRoomStateResponse.status },
+		{"HasGameBegun", getRoomStateResponse.hasGameBegun },
+		{"Players", getRoomStateResponse.players },
+		{"QuestionsCount", getRoomStateResponse.questionsCount },
+		{"AnswerTimeout", getRoomStateResponse.answerTimeout },
+	};
+
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { GET_ROOM_STATE_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse leaveRoomResponse)
 {
-	return vector<uint8_t>();
+	json j = { {"status", leaveRoomResponse.status } };
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { LEAVE_ROOM_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
