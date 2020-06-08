@@ -12,8 +12,9 @@ typedef struct RoomData
 {
 	unsigned int id;
 	string name;
-	int maxPlayers;
+	unsigned int maxPlayers;
 	unsigned int timePerQuestion;
+	unsigned int questionsCount;
 	unsigned int isActive;
 } RoomData;
 

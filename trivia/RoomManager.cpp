@@ -32,6 +32,21 @@ bool RoomManager::deleteRoom(int id)
 }
 
 /*
+	usage: the method joins a user to a room
+	in: the room's id, the logged user
+	out: if the user was joined
+*/
+bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
+{
+	if (this->m_rooms.count(id) == 0)
+	{
+		return false;
+	}
+
+	return this->m_rooms[id].addUser(loggedUser);
+}
+
+/*
 	usage: the method gets a room's state
 	in: the room's id
 	out: the room's state
@@ -57,6 +72,16 @@ vector<RoomData> RoomManager::getRooms() const
 	}
 
 	return rooms;
+}
+
+/*
+	usage: the method gets all players in a room
+	in: the room's id
+	out: all players in the room
+*/
+vector<string> RoomManager::getPlayersInRoom(int id)
+{
+	return this->m_rooms[id].getAllUsers();
 }
 
 /*

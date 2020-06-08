@@ -2,11 +2,22 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 
+
+/*
+	usage: constructor
+	in: the handler factory, the logged user
+	out: no
+*/
 MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser loggedUser) :
 	m_handlerFactory(handlerFactory), m_roomManager(handlerFactory.getRoomManager()), m_statisticsManager(handlerFactory.getStatisticsManager()), m_user(loggedUser)
 {
 }
 
+/*
+	usage: the method checks if a request is relevant
+	in: the request info
+	out: if the request is relevant
+*/
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo requestInfo) const
 {
 	return requestInfo.id == LOGOUT_REQUEST ||
@@ -17,6 +28,11 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo requestInfo) const
 		requestInfo.id == GET_STATISTICS_REQUEST;
 }
 
+/*
+	usage: the method handles a request
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo requestInfo)
 {
 	if (!this->isRequestRelevant(requestInfo))
@@ -65,6 +81,11 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo requestInfo)
 	}
 }
 
+/*
+	usage: the method signs out a user
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::signout(RequestInfo requestInfo) const
 {
 	if (this->m_handlerFactory.getLoginManager().logout(this->m_user.getUsername()))
@@ -81,6 +102,11 @@ RequestResult MenuRequestHandler::signout(RequestInfo requestInfo) const
 	};
 }
 
+/*
+	usage: the method gets all the rooms
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::getRooms(RequestInfo requestInfo) const
 {
 	return {
@@ -89,26 +115,80 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo requestInfo) const
 	};
 }
 
+/*
+	usage: the method gets all the players in a room
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo) const
 {
 	GetPlayersInRoomRequest getPlayersInRoomRequest = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(requestInfo.buffer);
 
-	
+	return {
+		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ this->m_roomManager.getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
+		nullptr
+	};
 }
 
+/*
+	usage: the method gets the statistics about a user
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::getStatistics(RequestInfo requestInfo) const
 {
-	Statistics statistics = this->m_statisticsManager.getStatistics(this->m_user);
-
-	//TODO - ADDED SEREALIZATION
+	return { 
+		JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse({ 1, this->m_statisticsManager.getStatistics(this->m_user) })),
+		nullptr
+	};
 }
 
+/*
+	usage: the method joins a user into a room
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo) const
 {
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(requestInfo.buffer);
+
+	if (this->m_roomManager.joinRoom(joinRoomRequest.roomId, this->m_user))
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse({ 1 })),
+			nullptr
+		};
+	}
+
+	return {
+			JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse({ 0 })),
+			nullptr
+	};
 }
 
+/*
+	usage: the method creates a room
+	in: the request info
+	out: the request result
+*/
 RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo) const
 {
-	return RequestResult();
+	CreateRoomRequest createRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(requestInfo.buffer);
+
+	this->m_roomManager.createRoom(
+		this->m_user, 
+		{ 
+			0, 
+			createRoomRequest.roomName, 
+			createRoomRequest.maxUsers, 
+			createRoomRequest.answerTimout, 
+			createRoomRequest.questionCount, 
+			0 
+		}
+	);
+
+	return {
+		JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse({ 1 })),
+		nullptr
+	};
 }

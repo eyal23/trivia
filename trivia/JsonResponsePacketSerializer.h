@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Room.h"
+#include "StatisticsManager.h"
 
 using std::string;
 using std::vector;
@@ -43,7 +44,7 @@ typedef struct GetPlayersInRoomResponse
 typedef struct GetStatisticsResponse
 {
 	unsigned int status;
-	vector<string> statistics;
+	Statistics statitstics;
 } GetStatisticsResponse;
 
 typedef struct JoinRoomResponse
