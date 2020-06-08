@@ -39,11 +39,21 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 	return this->m_loginManager;
 }
 
+/*
+	usage: the method gets the room manager
+	in: no
+	out: the room manager
+*/
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return this->m_roomManager;
 }
 
+/*
+	usage: the method gets the statistics manager
+	in: no
+	out: the statistics manager
+*/
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return this->m_statisticsManager;
