@@ -1,21 +1,20 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include "RequestHandlerFactory.h"
-#include "RoomManager.h"
 #include "Room.h"
 #include "LoggedUser.h"
 
+class RequestHandlerFactory;
+
+
 class RoomRequestHandler: public IRequestHandler
 {
-private:
+protected:
 	Room m_room;
 	LoggedUser m_user;
-	RoomManager& m_roomManager;
-	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	RoomRequestHandler(RequestHandlerFactory& handlerFactory, Room room, LoggedUser loggedUser);
+	RoomRequestHandler(Room room, LoggedUser loggedUser);
 
 	RequestResult handleRequest(RequestInfo requestInfo) override;
 
