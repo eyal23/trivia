@@ -104,7 +104,14 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResp
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse getRoomsRes)
 {
-	json j = { {"status", getRoomsRes.status } };
+	vector<string> rooms;
+
+	for (int i = 0; i < getRoomsRes.rooms.size(); i++)
+	{
+		rooms.push_back(getRoomsRes.rooms[i].name);
+	}
+
+	json j = { {"Rooms", rooms } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -126,7 +133,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsRe
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse getPlayersInRoomRes)
 {
-	json j = { {"players", getPlayersInRoomRes.players } };
+	json j = { {"PlayersInRoom", getPlayersInRoomRes.players } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -192,7 +199,21 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CreateRoom
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatisticsResponse getStatisticsRes)
 {
-	json j = { {"statistics", getStatisticsRes.statistics } };
+	json j = { 
+		{ "UserStatistics", { 
+				{ "AverageAnswerTime", getStatisticsRes.statitstics.averageAnswerTime },
+				{ "NumberOfCorrectAnswers", getStatisticsRes.statitstics.numberOfCorrectAnswers },
+				{ "NumberOfTotalAnswers", getStatisticsRes.statitstics.numberOfTotalAnswers },
+				{ "NumberOfPlayerGames", getStatisticsRes.statitstics.numberOfPlayerGames } }
+		},
+		{ "HighScores", json::array() }
+	};
+
+	for (int i = 0; i < 5; i++)
+	{
+		j["HighScores"].push_back(getStatisticsRes.statitstics.topScores[i]);
+	}
+
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();

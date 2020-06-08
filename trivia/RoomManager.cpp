@@ -31,6 +31,16 @@ bool RoomManager::deleteRoom(int id)
 	return this->m_rooms.erase(id);
 }
 
+bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
+{
+	if (this->m_rooms.count(id) == 0)
+	{
+		return false;
+	}
+
+	return this->m_rooms[id].addUser(loggedUser);
+}
+
 /*
 	usage: the method gets a room's state
 	in: the room's id
@@ -57,6 +67,11 @@ vector<RoomData> RoomManager::getRooms() const
 	}
 
 	return rooms;
+}
+
+vector<string> RoomManager::getPlayersInRoom(int id)
+{
+	return this->m_rooms[id].getAllUsers();
 }
 
 /*
