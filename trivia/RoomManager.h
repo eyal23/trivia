@@ -17,12 +17,15 @@ private:
 	map<int, Room> m_rooms;
 
 public:
-	void createRoom(LoggedUser loggedUser, RoomData roomData);
+	int createRoom(LoggedUser loggedUser, RoomData roomData);
 	bool deleteRoom(int id);
 	bool joinRoom(int id, LoggedUser loggedUser);
 	unsigned int getRoomState(int id);
 	vector<RoomData> getRooms() const;
 	vector<string> getPlayersInRoom(int id);
+	bool doesRoomExist(int id) const;
+
+	Room operator[](int id);
 
 private:
 	int getNextRoomId() const;

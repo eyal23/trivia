@@ -11,14 +11,16 @@ using std::map;
 /*
 	usage: the method creates a new room
 	in: the user who creates the room, the metadata
-	out: no
+	out: the new room's id
 */
-void RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
+int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 {
 	roomData.id = this->getNextRoomId();
 
 	this->m_rooms[roomData.id] = Room(roomData);
 	this->m_rooms[roomData.id].addUser(loggedUser);
+
+	return roomData.id;
 }
 
 /*
@@ -82,6 +84,16 @@ vector<RoomData> RoomManager::getRooms() const
 vector<string> RoomManager::getPlayersInRoom(int id)
 {
 	return this->m_rooms[id].getAllUsers();
+}
+
+bool RoomManager::doesRoomExist(int id) const
+{
+	return this->m_rooms.count(id) != 0;
+}
+
+Room RoomManager::operator[](int id)
+{
+	return this->m_rooms[id];
 }
 
 /*
