@@ -89,3 +89,8 @@ const RoomData& Room::getMetadata() const
 {
 	return this->m_metadata;
 }
+
+void Room::activateRoom()
+{
+	this->m_metadata.isActive = 1;
+}
