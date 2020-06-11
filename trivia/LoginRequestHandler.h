@@ -10,7 +10,6 @@ class LoginRequestHandler : public IRequestHandler
 {
 private:
 	RequestHandlerFactory& m_handlerFacotry;
-	LoginManager& m_loginManager;
 
 public:
 	LoginRequestHandler(RequestHandlerFactory& handlerFactory);

@@ -29,8 +29,8 @@ void communicatorThread(Communicator& communicator)
 	in: the database
 	out: no
 */
-Server::Server(IDatabase* database) :
-	m_database(database), m_handlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(this->m_handlerFactory))
+Server::Server(IDatabase& database) :
+	m_handlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(this->m_handlerFactory))
 {
 }
 

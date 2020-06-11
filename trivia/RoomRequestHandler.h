@@ -22,9 +22,9 @@ public:
 	virtual bool isRequestRelevant(RequestInfo requestInfo) const = 0;
 
 protected:
-	RequestResult getRoomState(RequestInfo requestInfo);
-	virtual RequestResult leaveRoom(RequestInfo requestInfo) = 0;
-	virtual RequestResult closeRoom(RequestInfo requestInfo) = 0;
-	virtual RequestResult startGame(RequestInfo requestInfo) = 0;
+	RequestResult getRoomState();
+	virtual RequestResult leaveRoom() = 0;
+	virtual RequestResult closeRoom() = 0;
+	virtual RequestResult startGame() = 0;
 };
 

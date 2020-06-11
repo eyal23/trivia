@@ -16,7 +16,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 
 }
 
-RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo requestInfo)
+RequestResult RoomAdminRequestHandler::closeRoom()
 {
     this->m_roomManager.deleteRoom(this->m_room.getMetadata().id);
     
@@ -26,7 +26,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo requestInfo)
     };
 }
 
-RequestResult RoomAdminRequestHandler::startGame(RequestInfo requestInfo)
+RequestResult RoomAdminRequestHandler::startGame()
 {
     this->m_room.activateRoom();
 

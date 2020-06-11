@@ -16,6 +16,6 @@ public:
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
-	RequestResult leaveRoom(RequestInfo requestInfo) override;
+	RequestResult leaveRoom() override;
 };
 

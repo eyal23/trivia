@@ -10,11 +10,11 @@ using std::string;
 class LoginManager
 {
 private:
-	IDatabase* m_database;
+	IDatabase& m_database;
 	vector<LoggedUser> m_loggedUsers;
 
 public:
-	LoginManager(IDatabase* database);
+	LoginManager(IDatabase& database);
 
 	bool signup(const string username, const string password, const string email) const;
 	bool login(const string username, const string password);

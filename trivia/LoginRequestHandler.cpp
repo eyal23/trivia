@@ -15,7 +15,7 @@ using std::vector;
 	out: no
 */
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) :
-	m_handlerFacotry(handlerFactory), m_loginManager(handlerFactory.getLoginManager())
+	m_handlerFacotry(handlerFactory)
 {
 }
 
@@ -73,7 +73,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 {
 	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
 	
-	if (this->m_loginManager.login(loginRequest.username, loginRequest.password))
+	if (this->m_handlerFacotry.getLoginManager().login(loginRequest.username, loginRequest.password))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
@@ -96,7 +96,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 {
 	SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
 
-	if (this->m_loginManager.signup(signUpRequest.username, signUpRequest.password, signUpRequest.email))
+	if (this->m_handlerFacotry.getLoginManager().signup(signUpRequest.username, signUpRequest.password, signUpRequest.email))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),

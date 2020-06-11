@@ -53,9 +53,16 @@ bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
 	in: the room's id
 	out: the room's state
 */
-unsigned int RoomManager::getRoomState(int id)
+RoomState RoomManager::getRoomState(int id)
 {
-	return this->m_rooms[id].getMetadata().isActive;
+	RoomData metadata = this->m_rooms[id].getMetadata();
+
+	return {
+		metadata.isActive,
+		this->m_rooms[id].getAllUsers(),
+		metadata.questionsCount,
+		metadata.timePerQuestion
+	};
 }
 
 /*

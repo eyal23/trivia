@@ -13,7 +13,7 @@ bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
         requestInfo.id == GET_ROOM_STATE_REQUEST;
 }
 
-RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo requestInfo)
+RequestResult RoomMemberRequestHandler::leaveRoom()
 {
     if (this->m_roomManager.doesRoomExist(this->m_room.getMetadata().id))
     {

@@ -16,7 +16,7 @@ public:
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
-	RequestResult closeRoom(RequestInfo requestInfo) override;
-	RequestResult startGame(RequestInfo requestInfo) override;
+	RequestResult closeRoom() override;
+	RequestResult startGame() override;
 };
 

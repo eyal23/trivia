@@ -15,7 +15,7 @@ typedef struct RoomData
 	unsigned int maxPlayers;
 	unsigned int timePerQuestion;
 	unsigned int questionsCount;
-	unsigned int isActive;
+	bool isActive;
 } RoomData;
 
 class Room

@@ -9,8 +9,8 @@
 	in: the database
 	out:no
 */
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) :
-	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
+RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
+	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
 {
 }
 

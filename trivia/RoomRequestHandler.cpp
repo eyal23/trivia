@@ -19,7 +19,7 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 
 	if (!this->m_roomManager.doesRoomExist(this->m_room.getMetadata().id))
 	{
-		return this->leaveRoom(requestInfo);
+		return this->leaveRoom();
 	}
 
 	try
@@ -27,19 +27,19 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 		switch (requestInfo.id)
 		{
 		case CLOSE_ROOM_REQUEST:
-			return this->closeRoom(requestInfo);
+			return this->closeRoom();
 			break;
 
 		case START_GAME_REQUEST:
-			return this->startGame(requestInfo);
+			return this->startGame();
 			break;
 
 		case GET_ROOM_STATE_REQUEST:
-			return this->getRoomState(requestInfo);
+			return this->getRoomState();
 			break;
 
 		case LEAVE_ROOM_REQUEST:
-			return this->leaveRoom(requestInfo);
+			return this->leaveRoom();
 			break;
 		}
 	}
@@ -53,12 +53,12 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 	}
 }
 
-RequestResult RoomRequestHandler::getRoomState(RequestInfo requestInfo)
+RequestResult RoomRequestHandler::getRoomState()
 {
-    RoomData metadata = this->m_room.getMetadata();
+    RoomState roomState = this->m_roomManager.getRoomState(this->m_room.getMetadata().id);
 
     return {
-        JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, metadata.isActive, this->m_room.getAllUsers(), metadata.questionsCount, metadata.timePerQuestion })),
+        JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
         nullptr
     };
 }

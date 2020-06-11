@@ -21,10 +21,9 @@ private:
 	LoginManager m_loginManager;
 	RoomManager m_roomManager;
 	StatisticsManager m_statisticsManager;
-	IDatabase* m_database;
 
 public:
-	RequestHandlerFactory(IDatabase* database);
+	RequestHandlerFactory(IDatabase& database);
 
 	LoginRequestHandler* createLoginRequestHandler();
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser loggedUser);
