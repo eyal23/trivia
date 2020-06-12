@@ -2,8 +2,8 @@
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
-RoomRequestHandler::RoomRequestHandler(Room room, LoggedUser loggedUser, RoomManager& roomManager) :
-    m_room(room), m_user(loggedUser), m_roomManager(roomManager)
+RoomRequestHandler::RoomRequestHandler(int roomId, LoggedUser loggedUser, RoomManager& roomManager) :
+    m_roomId(roomId), m_user(loggedUser), m_roomManager(roomManager)
 {
 }
 
@@ -17,7 +17,7 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 		};
 	}
 
-	if (!this->m_roomManager.doesRoomExist(this->m_room.getMetadata().id))
+	if (!this->m_roomManager.doesRoomExist(this->m_roomId))
 	{
 		return this->leaveRoom();
 	}
@@ -55,7 +55,7 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 
 RequestResult RoomRequestHandler::getRoomState()
 {
-    RoomState roomState = this->m_roomManager.getRoomState(this->m_room.getMetadata().id);
+    RoomState roomState = this->m_roomManager.getRoomState(this->m_roomId);
 
     return {
         JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),

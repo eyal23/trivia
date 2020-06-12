@@ -11,7 +11,7 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, Room room, LoggedUser loggedUser);
+	RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser);
 
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 

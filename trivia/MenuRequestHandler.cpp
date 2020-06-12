@@ -156,7 +156,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo) const
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse({ 1 })),
-			this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, this->m_handlerFactory.getRoomManager()[joinRoomRequest.roomId])
+			this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, joinRoomRequest.roomId)
 		};
 	}
 
@@ -189,6 +189,6 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo) const
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse({ 1 })),
-		this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, this->m_handlerFactory.getRoomManager()[id])
+		this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, id)
 	};
 }

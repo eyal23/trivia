@@ -29,12 +29,12 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser l
 	return new MenuRequestHandler(*this, loggedUser);
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, Room room)
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, int roomId)
 {
 	return nullptr;
 }
 
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, Room room)
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, int roomId)
 {
 	return nullptr;
 }
