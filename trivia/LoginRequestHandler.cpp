@@ -46,13 +46,15 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 
 	try
 	{
-		if (requestInfo.id == LOGIN_REQUEST)
+		switch (requestInfo.id)
 		{
+		case LOGIN_REQUEST:
 			return this->login(requestInfo);
-		}
-		else
-		{
+			break;
+
+		case SIGN_UP_REQUEST:
 			return this->signup(requestInfo);
+			break;
 		}
 	}
 	catch (const std::exception& e)

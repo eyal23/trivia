@@ -183,7 +183,8 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo) const
 			createRoomRequest.maxUsers, 
 			createRoomRequest.answerTimout, 
 			createRoomRequest.questionCount, 
-			false 
+			false,
+			true
 		}
 	);
 

@@ -16,6 +16,7 @@ typedef struct RoomData
 	unsigned int timePerQuestion;
 	unsigned int questionsCount;
 	bool isActive;
+	bool isOpen;
 } RoomData;
 
 class Room
@@ -33,5 +34,6 @@ public:
 	vector<string> getAllUsers() const;
 	const RoomData& getMetadata() const;
 	void activateRoom();
+	void closeRoom();
 };
 

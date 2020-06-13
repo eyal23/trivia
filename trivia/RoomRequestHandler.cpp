@@ -2,6 +2,7 @@
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
+
 RoomRequestHandler::RoomRequestHandler(int roomId, LoggedUser loggedUser, RoomManager& roomManager) :
     m_roomId(roomId), m_user(loggedUser), m_roomManager(roomManager)
 {
@@ -17,7 +18,7 @@ RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
 		};
 	}
 
-	if (!this->m_roomManager.doesRoomExist(this->m_roomId))
+	if (!this->m_roomManager.isRoomOpen(this->m_roomId))
 	{
 		return this->leaveRoom();
 	}

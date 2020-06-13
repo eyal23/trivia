@@ -94,3 +94,8 @@ void Room::activateRoom()
 {
 	this->m_metadata.isActive = 1;
 }
+
+void Room::closeRoom()
+{
+	this->m_metadata.isOpen = false;
+}

@@ -27,12 +27,13 @@ private:
 
 public:
 	int createRoom(LoggedUser loggedUser, RoomData roomData);
-	bool deleteRoom(int id);
+	void closeRoom(int id);
+	bool tryDeleteRoom(int id, LoggedUser loggedUser);
 	bool joinRoom(int id, LoggedUser loggedUser);
 	RoomState getRoomState(int id);
 	vector<RoomData> getRooms() const;
 	vector<string> getPlayersInRoom(int id);
-	bool doesRoomExist(int id) const;
+	bool isRoomOpen(int id);
 
 	Room operator[](int id);
 

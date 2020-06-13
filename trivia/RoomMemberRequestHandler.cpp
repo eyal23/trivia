@@ -15,10 +15,7 @@ bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 
 RequestResult RoomMemberRequestHandler::leaveRoom()
 {
-    if (this->m_roomManager.doesRoomExist(this->m_roomId))
-    {
-        this->m_roomManager[this->m_roomId].removeUser(this->m_user);
-    }
+    this->m_roomManager.tryDeleteRoom(this->m_roomId, this->m_user);
 
     return {
         JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse({ 1 })),

@@ -23,14 +23,27 @@ int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 	return roomData.id;
 }
 
+void RoomManager::closeRoom(int id)
+{
+	this->m_rooms[id].closeRoom();
+}
+
 /*
 	usage: the method deletes a room
 	in: the room's id
 	out: if the room was deleted
 */
-bool RoomManager::deleteRoom(int id)
+bool RoomManager::tryDeleteRoom(int id, LoggedUser loggedUser)
 {
-	return this->m_rooms.erase(id);
+	this->m_rooms[id].removeUser(loggedUser);
+
+	if (this->m_rooms[id].getAllUsers().size() == 0)
+	{
+		this->m_rooms.erase(id);
+		return true;
+	}
+
+	return false;
 }
 
 /*
@@ -93,9 +106,9 @@ vector<string> RoomManager::getPlayersInRoom(int id)
 	return this->m_rooms[id].getAllUsers();
 }
 
-bool RoomManager::doesRoomExist(int id) const
+bool RoomManager::isRoomOpen(int id)
 {
-	return this->m_rooms.count(id) != 0;
+	return this->m_rooms[id].getMetadata().isOpen;
 }
 
 Room RoomManager::operator[](int id)

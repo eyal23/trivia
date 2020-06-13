@@ -17,7 +17,8 @@ bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 
 RequestResult RoomAdminRequestHandler::closeRoom()
 {
-    this->m_roomManager.deleteRoom(this->m_roomId);
+    this->m_roomManager.closeRoom(this->m_roomId);
+    this->m_roomManager.tryDeleteRoom(this->m_roomId, this->m_user);
     
     return {
         JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse({ 1 })),
