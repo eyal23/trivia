@@ -15,10 +15,10 @@ typedef struct Statistics
 class StatisticsManager
 {
 private:
-	IDatabase* m_database;
+	IDatabase& m_database;
 
 public:
-	StatisticsManager(IDatabase* database);
+	StatisticsManager(IDatabase& database);
 
 	Statistics getStatistics(LoggedUser loggedUser);
 };

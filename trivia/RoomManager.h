@@ -11,18 +11,31 @@ using std::map;
 using std::vector;
 using std::string;
 
+
+typedef struct RoomState
+{
+	bool hasGameBegun;
+	vector<string> players;
+	unsigned int questionsCount;
+	unsigned int answerTimeout;
+} RoomState;
+
 class RoomManager
 {
 private:
 	map<int, Room> m_rooms;
 
 public:
-	void createRoom(LoggedUser loggedUser, RoomData roomData);
-	bool deleteRoom(int id);
+	int createRoom(LoggedUser loggedUser, RoomData roomData);
+	void closeRoom(int id);
+	bool tryDeleteRoom(int id, LoggedUser loggedUser);
 	bool joinRoom(int id, LoggedUser loggedUser);
-	unsigned int getRoomState(int id);
+	RoomState getRoomState(int id);
 	vector<RoomData> getRooms() const;
 	vector<string> getPlayersInRoom(int id);
+	bool isRoomOpen(int id);
+
+	Room operator[](int id);
 
 private:
 	int getNextRoomId() const;

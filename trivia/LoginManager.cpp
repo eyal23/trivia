@@ -8,7 +8,7 @@
 	in: the database
 	out: no
 */
-LoginManager::LoginManager(IDatabase* database) :
+LoginManager::LoginManager(IDatabase& database) :
 	m_database(database)
 {
 }
@@ -20,12 +20,12 @@ LoginManager::LoginManager(IDatabase* database) :
 */
 bool LoginManager::signup(const string username, const string password, const string email) const
 {
-	if (this->m_database->doesUserExist(username))
+	if (this->m_database.doesUserExist(username))
 	{
 		return false;
 	}
 
-	this->m_database->addNewUser(username, password, email);
+	this->m_database.addNewUser(username, password, email);
 
 	return true;
 }
@@ -37,7 +37,7 @@ bool LoginManager::signup(const string username, const string password, const st
 */
 bool LoginManager::login(const string username, const string password)
 {
-	if (!this->m_database->doesPasswordMatch(username, password))
+	if (!this->m_database.doesPasswordMatch(username, password))
 	{
 		return false;
 	}

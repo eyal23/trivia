@@ -1,6 +1,8 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
 #include "IDatabase.h"
 
 
@@ -9,8 +11,8 @@
 	in: the database
 	out:no
 */
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) :
-	m_database(database), m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
+RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
+	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
 {
 }
 
@@ -24,9 +26,34 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return new LoginRequestHandler(*this);
 }
 
+/*
+	usage: the method creates a menu request handler
+	in: no
+	out: the menu request handler
+*/
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser loggedUser)
 {
 	return new MenuRequestHandler(*this, loggedUser);
+}
+
+/*
+	usage: the method creates a room admin request handler
+	in: no
+	out: the room admin request handler
+*/
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, int roomId)
+{
+	return new RoomAdminRequestHandler(*this, roomId, loggedUser);
+}
+
+/*
+	usage: the method creates a room member request handler
+	in: no
+	out: the room member request handler
+*/
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, int roomId)
+{
+	return new RoomMemberRequestHandler(*this, roomId, loggedUser);
 }
 
 /*

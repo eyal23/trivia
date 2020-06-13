@@ -11,14 +11,26 @@ using std::map;
 /*
 	usage: the method creates a new room
 	in: the user who creates the room, the metadata
-	out: no
+	out: the new room's id
 */
-void RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
+int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 {
 	roomData.id = this->getNextRoomId();
 
 	this->m_rooms[roomData.id] = Room(roomData);
 	this->m_rooms[roomData.id].addUser(loggedUser);
+
+	return roomData.id;
+}
+
+/*
+	usage: the method closes a room
+	in: the room id
+	out: no
+*/
+void RoomManager::closeRoom(int id)
+{
+	this->m_rooms[id].closeRoom();
 }
 
 /*
@@ -26,9 +38,17 @@ void RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 	in: the room's id
 	out: if the room was deleted
 */
-bool RoomManager::deleteRoom(int id)
+bool RoomManager::tryDeleteRoom(int id, LoggedUser loggedUser)
 {
-	return this->m_rooms.erase(id);
+	this->m_rooms[id].removeUser(loggedUser);
+
+	if (this->m_rooms[id].getAllUsers().size() == 0)
+	{
+		this->m_rooms.erase(id);
+		return true;
+	}
+
+	return false;
 }
 
 /*
@@ -51,9 +71,16 @@ bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
 	in: the room's id
 	out: the room's state
 */
-unsigned int RoomManager::getRoomState(int id)
+RoomState RoomManager::getRoomState(int id)
 {
-	return this->m_rooms[id].getMetadata().isActive;
+	RoomData metadata = this->m_rooms[id].getMetadata();
+
+	return {
+		metadata.isActive,
+		this->m_rooms[id].getAllUsers(),
+		metadata.questionsCount,
+		metadata.timePerQuestion
+	};
 }
 
 /*
@@ -82,6 +109,26 @@ vector<RoomData> RoomManager::getRooms() const
 vector<string> RoomManager::getPlayersInRoom(int id)
 {
 	return this->m_rooms[id].getAllUsers();
+}
+
+/*
+	usage: the method checks if a room is open
+	in: the room id
+	out: if the room is open
+*/
+bool RoomManager::isRoomOpen(int id)
+{
+	return this->m_rooms[id].getMetadata().isOpen;
+}
+
+/*
+	usage: the method gets a room
+	in: the room id
+	out: the room
+*/
+Room RoomManager::operator[](int id)
+{
+	return this->m_rooms[id];
 }
 
 /*

@@ -23,7 +23,6 @@ public:
 	~Communicator();
 
 	void startHandleRequests();
-	RequestHandlerFactory& getHandlerFactory();
 	void removeClient(SOCKET clientSocket);
 	IRequestHandler*& operator[](const SOCKET& socket);
 

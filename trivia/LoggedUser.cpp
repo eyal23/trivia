@@ -13,8 +13,8 @@ LoggedUser::LoggedUser(const string username) :
 
 /*
 	usage: the method gets the user's username
-	in:
-	out:
+	in: no
+	out: the user's username
 */
 string LoggedUser::getUsername() const
 {

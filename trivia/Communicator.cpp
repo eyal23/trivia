@@ -72,6 +72,7 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 
 		if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
 		{
+			delete (*communicator)[clientSocket];
 			communicator->removeClient(clientSocket);
 			break;
 		}
@@ -81,12 +82,14 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 
 		if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
 		{
+			delete (*communicator)[clientSocket];
 			communicator->removeClient(clientSocket);
 			break;
 		}
 
 		if (requestResult.newHandler == nullptr)
 		{
+			delete (*communicator)[clientSocket];
 			communicator->removeClient(clientSocket);
 			break;
 		}
@@ -112,16 +115,6 @@ void Communicator::startHandleRequests()
 	{
 		Communicator::handleNewClient(Communicator::accept());
 	}
-}
-
-/*
-	usage: the method gets the handler factory
-	in: no
-	out: the handler factory
-*/
-RequestHandlerFactory& Communicator::getHandlerFactory()
-{
-	return this->m_handlerFactory;
 }
 
 void Communicator::removeClient(SOCKET clientSocket)
