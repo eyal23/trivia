@@ -8,7 +8,7 @@ int main()
 	{
 		WSAInitializer wsaInit;
 		SqliteDatabase sqliteDatabase;
-		Server server(&sqliteDatabase);
+		Server server(sqliteDatabase);
 
 		server.run();
 	}

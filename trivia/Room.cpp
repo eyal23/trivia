@@ -90,7 +90,22 @@ const RoomData& Room::getMetadata() const
 	return this->m_metadata;
 }
 
+/*
+	usage: the method activates the room
+	in: no
+	out: no
+*/
 void Room::activateRoom()
 {
-	this->m_metadata.isActive = 1;
+	this->m_metadata.isActive = true;
+}
+
+/*
+	usage: the method closes the room
+	in: no
+	out: no
+*/
+void Room::closeRoom()
+{
+	this->m_metadata.isOpen = false;
 }

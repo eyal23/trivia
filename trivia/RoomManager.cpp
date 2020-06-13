@@ -24,13 +24,31 @@ int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 }
 
 /*
+	usage: the method closes a room
+	in: the room id
+	out: no
+*/
+void RoomManager::closeRoom(int id)
+{
+	this->m_rooms[id].closeRoom();
+}
+
+/*
 	usage: the method deletes a room
 	in: the room's id
 	out: if the room was deleted
 */
-bool RoomManager::deleteRoom(int id)
+bool RoomManager::tryDeleteRoom(int id, LoggedUser loggedUser)
 {
-	return this->m_rooms.erase(id);
+	this->m_rooms[id].removeUser(loggedUser);
+
+	if (this->m_rooms[id].getAllUsers().size() == 0)
+	{
+		this->m_rooms.erase(id);
+		return true;
+	}
+
+	return false;
 }
 
 /*
@@ -53,9 +71,16 @@ bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
 	in: the room's id
 	out: the room's state
 */
-unsigned int RoomManager::getRoomState(int id)
+RoomState RoomManager::getRoomState(int id)
 {
-	return this->m_rooms[id].getMetadata().isActive;
+	RoomData metadata = this->m_rooms[id].getMetadata();
+
+	return {
+		metadata.isActive,
+		this->m_rooms[id].getAllUsers(),
+		metadata.questionsCount,
+		metadata.timePerQuestion
+	};
 }
 
 /*
@@ -86,11 +111,21 @@ vector<string> RoomManager::getPlayersInRoom(int id)
 	return this->m_rooms[id].getAllUsers();
 }
 
-bool RoomManager::doesRoomExist(int id) const
+/*
+	usage: the method checks if a room is open
+	in: the room id
+	out: if the room is open
+*/
+bool RoomManager::isRoomOpen(int id)
 {
-	return this->m_rooms.count(id) != 0;
+	return this->m_rooms[id].getMetadata().isOpen;
 }
 
+/*
+	usage: the method gets a room
+	in: the room id
+	out: the room
+*/
 Room RoomManager::operator[](int id)
 {
 	return this->m_rooms[id];

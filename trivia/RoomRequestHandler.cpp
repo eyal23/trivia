@@ -2,63 +2,43 @@
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
-RoomRequestHandler::RoomRequestHandler(Room room, LoggedUser loggedUser, RoomManager& roomManager) :
-    m_room(room), m_user(loggedUser), m_roomManager(roomManager)
+
+/*
+	usage: constructor
+	in: the room id, the logged user, the room manager
+	out: no
+*/
+RoomRequestHandler::RoomRequestHandler(int roomId, LoggedUser loggedUser, RoomManager& roomManager) :
+    m_roomId(roomId), m_user(loggedUser), m_roomManager(roomManager)
 {
 }
 
-RequestResult RoomRequestHandler::handleRequest(RequestInfo requestInfo)
+/*
+	usage: the method gets a room's state
+	in: no
+	out: the request result
+*/
+RequestResult RoomRequestHandler::getRoomState()
 {
-	if (!this->isRequestRelevant(requestInfo))
-	{
-		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
-			nullptr
-		};
-	}
-
-	if (!this->m_roomManager.doesRoomExist(this->m_room.getMetadata().id))
-	{
-		return this->leaveRoom(requestInfo);
-	}
-
-	try
-	{
-		switch (requestInfo.id)
-		{
-		case CLOSE_ROOM_REQUEST:
-			return this->closeRoom(requestInfo);
-			break;
-
-		case START_GAME_REQUEST:
-			return this->startGame(requestInfo);
-			break;
-
-		case GET_ROOM_STATE_REQUEST:
-			return this->getRoomState(requestInfo);
-			break;
-
-		case LEAVE_ROOM_REQUEST:
-			return this->leaveRoom(requestInfo);
-			break;
-		}
-	}
-
-	catch (const std::exception& e)
-	{
-		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
-			nullptr
-		};
-	}
-}
-
-RequestResult RoomRequestHandler::getRoomState(RequestInfo requestInfo)
-{
-    RoomData metadata = this->m_room.getMetadata();
+    RoomState roomState = this->m_roomManager.getRoomState(this->m_roomId);
 
     return {
-        JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, metadata.isActive, this->m_room.getAllUsers(), metadata.questionsCount, metadata.timePerQuestion })),
+        JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
         nullptr
     };
+}
+
+/*
+	usage: the method starts a game
+	in: no
+	out: the request result
+*/
+RequestResult RoomRequestHandler::startGame()
+{
+	this->m_roomManager[this->m_roomId].activateRoom();
+
+	return {
+		JsonResponsePacketSerializer::serializeResponse(StartGameResponse({ 1 })),
+		nullptr
+	};
 }

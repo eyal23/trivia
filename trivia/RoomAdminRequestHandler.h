@@ -11,12 +11,12 @@ private:
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
-	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, Room room, LoggedUser loggedUser);
+	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser);
 
+	RequestResult handleRequest(RequestInfo requestInfo) override;
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
-	RequestResult closeRoom(RequestInfo requestInfo) override;
-	RequestResult startGame(RequestInfo requestInfo) override;
+	RequestResult closeRoom();
 };
 

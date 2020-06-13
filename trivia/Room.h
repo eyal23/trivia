@@ -15,7 +15,8 @@ typedef struct RoomData
 	unsigned int maxPlayers;
 	unsigned int timePerQuestion;
 	unsigned int questionsCount;
-	unsigned int isActive;
+	bool isActive;
+	bool isOpen;
 } RoomData;
 
 class Room
@@ -33,5 +34,6 @@ public:
 	vector<string> getAllUsers() const;
 	const RoomData& getMetadata() const;
 	void activateRoom();
+	void closeRoom();
 };
 

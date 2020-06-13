@@ -12,8 +12,6 @@ class MenuRequestHandler: public IRequestHandler
 {
 private:
 	LoggedUser m_user;
-	RoomManager& m_roomManager;
-	StatisticsManager& m_statisticsManager;
 	RequestHandlerFactory& m_handlerFactory;
 
 public:
@@ -23,10 +21,10 @@ public:
 	RequestResult handleRequest(const RequestInfo requestInfo) override;
 
 private:
-	RequestResult signout(RequestInfo requestInfo) const;
-	RequestResult getRooms(RequestInfo requestInfo) const;
+	RequestResult signout() const;
+	RequestResult getRooms() const;
 	RequestResult getPlayersInRoom(RequestInfo requestInfo) const;
-	RequestResult getStatistics(RequestInfo requestInfo) const;
+	RequestResult getStatistics() const;
 	RequestResult joinRoom(RequestInfo requestInfo) const;
 	RequestResult createRoom(RequestInfo requestInfo) const;
 };
