@@ -97,3 +97,8 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 		jsonData["answerTimout"]
 	};
 }
+
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(const vector<uint8_t> buffer)
+{
+	return SubmitAnswerRequest();
+}

@@ -38,6 +38,11 @@ typedef struct CreateRoomRequest
 	unsigned int answerTimout;
 } CreateRoomRequest;
 
+typedef struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+} SubmitAnswerRequest;
+
 
 class JsonRequestPacketDeserializer
 {
@@ -47,4 +52,5 @@ public:
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(const vector<uint8_t> buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(const vector<uint8_t> buffer);
 	static CreateRoomRequest deserializeCreateRoomRequest(const vector<uint8_t> buffer);
+	static SubmitAnswerRequest deserializerSubmitAnswerRequest(const vector<uint8_t> buffer);
 };
