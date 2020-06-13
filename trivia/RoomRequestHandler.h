@@ -17,13 +17,11 @@ protected:
 public:
 	RoomRequestHandler(int roomId, LoggedUser loggedUser, RoomManager& roomManager);
 
-	RequestResult handleRequest(RequestInfo requestInfo) override;
+	virtual RequestResult handleRequest(RequestInfo requestInfo) = 0;
 	virtual bool isRequestRelevant(RequestInfo requestInfo) const = 0;
 
 protected:
 	RequestResult getRoomState();
-	virtual RequestResult leaveRoom() = 0;
-	virtual RequestResult closeRoom() = 0;
-	virtual RequestResult startGame() = 0;
+	RequestResult startGame();
 };
 

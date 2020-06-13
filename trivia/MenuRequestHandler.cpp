@@ -83,7 +83,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo requestInfo)
 
 /*
 	usage: the method signs out a user
-	in: the request info
+	in: no
 	out: the request result
 */
 RequestResult MenuRequestHandler::signout() const
@@ -104,7 +104,7 @@ RequestResult MenuRequestHandler::signout() const
 
 /*
 	usage: the method gets all the rooms
-	in: the request info
+	in: no
 	out: the request result
 */
 RequestResult MenuRequestHandler::getRooms() const
@@ -132,7 +132,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo) cons
 
 /*
 	usage: the method gets the statistics about a user
-	in: the request info
+	in: no
 	out: the request result
 */
 RequestResult MenuRequestHandler::getStatistics() const

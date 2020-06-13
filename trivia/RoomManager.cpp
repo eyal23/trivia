@@ -23,6 +23,11 @@ int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 	return roomData.id;
 }
 
+/*
+	usage: the method closes a room
+	in: the room id
+	out: no
+*/
 void RoomManager::closeRoom(int id)
 {
 	this->m_rooms[id].closeRoom();
@@ -106,11 +111,21 @@ vector<string> RoomManager::getPlayersInRoom(int id)
 	return this->m_rooms[id].getAllUsers();
 }
 
+/*
+	usage: the method checks if a room is open
+	in: the room id
+	out: if the room is open
+*/
 bool RoomManager::isRoomOpen(int id)
 {
 	return this->m_rooms[id].getMetadata().isOpen;
 }
 
+/*
+	usage: the method gets a room
+	in: the room id
+	out: the room
+*/
 Room RoomManager::operator[](int id)
 {
 	return this->m_rooms[id];

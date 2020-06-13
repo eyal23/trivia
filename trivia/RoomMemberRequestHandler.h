@@ -13,9 +13,10 @@ private:
 public:
 	RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser);
 
+	RequestResult handleRequest(RequestInfo requestInfo) override;
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
-	RequestResult leaveRoom() override;
+	RequestResult leaveRoom();
 };
 

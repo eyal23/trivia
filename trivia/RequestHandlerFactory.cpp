@@ -1,6 +1,8 @@
 #include "RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
 #include "IDatabase.h"
 
 
@@ -24,19 +26,34 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 	return new LoginRequestHandler(*this);
 }
 
+/*
+	usage: the method creates a menu request handler
+	in: no
+	out: the menu request handler
+*/
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser loggedUser)
 {
 	return new MenuRequestHandler(*this, loggedUser);
 }
 
+/*
+	usage: the method creates a room admin request handler
+	in: no
+	out: the room admin request handler
+*/
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, int roomId)
 {
-	return nullptr;
+	return new RoomAdminRequestHandler(*this, roomId, loggedUser);
 }
 
+/*
+	usage: the method creates a room member request handler
+	in: no
+	out: the room member request handler
+*/
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, int roomId)
 {
-	return nullptr;
+	return new RoomMemberRequestHandler(*this, roomId, loggedUser);
 }
 
 /*

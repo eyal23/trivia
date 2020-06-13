@@ -13,10 +13,10 @@ private:
 public:
 	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser);
 
+	RequestResult handleRequest(RequestInfo requestInfo) override;
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
-	RequestResult closeRoom() override;
-	RequestResult startGame() override;
+	RequestResult closeRoom();
 };
 
