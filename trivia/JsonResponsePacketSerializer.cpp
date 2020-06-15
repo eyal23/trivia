@@ -320,20 +320,88 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomR
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse getGameResultsResponse)
 {
-	return vector<uint8_t>();
+	json j = { 
+		{"status", getGameResultsResponse.status },
+		{"Results", json::array()}
+	};
+
+	for (int i = 0; i < getGameResultsResponse.results.size(); i++)
+	{
+		j["Results"].push_back(json({
+			{ "Username", getGameResultsResponse.results[i].username },
+			{ "CorrectAnswersCount", getGameResultsResponse.results[i].correctAnswersCount },
+			{ "WrongAnswersCount", getGameResultsResponse.results[i].wrongAnswersCount },
+			{ "AverageAnswerTime", getGameResultsResponse.results[i].averageAnswerTime }
+			})
+		);
+	}
+
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { GET_GAME_RESULT_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse submitAnswersResponse)
 {
-	return vector<uint8_t>();
+	json j = { {"status", submitAnswersResponse.status } };
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { SUBMIT_ANSWER_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
-vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse getQuestionResponse)
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestionResponse)
 {
-	return vector<uint8_t>();
+	json j = { 
+		{"status", getQuestionResponse.status },
+		{ "Question", getQuestionResponse.question },
+		{ "Asnwers", {
+			{ 0, getQuestionResponse.answers[0] },
+			{ 1, getQuestionResponse.answers[1] },
+			{ 2, getQuestionResponse.answers[2] },
+			{ 3, getQuestionResponse.answers[3] }
+		}}
+	};
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { GET_QUESTION_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }
 
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse leaveGameResponse)
 {
-	return vector<uint8_t>();
+	json j = { {"status", leaveGameResponse.status } };
+	std::vector<uint8_t> bson = json::to_bson(j);
+
+	int dataSize = bson.size();
+	vector<uint8_t> message = { LEAVE_GAME_RESPONSE };
+	message.resize(5);
+
+	memcpy((uint8_t*)(message.data() + 1), (uint8_t*)&dataSize, 4);
+
+	message.insert(message.end(), bson.begin(), bson.end());
+
+	return message;
 }

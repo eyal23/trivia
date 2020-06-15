@@ -96,7 +96,6 @@ typedef struct GetQuestionResponse
 typedef struct SubmitAnswerResponse
 {
 	unsigned int status;
-	unsigned int correctAnswerId;
 } SubmitAnswerResponse;
 
 typedef struct PlayerResults
@@ -132,6 +131,6 @@ public:
 	static vector<uint8_t> serializeResponse(const LeaveRoomResponse leaveRoomResponse);
 	static vector<uint8_t> serializeResponse(const GetGameResultsResponse getGameResultsResponse);
 	static vector<uint8_t> serializeResponse(const SubmitAnswerResponse submitAnswersResponse);
-	static vector<uint8_t> serializeResponse(const GetQuestionResponse getQuestionResponse);
+	static vector<uint8_t> serializeResponse(GetQuestionResponse getQuestionResponse);
 	static vector<uint8_t> serializeResponse(const LeaveGameResponse leaveGameResponse);
 };
