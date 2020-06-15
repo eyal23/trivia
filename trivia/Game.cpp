@@ -6,7 +6,7 @@ Game::Game(vector<LoggedUser> loggedUsers)
 
 Question Game::getQuestionForUser(LoggedUser loggedUser)
 {
-    return Question();
+    return Question(string(), vector<string>());
 }
 
 void Game::submitAnswer(LoggedUser loggedUser, unsigned int answerId)

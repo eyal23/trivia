@@ -12,7 +12,7 @@
 	out:no
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
-	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
+	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database)), m_gameManager(database)
 {
 }
 
@@ -93,5 +93,5 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 
 GameManager& RequestHandlerFactory::getGameManager()
 {
-	// TODO: insert return statement here
+	return this->m_gameManager;
 }
