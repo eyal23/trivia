@@ -317,3 +317,23 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomR
 
 	return message;
 }
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse getGameResultsResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse submitAnswersResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse getQuestionResponse)
+{
+	return vector<uint8_t>();
+}
+
+vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse leaveGameResponse)
+{
+	return vector<uint8_t>();
+}
