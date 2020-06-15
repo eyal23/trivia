@@ -318,6 +318,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomR
 	return message;
 }
 
+/*
+	usage: the method serializes a get game results response
+	in: the get game results response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse getGameResultsResponse)
 {
 	json j = { 
@@ -349,6 +354,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameRes
 	return message;
 }
 
+/*
+	usage: the method serializes a submit answer response
+	in: the submit answer response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse submitAnswersResponse)
 {
 	json j = { {"status", submitAnswersResponse.status } };
@@ -365,6 +375,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnsw
 	return message;
 }
 
+/*
+	usage: the method serializes a get question response
+	in: the get question response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestionResponse)
 {
 	json j = { 
@@ -390,6 +405,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(GetQuestionRespo
 	return message;
 }
 
+/*
+	usage: the method serializes a leave game response
+	in: the leave game response
+	out: the serialized response
+*/
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse leaveGameResponse)
 {
 	json j = { {"status", leaveGameResponse.status } };
