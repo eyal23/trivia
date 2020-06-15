@@ -98,7 +98,18 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	};
 }
 
+/*
+	usage: the method deserializes a json-buffer into a submit answer object
+	in: the buffer
+	out: the submit answer object
+*/
 SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(const vector<uint8_t> buffer)
 {
-	return SubmitAnswerRequest();
+	int* dataSize = (int*)(&buffer[1]);
+	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
+	json jsonData = json::from_bson(data);
+
+	return {
+		jsonData["answerId"]
+	};
 }
