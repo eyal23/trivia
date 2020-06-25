@@ -82,5 +82,19 @@ namespace TriviaGui
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void userName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.GotFocus -= userName_GotFocus;
+        }
+
+        private void password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PasswordBox tb = (PasswordBox)sender;
+            tb.Password = string.Empty;
+            tb.GotFocus -= password_GotFocus;
+        }
     }
 }

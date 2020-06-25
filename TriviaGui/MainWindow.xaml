@@ -8,7 +8,8 @@
         Title="MainWindow" Height="450" Width="380"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
-        MouseDown="MainWindow_OnMouseDown">
+        MouseDown="MainWindow_OnMouseDown"
+        Icon="Assets/Untitled.png">
 
     <Grid>
         <Grid>
@@ -29,20 +30,19 @@
 
             <StackPanel VerticalAlignment="Center" Height="102">
                 <TextBlock Text="trivia"
-                          FontWeight="Light"
-                          FontFamily="helvetica"
+                           FontFamily="Corbert"   
+                          FontWeight="UltraLight"
                           FontSize="100"
-                          Foreground="White"
+                          Foreground="Gainsboro"
                           HorizontalAlignment="Center"/>
             </StackPanel>
-
 
             <StackPanel Grid.Row="1" >
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="userName"
-                            FontFamily="Helvetica"
-                            FontWeight="Light"
-                            Text="username"
+                            FontFamily="Corbert"
+                            FontWeight="UltraLight"
+                            Text="user name"
                             FontSize="20"
                             HorizontalAlignment="Center"
                             Foreground="Black"
@@ -52,7 +52,8 @@
                             HorizontalContentAlignment="Left"
                             Opacity="0.5"
                             Height="25"
-                            Margin="63,0,0,0"/>
+                            Margin="63,0,0,0"
+                            GotFocus="userName_GotFocus"/>
                 </StackPanel>
 
                 <Border Width="250"
@@ -60,12 +61,10 @@
                        Background="black"
                        Opacity="0.5"/>
 
-
-
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <PasswordBox x:Name="password"
-                            FontFamily="Helvetica"
-                            FontWeight="Light"
+                            FontFamily="Corbert"
+                            FontWeight="UltraLight"
                             Password="password"
                             FontSize="20"
                             HorizontalAlignment="Center"
@@ -76,7 +75,8 @@
                             HorizontalContentAlignment="Left"
                             Opacity="0.5"
                             Height="25"
-                            Margin="63,0,0,0"/>
+                            Margin="63,0,0,0"
+                                 GotFocus="password_GotFocus"/>
                 </StackPanel>
 
                 <Border Width="250"
@@ -84,18 +84,70 @@
                        Background="black"
                        Opacity="0.5"/>
 
-
                 <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
-                    <Button x:Name="login" Width="130" Height="40" Content="login" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Click="login_Click"/>
-                    <Button x:Name="MinimizeButton" Width="60" Height="37" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Content="-" Click="MinimizeButton_Click" />
-                    <Button x:Name="CloseButton" Width="60" Height="40" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Content="x" Click="CloseButton_Click" />
-                    <Button x:Name="signup" Width="130" Height="40" Content="signup" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Click="signUp_Click"/>
+                    <Button x:Name="login"
+                            FontFamily="Corbert"
+                            FontWeight="UltraLight"
+                            Width="130" 
+                            Height="40" 
+                            Content="login" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent" 
+                            BorderThickness="0" 
+                            Padding="-4" 
+                            Click="login_Click"/>
+
+                    <Button x:Name="MinimizeButton" 
+                            FontFamily="Corbert"
+                            Width="60" 
+                            Height="40" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent" 
+                            BorderThickness="0" 
+                            Padding="-4" 
+                            Click="MinimizeButton_Click">
+                        
+                        <StackPanel Height="25" Width="30">
+                            <Image Source="Assets/minimize-icon-23800.png" 
+                                   Height="25" 
+                                   Width="30"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="CloseButton" 
+                            Width="60" 
+                            Height="40" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent" 
+                            BorderThickness="0" 
+                            Padding="-4" 
+                            Click="CloseButton_Click">
+                        
+                        <StackPanel Height="20" Width="40">
+                            <Image Source="Assets/shutdown-icon-11831.png" 
+                                   Height="20" 
+                                   Width="40"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="signup" 
+                            Content="sign up"
+                            FontFamily="Corbert"
+                            FontWeight="UltraLight"
+                            Width="130" 
+                            Height="40" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent" 
+                            BorderThickness="0" 
+                            Padding="-4" 
+                            Click="signUp_Click">
+                    </Button>
                 </StackPanel>
 
             </StackPanel>
 
-
         </Grid>
+        
     </Grid>
 
 </Window>

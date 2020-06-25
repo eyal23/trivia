@@ -6,4 +6,32 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\back-button-png-10-transparent.png" />
+    <None Remove="Assets\max.png" />
+    <None Remove="Assets\minimize-icon-23800.png" />
+    <None Remove="Assets\return-button-png-34571.png" />
+    <None Remove="Assets\shutdown-icon-11831.png" />
+    <None Remove="Assets\Untitled.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\max.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\minimize-icon-23800.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\shutdown-icon-11831.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\back-button-png-10-transparent.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Untitled.png" />
+  </ItemGroup>
+
 </Project>

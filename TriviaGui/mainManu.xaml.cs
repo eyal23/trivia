@@ -73,7 +73,9 @@ namespace TriviaGui
 
         private void CreateRoomButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Hide();
+            new CreateRoom().ShowDialog();
+            ShowDialog();
         }
 
         private void JoinRoomButton_Click(object sender, RoutedEventArgs e)
@@ -82,3 +84,4 @@ namespace TriviaGui
         }
     }
 }
+

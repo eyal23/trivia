@@ -8,7 +8,8 @@
         Title="minManu" Height="450" Width="800"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
-        MouseDown="mainManu_OnMouseDown">
+        MouseDown="mainManu_OnMouseDown"
+        Icon="Assets/Untitled.png">
     
     <Grid>
         <Border Grid.RowSpan="4" Grid.ColumnSpan="3">
@@ -20,20 +21,105 @@
             </Border.Background>
         </Border>
 
-        <Button x:Name="CloseButton" Width="75" Height="40" Content="x" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Click="CloseButton_Click" Margin="10,16,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="minButton" Width="75" Height="40" Content="-" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Click="MinimizeButton_Click" Margin="90,16,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="maxemizeButton" Width="75" Height="40" Content="[ ]" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Padding="-4" Click="maxButton_Click" Margin="170,16,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button x:Name="CloseButton" 
+                Width="20" Height="20" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="CloseButton_Click" 
+                Margin="10,16,0,0" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top">
 
-        <TextBlock Text="manu"
-                          FontWeight="Light"
-                          FontFamily="helvetica"
-                          FontSize="100"
-                          Foreground="White"
-                          HorizontalAlignment="Center" Margin="0,24,0,247"/>
+            <StackPanel Height="19" Width="19">
+                <Image Source="Assets/shutdown-icon-11831.png" 
+                       Height="19" 
+                       Width="19"/>
+            </StackPanel>
+        </Button>
 
-        <Button x:Name="JoinRoomButton" Content="join room " Width="300" Height="40" Background="Transparent" BorderBrush="White" HorizontalAlignment="Center" Padding="-4" Click="JoinRoomButton_Click" Margin="0,180,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="CreateRoomButton" Content="create room " Width="300" Height="40" Background="Transparent" BorderBrush="White" HorizontalAlignment="Center" Padding="-4" Click="CreateRoomButton_Click" Margin="0,380,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="StatisticsButton" Content="statistics" Width="300" Height="40" Background="Transparent" BorderBrush="White" HorizontalAlignment="Center" Padding="-4" Click="StatisticsButton_Click" Margin="0,280,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="minButton" 
+                Width="20" 
+                Height="20" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="MinimizeButton_Click" 
+                Margin="50,16,0,0" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" >
+
+            <StackPanel Height="20" Width="20">
+                <Image Source="Assets/minimize-icon-23800.png" 
+                       Height="20" 
+                       Width="20"/>
+            </StackPanel>
+        </Button>
+
+        <Button x:Name="maxemizeButton" 
+                Width="20" 
+                Height="20" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="maxButton_Click" 
+                Margin="90,16,0,0" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top">
+
+            <StackPanel Height="20" Width="20">
+                <Image Source="Assets/max.png" 
+                       Height="20" 
+                       Width="20"/>
+            </StackPanel>
+        </Button>
+
+        <TextBlock Text="menu"
+                   FontWeight="Light"
+                   FontFamily="helvetica"
+                   FontSize="100"
+                   Foreground="White"
+                   HorizontalAlignment="Center" 
+                   Margin="0,24,0,247"/>
+
+        <Button x:Name="JoinRoomButton" 
+                Content="join room " 
+                Width="300" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="White" 
+                HorizontalAlignment="Center" 
+                Padding="-4" 
+                Click="JoinRoomButton_Click" 
+                Margin="0,180,0,0" 
+                VerticalAlignment="Top"/>
+        
+        <Button x:Name="CreateRoomButton" 
+                Content="create room " 
+                Width="300" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="White" 
+                HorizontalAlignment="Center" 
+                Padding="-4" 
+                Click="CreateRoomButton_Click" 
+                Margin="0,380,0,0" 
+                VerticalAlignment="Top"/>
+        
+        <Button x:Name="StatisticsButton" 
+                Content="statistics" 
+                Width="300" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="White" 
+                HorizontalAlignment="Center" 
+                Padding="-4" 
+                Click="StatisticsButton_Click" 
+                Margin="0,280,0,0" 
+                VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
