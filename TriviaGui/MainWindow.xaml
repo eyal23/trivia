@@ -31,10 +31,10 @@
             <StackPanel VerticalAlignment="Center" Height="102">
                 <TextBlock Text="trivia"
                            FontFamily="Corbert"   
-                          FontWeight="UltraLight"
-                          FontSize="100"
-                          Foreground="Gainsboro"
-                          HorizontalAlignment="Center"/>
+                           FontWeight="UltraLight"
+                           FontSize="100"
+                           Foreground="Gainsboro"
+                           HorizontalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" >

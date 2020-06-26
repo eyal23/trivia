@@ -78,14 +78,17 @@
         </Button>
 
         <TextBlock Text="menu"
-                   FontWeight="Light"
-                   FontFamily="helvetica"
+                   FontWeight="UltraLight"
+                   FontFamily="Corbert"
                    FontSize="100"
-                   Foreground="White"
+                   Foreground="Gainsboro"
                    HorizontalAlignment="Center" 
                    Margin="0,24,0,247"/>
 
         <Button x:Name="JoinRoomButton" 
+                Foreground="White"
+                FontWeight="UltraLight"
+                FontFamily="Corbert"
                 Content="join room " 
                 Width="300" 
                 Height="40" 
@@ -98,11 +101,14 @@
                 VerticalAlignment="Top"/>
         
         <Button x:Name="CreateRoomButton" 
+               FontFamily="Corbert"
                 Content="create room " 
                 Width="300" 
                 Height="40" 
                 Background="Transparent" 
+                FontWeight="UltraLight"
                 BorderBrush="White" 
+                Foreground="white"
                 HorizontalAlignment="Center" 
                 Padding="-4" 
                 Click="CreateRoomButton_Click" 
@@ -110,6 +116,9 @@
                 VerticalAlignment="Top"/>
         
         <Button x:Name="StatisticsButton" 
+                Foreground="White"
+                FontFamily="corbert"
+                FontWeight="UltraLight"
                 Content="statistics" 
                 Width="300" 
                 Height="40" 
