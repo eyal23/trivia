@@ -94,7 +94,11 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 			break;
 		}
 
-		delete (*communicator)[clientSocket];
+		if ((*communicator)[clientSocket] != requestResult.newHandler)
+		{
+			delete (*communicator)[clientSocket];
+		}
+		
 		(*communicator)[clientSocket] = requestResult.newHandler;
 	}
 }

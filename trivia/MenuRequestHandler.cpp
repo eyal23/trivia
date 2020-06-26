@@ -107,11 +107,11 @@ RequestResult MenuRequestHandler::signout() const
 	in: no
 	out: the request result
 */
-RequestResult MenuRequestHandler::getRooms() const
+RequestResult MenuRequestHandler::getRooms()
 {
 	return {
 		JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse({ 1, this->m_handlerFactory.getRoomManager().getRooms() })),
-		this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+		this
 	};
 }
 
@@ -120,13 +120,13 @@ RequestResult MenuRequestHandler::getRooms() const
 	in: the request info
 	out: the request result
 */
-RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo) const
+RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 {
 	GetPlayersInRoomRequest getPlayersInRoomRequest = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(requestInfo.buffer);
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ this->m_handlerFactory.getRoomManager().getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
-		this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+		this
 	};
 }
 
@@ -135,11 +135,11 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo) cons
 	in: no
 	out: the request result
 */
-RequestResult MenuRequestHandler::getStatistics() const
+RequestResult MenuRequestHandler::getStatistics()
 {
 	return {
 		JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse({ 1, this->m_handlerFactory.getStatisticsManager().getStatistics(this->m_user) })),
-		this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+		this
 	};
 }
 
@@ -148,7 +148,7 @@ RequestResult MenuRequestHandler::getStatistics() const
 	in: the request info
 	out: the request result
 */
-RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo) const
+RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 {
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(requestInfo.buffer);
 
@@ -162,7 +162,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo) const
 
 	return {
 			JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse({ 0 })),
-			this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+			this
 	};
 }
 

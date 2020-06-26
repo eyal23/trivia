@@ -22,10 +22,10 @@ public:
 
 private:
 	RequestResult signout() const;
-	RequestResult getRooms() const;
-	RequestResult getPlayersInRoom(RequestInfo requestInfo) const;
-	RequestResult getStatistics() const;
-	RequestResult joinRoom(RequestInfo requestInfo) const;
+	RequestResult getRooms();
+	RequestResult getPlayersInRoom(RequestInfo requestInfo);
+	RequestResult getStatistics();
+	RequestResult joinRoom(RequestInfo requestInfo);
 	RequestResult createRoom(RequestInfo requestInfo) const;
 };
 

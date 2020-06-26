@@ -30,5 +30,6 @@ public:
 	Question getQuestionForUser(LoggedUser loggedUser);
 	void submitAnswer(LoggedUser loggedUser, unsigned int answerId);
 	void removePlayer(LoggedUser loggedUser);
+	GameData getUserGameData(LoggedUser loggedUser);
 };
 

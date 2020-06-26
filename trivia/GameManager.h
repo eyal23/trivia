@@ -20,5 +20,8 @@ public:
 
 	Game createGame(Room room);
 	void deleteGame(Game game);
+	Question getUserQuestion(LoggedUser loggedUser);
+	void submitAnswer(LoggedUser loggedUser, unsigned int answerId);
+	GameData getGameResults(LoggedUser loggedUser);
 };
 

@@ -16,3 +16,8 @@ void Game::submitAnswer(LoggedUser loggedUser, unsigned int answerId)
 void Game::removePlayer(LoggedUser loggedUser)
 {
 }
+
+GameData Game::getUserGameData(LoggedUser loggedUser)
+{
+    return GameData();
+}
