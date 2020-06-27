@@ -73,9 +73,9 @@ namespace TriviaGui
 
         private void CreateRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            Hide();
-            new CreateRoom().ShowDialog();
-            ShowDialog();
+            CreateRoom cr = new CreateRoom();
+            cr.Show();
+            this.Close();
         }
 
         private void JoinRoomButton_Click(object sender, RoutedEventArgs e)

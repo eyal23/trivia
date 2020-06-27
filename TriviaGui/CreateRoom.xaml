@@ -8,7 +8,8 @@
         Title="CreateRoom" Height="450" Width="800"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
-        MouseDown="CreateRoom_MouseDown">
+        MouseDown="CreateRoom_MouseDown"
+        Icon="Assets/Untitled.png">
 
     <Grid>
 

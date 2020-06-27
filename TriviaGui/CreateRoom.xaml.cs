@@ -24,7 +24,9 @@ namespace TriviaGui
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-
+            mainManu m = new mainManu();
+            m.Show();
+            this.Close();
         }
 
         private void CreateRoom_MouseDown(object sender, MouseButtonEventArgs e)
