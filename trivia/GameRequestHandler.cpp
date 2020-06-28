@@ -3,11 +3,21 @@
 #include "JsonResponsePacketSerializer.h"
 
 
+/*
+	usage: constructor
+	in: the handler factory, the game id, the user
+	out: no
+*/
 GameRequestHandler::GameRequestHandler(RequestHandlerFactory& handlerFactory, unsigned int gameId, LoggedUser user) :
     m_handlerFactory(handlerFactory), m_gameId(gameId), m_user(user)
 {
 }
 
+/*
+	usage: the method checks if a request is relevant
+	in: the request info 
+	out: if the request is relevant
+*/
 bool GameRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
 {
     return requestInfo.id == LEAVE_GAME_REQUEST ||
@@ -16,6 +26,11 @@ bool GameRequestHandler::isRequestRelevant(RequestInfo requestInfo) const
         requestInfo.id == GET_GAME_RESULT_REQUEST;
 }
 
+/*
+	usage: the method handles a request
+	in: the request info
+	out: the request result
+*/
 RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 {
 	if (!this->isRequestRelevant(requestInfo))
@@ -31,11 +46,11 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 		switch (requestInfo.id)
 		{
 		case LEAVE_GAME_REQUEST:
-			return this->leaveGame(requestInfo);
+			return this->leaveGame();
 			break;
 
 		case GET_QUESTION_REQUEST:
-			return this->getQuestion(requestInfo);
+			return this->getQuestion();
 			break;
 
 		case SUBMIT_ANSWER_REQUEST:
@@ -43,7 +58,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 			break;
 
 		case GET_GAME_RESULT_REQUEST:
-			return this->getGameResults(requestInfo);
+			return this->getGameResults();
 			break;
 		}
 	}
@@ -56,7 +71,12 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 	}
 }
 
-RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
+/*
+	usage: the method  gets a question for a user
+	in: no
+	out: the request result
+*/
+RequestResult GameRequestHandler::getQuestion()
 {
 	Question question = this->m_handlerFactory.getGameManager()[this->m_gameId].getQuestionForUser(this->m_user);
 	map<unsigned int, string> answers = {
@@ -72,6 +92,11 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 	};
 }
 
+/*
+	usage: the method submits a user's answer
+	in: the request info
+	out: the request result
+*/
 RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
 	SubmitAnswerRequest submitAnswerRequest = JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(requestInfo.buffer);
@@ -84,7 +109,12 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 	};
 }
 
-RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
+/*
+	usage: the method gets a game's results
+	in: no
+	out: the request result
+*/
+RequestResult GameRequestHandler::getGameResults()
 {
 	return {
 		JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse({ 1, this->m_handlerFactory.getGameManager()[this->m_gameId].getGameResults() })),
@@ -92,7 +122,12 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 	};
 }
 
-RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
+/*
+	usage: the method removes a user from a game
+	in: no
+	out: the request result
+*/
+RequestResult GameRequestHandler::leaveGame()
 {
 	this->m_handlerFactory.getGameManager()[this->m_gameId].removePlayer(this->m_user);
 

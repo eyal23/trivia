@@ -20,9 +20,9 @@ public:
 	RequestResult handleRequest(RequestInfo requestInfo) override;
 
 private:
-	RequestResult getQuestion(RequestInfo requestInfo);
+	RequestResult getQuestion();
 	RequestResult submitAnswer(RequestInfo requestInfo);
-	RequestResult getGameResults(RequestInfo requestInfo);
-	RequestResult leaveGame(RequestInfo requestInfo);
+	RequestResult getGameResults();
+	RequestResult leaveGame();
 };
 
