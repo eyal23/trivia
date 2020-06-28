@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Media;
 
 namespace TriviaGui
 {
@@ -29,6 +31,11 @@ namespace TriviaGui
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            MediaPlayer m = new MediaPlayer();
+
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            m.Play();
+
             isOnRegister = !isOnRegister;
             var temp = login.Content;
             login.Content = (string)signup.Content;
@@ -44,6 +51,11 @@ namespace TriviaGui
 
         private void signUp_Click(object sender, RoutedEventArgs e)
         {
+            MediaPlayer m = new MediaPlayer();
+
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            m.Play();
+
             if (isOnRegister)
                 MessageBox.Show($"send: {userName.Text} {password.Password}");
 

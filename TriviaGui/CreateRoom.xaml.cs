@@ -34,5 +34,26 @@ namespace TriviaGui
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+        private void NumberOfPlayers_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.GotFocus -= NumberOfPlayers_GotFocus;
+        }
+
+        private void QustienTime_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.GotFocus -= QustienTime_GotFocus;
+        }
+
+        private void RoomName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+            tb.GotFocus -= RoomName_GotFocus;
+        }
     }
 }

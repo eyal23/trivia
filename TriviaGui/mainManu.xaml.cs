@@ -17,9 +17,20 @@ namespace TriviaGui
     /// </summary>
     public partial class mainManu : Window
     {
+        private MediaPlayer player;
+
         public mainManu()
         {
             InitializeComponent();
+            PlayMusic();
+        }
+
+        private void PlayMusic()
+        {
+
+            player = new MediaPlayer();
+            player.Open(new Uri("../../Immanuel.mp3", UriKind.RelativeOrAbsolute));
+            player.Play();
         }
         private void mainManu_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -68,19 +79,31 @@ namespace TriviaGui
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
+            MediaPlayer m = new MediaPlayer();
 
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            m.Play();
         }
 
         private void CreateRoomButton_Click(object sender, RoutedEventArgs e)
         {
+            MediaPlayer m = new MediaPlayer();
             CreateRoom cr = new CreateRoom();
+
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+
+            m.Play();
             cr.Show();
             this.Close();
+
         }
 
         private void JoinRoomButton_Click(object sender, RoutedEventArgs e)
         {
+            MediaPlayer m = new MediaPlayer();
 
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            m.Play();
         }
     }
 }

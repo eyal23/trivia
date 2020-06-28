@@ -29,12 +29,12 @@
                 Foreground="White" 
                 Margin="1,20,0,0" 
                 VerticalAlignment="Bottom" 
-                Click="BackButton_Click" Height="75" Width="100">
+                Click="BackButton_Click" 
+                Height="75" 
+                Width="100">
 
             <StackPanel Height="75" Width="100">
                 <Image Source="Assets/back-button-png-10-transparent.png" Height="55" Width="100"/>
-                <TextBlock Text="back" HorizontalAlignment="Center" Foreground="black" Margin="1,-10,0,0"/>
-
             </StackPanel>
         </Button>
 
@@ -49,7 +49,8 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="283,111,282,285"/>
+                 Margin="283,111,282,285"
+                 GotFocus="RoomName_GotFocus"/>
 
         <Border Width="250"
                 Height="2"
@@ -68,7 +69,8 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="283,177,282,220"/>
+                 Margin="283,177,282,220"
+                 GotFocus="QustienTime_GotFocus"/>
 
         <Border Width="250"
                 Height="2"
@@ -87,7 +89,8 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="283,247,282,155" />
+                 Margin="283,247,282,155" 
+                 GotFocus="NumberOfPlayers_GotFocus"/>
 
         <Border Width="250"
                 Height="2"
