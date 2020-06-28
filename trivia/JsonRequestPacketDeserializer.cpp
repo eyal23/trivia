@@ -72,7 +72,7 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
 	json jsonData = json::from_bson(data);
 
-	return{
+	return {
 		jsonData["roomid"]
 	};
 }

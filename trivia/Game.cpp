@@ -4,6 +4,10 @@ Game::Game(vector<LoggedUser> loggedUsers)
 {
 }
 
+Game::Game()
+{
+}
+
 Question Game::getQuestionForUser(LoggedUser loggedUser)
 {
     return Question(string(), vector<string>());
@@ -17,7 +21,7 @@ void Game::removePlayer(LoggedUser loggedUser)
 {
 }
 
-GameData Game::getUserGameData(LoggedUser loggedUser)
+vector<PlayerResults> Game::getGameResults()
 {
-    return GameData();
+    return vector<PlayerResults>();
 }

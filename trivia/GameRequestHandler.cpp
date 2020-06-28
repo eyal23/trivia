@@ -3,8 +3,8 @@
 #include "JsonResponsePacketSerializer.h"
 
 
-GameRequestHandler::GameRequestHandler(RequestHandlerFactory& handlerFactory, Game game, LoggedUser user) :
-    m_handlerFactory(handlerFactory), m_game(game), m_user(user)
+GameRequestHandler::GameRequestHandler(RequestHandlerFactory& handlerFactory, unsigned int gameId, LoggedUser user) :
+    m_handlerFactory(handlerFactory), m_gameId(gameId), m_user(user)
 {
 }
 
@@ -58,7 +58,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo requestInfo)
 {
-	Question question = this->m_handlerFactory.getGameManager().getUserQuestion(this->m_user);
+	Question question = this->m_handlerFactory.getGameManager()[this->m_gameId].getQuestionForUser(this->m_user);
 	map<unsigned int, string> answers = {
 		{ 0, question.getCorrectAnswer() },
 		{ 1, question.getAnswers()[0] },
@@ -76,7 +76,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
 	SubmitAnswerRequest submitAnswerRequest = JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(requestInfo.buffer);
 
-	this->m_handlerFactory.getGameManager().submitAnswer(this->m_user, submitAnswerRequest.answerId);
+	this->m_handlerFactory.getGameManager()[this->m_gameId].submitAnswer(this->m_user, submitAnswerRequest.answerId);
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse({ 1 })),
@@ -86,15 +86,18 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 
 RequestResult GameRequestHandler::getGameResults(RequestInfo requestInfo)
 {
-	GameData gameData = this->m_handlerFactory.getGameManager().getGameResults(this->m_user);
-
 	return {
-		JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse({ 1, PlayerResults({  }) })),
+		JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse({ 1, this->m_handlerFactory.getGameManager()[this->m_gameId].getGameResults() })),
 		this
 	};
 }
 
 RequestResult GameRequestHandler::leaveGame(RequestInfo requestInfo)
 {
-    return RequestResult();
+	this->m_handlerFactory.getGameManager()[this->m_gameId].removePlayer(this->m_user);
+
+	return {
+		JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse({ 1 })),
+		this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+	};
 }

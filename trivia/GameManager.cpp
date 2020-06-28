@@ -1,5 +1,6 @@
 #include "GameManager.h"
 
+
 GameManager::GameManager(IDatabase& database) :
     m_database(database)
 {
@@ -14,16 +15,7 @@ void GameManager::deleteGame(Game game)
 {
 }
 
-Question GameManager::getUserQuestion(LoggedUser loggedUser)
+Game& GameManager::operator[](unsigned int id)
 {
-    return Question();
-}
-
-void GameManager::submitAnswer(LoggedUser loggedUser, unsigned int answerId)
-{
-}
-
-GameData GameManager::getGameResults(LoggedUser loggedUser)
-{
-    return GameData();
+    return this->m_games[id];
 }

@@ -5,6 +5,7 @@
 
 #include "Question.h"
 #include "LoggedUser.h"
+#include "JsonResponsePacketSerializer.h"
 
 using std::map;
 using std::vector;
@@ -26,10 +27,11 @@ private:
 
 public:
 	Game(vector<LoggedUser> loggedUsers);
+	Game();
 
 	Question getQuestionForUser(LoggedUser loggedUser);
 	void submitAnswer(LoggedUser loggedUser, unsigned int answerId);
 	void removePlayer(LoggedUser loggedUser);
-	GameData getUserGameData(LoggedUser loggedUser);
+	vector<PlayerResults> getGameResults();
 };
 
