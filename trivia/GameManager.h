@@ -19,9 +19,12 @@ private:
 public:
 	GameManager(IDatabase& database);
 
-	Game createGame(Room room);
-	void deleteGame(Game game);
+	unsigned int createGame(Room room);
+	void deleteGame(unsigned int gameId);
 
 	Game& operator[](unsigned int id);
+
+private:
+	unsigned int getNextGameId() const;
 };
 

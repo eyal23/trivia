@@ -26,7 +26,7 @@ private:
 	map<LoggedUser, GameData> m_players;
 
 public:
-	Game(vector<LoggedUser> loggedUsers);
+	Game(vector<LoggedUser> players, vector<Question> questions);
 	Game();
 
 	Question getQuestionForUser(LoggedUser loggedUser);
