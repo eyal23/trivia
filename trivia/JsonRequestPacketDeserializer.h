@@ -27,7 +27,7 @@ typedef struct GetPlayersInRoomRequest
 
 typedef struct JoinRoomRequest
 {
-	unsigned roomId;
+	unsigned int roomId;
 } JoinRoomRequest;
 
 typedef struct CreateRoomRequest
@@ -41,6 +41,7 @@ typedef struct CreateRoomRequest
 typedef struct SubmitAnswerRequest
 {
 	unsigned int answerId;
+	float answerTime;
 } SubmitAnswerRequest;
 
 

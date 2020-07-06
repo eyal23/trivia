@@ -101,7 +101,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
 	SubmitAnswerRequest submitAnswerRequest = JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(requestInfo.buffer);
 
-	this->m_handlerFactory.getGameManager()[this->m_gameId].submitAnswer(this->m_user, submitAnswerRequest.answerId);
+	this->m_handlerFactory.getGameManager()[this->m_gameId].submitAnswer(this->m_user, submitAnswerRequest.answerId, submitAnswerRequest.answerTime);
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse({ 1 })),

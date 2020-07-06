@@ -38,6 +38,7 @@ typedef struct GetRoomsResponse
 
 typedef struct GetPlayersInRoomResponse
 {
+	unsigned int status;
 	vector<string> players;
 } GetPlayersInRoomResponse;
 
@@ -103,7 +104,7 @@ typedef struct PlayerResults
 	string username;
 	unsigned int correctAnswersCount;
 	unsigned int wrongAnswersCount;
-	unsigned int averageAnswerTime;
+	float averageAnswerTime;
 } PlayerResults;
 
 typedef struct GetGameResultsResponse

@@ -16,8 +16,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["username"],
-		jsonData["password"]
+		jsonData["Username"],
+		jsonData["Password"]
 	};
 }
 
@@ -34,9 +34,9 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vect
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["username"],
-		jsonData["password"],
-		jsonData["email"]
+		jsonData["Username"],
+		jsonData["Password"],
+		jsonData["Email"]
 	};
 }
 
@@ -54,7 +54,7 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequ
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["roomid"]
+		jsonData["RoomId"]
 
 	};
 }
@@ -73,7 +73,7 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["roomid"]
+		jsonData["RoomId"]
 	};
 }
 
@@ -91,10 +91,10 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["roomName"],
-		jsonData["maxUsers"],
-		jsonData["questionCount"],
-		jsonData["answerTimout"]
+		jsonData["RoomName"],
+		jsonData["MaxUsers"],
+		jsonData["QuestionCount"],
+		jsonData["AnswerTimout"]
 	};
 }
 
@@ -110,6 +110,7 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerReque
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["answerId"]
+		jsonData["AnswerId"],
+		jsonData["AnswerTime"]
 	};
 }

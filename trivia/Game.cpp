@@ -14,8 +14,7 @@ Game::Game(vector<LoggedUser> players, vector<Question> questions) :
 	}
 }
 
-Game::Game() :
-	m_questions(vector<Question>()), m_players(map<LoggedUser, GameData>())
+Game::Game()
 {
 }
 
@@ -24,7 +23,7 @@ Question Game::getQuestionForUser(LoggedUser loggedUser)
     return this->m_players[loggedUser].currentQuestion;
 }
 
-void Game::submitAnswer(LoggedUser loggedUser, unsigned int answerId)
+void Game::submitAnswer(LoggedUser loggedUser, unsigned int answerId, float answerTime)
 {
 	if (this->m_players[loggedUser].currentQuestion.getCorrectAnswer() == this->m_players[loggedUser].currentQuestion.getAnswers()[answerId])
 	{
@@ -34,6 +33,8 @@ void Game::submitAnswer(LoggedUser loggedUser, unsigned int answerId)
 	{
 		this->m_players[loggedUser].wrongAnswersCount++;
 	}
+
+	this->m_players[loggedUser].totalAnswerTime += answerTime;
 }
 
 void Game::removePlayer(LoggedUser loggedUser)
@@ -47,7 +48,7 @@ vector<PlayerResults> Game::getGameResults()
 
 	for (map<LoggedUser, GameData>::iterator player = this->m_players.begin(); player != this->m_players.end(); ++player)
 	{
-		gameResults.push_back(PlayerResults({ player->first.getUsername(), player->second.correctAnswersCount, player->second.wrongAnswersCount, player->second.averageAnswerTime }));
+		gameResults.push_back(PlayerResults({ player->first.getUsername(), player->second.correctAnswersCount, player->second.wrongAnswersCount, player->second.totalAnswerTime / (player->second.correctAnswersCount + player->second.wrongAnswersCount) }));
 	}
 
 	return gameResults;

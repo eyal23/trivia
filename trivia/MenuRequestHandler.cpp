@@ -125,7 +125,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 	GetPlayersInRoomRequest getPlayersInRoomRequest = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(requestInfo.buffer);
 
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ this->m_handlerFactory.getRoomManager().getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
+		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ 1, this->m_handlerFactory.getRoomManager().getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
 		this
 	};
 }

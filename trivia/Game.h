@@ -13,10 +13,10 @@ using std::vector;
 
 typedef struct GameData
 {
-	Question currentQuestion;
+	Question currentQuestion = Question(string(), vector<string>());
 	unsigned int correctAnswersCount;
 	unsigned int wrongAnswersCount;
-	unsigned int averageAnswerTime;
+	float totalAnswerTime;
 } GameData;
 
 class Game
@@ -30,7 +30,7 @@ public:
 	Game();
 
 	Question getQuestionForUser(LoggedUser loggedUser);
-	void submitAnswer(LoggedUser loggedUser, unsigned int answerId);
+	void submitAnswer(LoggedUser loggedUser, unsigned int answerId, float answerTime);
 	void removePlayer(LoggedUser loggedUser);
 	vector<PlayerResults> getGameResults();
 };

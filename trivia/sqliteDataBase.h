@@ -48,6 +48,7 @@ public:
 	int getNumOfTotalAnswers(string username) override;
 	int getNumOfPlayerGames(string username) override;
 	int* getTopScores(string username) override;
+	void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime) override;
 
 private:
 	bool initDatabase();
