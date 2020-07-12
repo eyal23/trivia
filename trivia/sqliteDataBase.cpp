@@ -284,6 +284,11 @@ int* SqliteDatabase::getTopScores(string username)
 	return topScores;
 }
 
+/*
+	usage: the method adds a new statistic to the database
+	in: the username, the total answers, the total correct answers, the total answer time
+	out: no
+*/
 void SqliteDatabase::addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime)
 {
 	InsertQuery query = {
@@ -302,6 +307,11 @@ void SqliteDatabase::addStatistic(string username, unsigned int totalAnswers, un
 	}
 }
 
+/*
+	usage: the method gets the questions from the database
+	in: no
+	out: the questions
+*/
 vector<Question> SqliteDatabase::getQuestions()
 {
 	vector<map<string, string>> result;
