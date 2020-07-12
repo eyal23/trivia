@@ -302,6 +302,43 @@ void SqliteDatabase::addStatistic(string username, unsigned int totalAnswers, un
 	}
 }
 
+vector<Question> SqliteDatabase::getQuestions()
+{
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "QUESTIONS" },
+		{},
+		{ 
+			QUESTIONS_QUESTION, 
+			QUESTIONS_CORRECT_ANSWER,
+			QUESTIONS_INCORRECT_ANSWER_1,
+			QUESTIONS_INCORRECT_ANSWER_2,
+			QUESTIONS_INCORRECT_ANSWER_3
+		},
+		{}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	vector<Question> questions;
+
+	for (int i = 0; i < result.size(); i++)
+	{
+		questions.push_back(Question(
+			result[i][QUESTIONS_QUESTION], 
+			{ 
+				result[i][QUESTIONS_CORRECT_ANSWER],
+				result[i][QUESTIONS_INCORRECT_ANSWER_1], 
+				result[i][QUESTIONS_INCORRECT_ANSWER_2], 
+				result[i][QUESTIONS_INCORRECT_ANSWER_3] 
+			}
+		));
+	}
+}
+
 /*
 	usage: the method initializes the database
 	in: no
