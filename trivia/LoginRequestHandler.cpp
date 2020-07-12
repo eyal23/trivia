@@ -1,24 +1,15 @@
 #include <vector>
 
 #include "LoginRequestHandler.h"
-#include "MenuRequestHandler.h"
+#include "LoginManager.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 #include "LoggedUser.h"
+#include "RequestHandlerFactory.h"
 #include "Constants.h"
 
 using std::vector;
 
-
-/*
-	usage: constructor
-	in: reference to the requestHandlerFactory
-	out: no
-*/
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) :
-	m_handlerFacotry(handlerFactory)
-{
-}
 
 /*
 	usage: the methods checks if a request is relevant
@@ -40,7 +31,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 	if (!this->isRequestRelevant(requestInfo))
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Request is non-relevant" })),
 			nullptr
 		};
 	}
@@ -61,7 +52,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo requestInfo)
 	catch (const std::exception& e)
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ e.what() })),
 			nullptr
 		};
 	}
@@ -76,17 +67,17 @@ RequestResult LoginRequestHandler::login(const RequestInfo requestInfo) const
 {
 	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(requestInfo.buffer);
 	
-	if (this->m_handlerFacotry.getLoginManager().login(loginRequest.username, loginRequest.password))
+	if (LoginManager::getInstance().login(loginRequest.username, loginRequest.password))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			this->m_handlerFacotry.createMenuRequestHandler(LoggedUser(loginRequest.username))
+			RequestHandlerFactory::getInstance().createMenuRequestHandler(LoggedUser(loginRequest.username))
 		};
 	}
 	
 	return {
 		JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 0 })),
-		this->m_handlerFacotry.createLoginRequestHandler()
+		RequestHandlerFactory::getInstance().createLoginRequestHandler()
 	};
 }
 
@@ -99,16 +90,16 @@ RequestResult LoginRequestHandler::signup(const RequestInfo requestInfo) const
 {
 	SignUpRequest signUpRequest = JsonRequestPacketDeserializer::deserializeSignUpRequest(requestInfo.buffer);
 
-	if (this->m_handlerFacotry.getLoginManager().signup(signUpRequest.username, signUpRequest.password, signUpRequest.email))
+	if (LoginManager::getInstance().signup(signUpRequest.username, signUpRequest.password, signUpRequest.email))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 1 })),
-			this->m_handlerFacotry.createMenuRequestHandler(LoggedUser(signUpRequest.username))
+			RequestHandlerFactory::getInstance().createMenuRequestHandler(LoggedUser(signUpRequest.username))
 		};
 	}
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(SignupResponse({ 0 })),
-		this->m_handlerFacotry.createLoginRequestHandler()
+		RequestHandlerFactory::getInstance().createLoginRequestHandler()
 	};
 }

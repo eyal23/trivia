@@ -26,6 +26,12 @@ private:
 	map<int, Room> m_rooms;
 
 public:
+	static RoomManager& getInstance()
+	{
+		static RoomManager instance;
+		return instance;
+	}
+
 	int createRoom(LoggedUser loggedUser, RoomData roomData);
 	void closeRoom(int id);
 	bool tryDeleteRoom(int id, LoggedUser loggedUser);
@@ -37,7 +43,12 @@ public:
 
 	Room operator[](int id);
 
+	RoomManager(RoomManager const&) = delete;
+	void operator=(RoomManager const&) = delete;
+
 private:
+	RoomManager() {}
+
 	int getNextRoomId() const;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "LoggedUser.h"
+
 
 typedef struct Statistics
 {
@@ -14,12 +14,19 @@ typedef struct Statistics
 
 class StatisticsManager
 {
-private:
-	IDatabase& m_database;
-
 public:
-	StatisticsManager(IDatabase& database);
+	static StatisticsManager& getInstance()
+	{
+		static StatisticsManager instance;
+		return instance;
+	}
 
 	Statistics getStatistics(LoggedUser loggedUser);
+
+	StatisticsManager(StatisticsManager const&) = delete;
+	void operator=(StatisticsManager const&) = delete;
+
+private:
+	StatisticsManager() {}
 };
 

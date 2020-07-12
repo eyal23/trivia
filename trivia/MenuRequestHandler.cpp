@@ -1,6 +1,10 @@
 #include "MenuRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
+#include "LoginManager.h"
+#include "RoomManager.h"
+#include "StatisticsManager.h"
+#include "RequestHandlerFactory.h"
 
 
 /*
@@ -8,8 +12,8 @@
 	in: the handler factory, the logged user
 	out: no
 */
-MenuRequestHandler::MenuRequestHandler(RequestHandlerFactory& handlerFactory, LoggedUser loggedUser) :
-	m_handlerFactory(handlerFactory), m_user(loggedUser)
+MenuRequestHandler::MenuRequestHandler(LoggedUser loggedUser) :
+	m_user(loggedUser)
 {
 }
 
@@ -38,7 +42,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo requestInfo)
 	if (!this->isRequestRelevant(requestInfo))
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Request is non-relevant" })),
 			nullptr
 		};
 	}
@@ -86,19 +90,19 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo requestInfo)
 	in: no
 	out: the request result
 */
-RequestResult MenuRequestHandler::signout() const
+RequestResult MenuRequestHandler::signout()
 {
-	if (this->m_handlerFactory.getLoginManager().logout(this->m_user.getUsername()))
+	if (LoginManager::getInstance().logout(this->m_user.getUsername()))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(LogoutResponse({ 1 })),
-			nullptr
+			RequestHandlerFactory::getInstance().createLoginRequestHandler()
 		};
 	}
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(LogoutResponse({ 0 })),
-		nullptr
+		this
 	};
 }
 
@@ -110,7 +114,7 @@ RequestResult MenuRequestHandler::signout() const
 RequestResult MenuRequestHandler::getRooms()
 {
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse({ 1, this->m_handlerFactory.getRoomManager().getRooms() })),
+		JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse({ 1, RoomManager::getInstance().getRooms() })),
 		this
 	};
 }
@@ -125,7 +129,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 	GetPlayersInRoomRequest getPlayersInRoomRequest = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(requestInfo.buffer);
 
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ 1, this->m_handlerFactory.getRoomManager().getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
+		JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse({ 1, RoomManager::getInstance().getPlayersInRoom(getPlayersInRoomRequest.roomId) })),
 		this
 	};
 }
@@ -138,7 +142,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo requestInfo)
 RequestResult MenuRequestHandler::getStatistics()
 {
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse({ 1, this->m_handlerFactory.getStatisticsManager().getStatistics(this->m_user) })),
+		JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse({ 1, StatisticsManager::getInstance().getStatistics(this->m_user) })),
 		this
 	};
 }
@@ -152,11 +156,11 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo requestInfo)
 {
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(requestInfo.buffer);
 
-	if (this->m_handlerFactory.getRoomManager().joinRoom(joinRoomRequest.roomId, this->m_user))
+	if (RoomManager::getInstance().joinRoom(joinRoomRequest.roomId, this->m_user))
 	{
 		return {
 			JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse({ 1 })),
-			this->m_handlerFactory.createRoomMemberRequestHandler(this->m_user, joinRoomRequest.roomId)
+			RequestHandlerFactory::getInstance().createRoomMemberRequestHandler(this->m_user, joinRoomRequest.roomId)
 		};
 	}
 
@@ -175,7 +179,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo) const
 {
 	CreateRoomRequest createRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(requestInfo.buffer);
 
-	int id = this->m_handlerFactory.getRoomManager().createRoom(
+	int id = RoomManager::getInstance().createRoom(
 		this->m_user, 
 		{ 
 			0, 
@@ -190,6 +194,6 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo requestInfo) const
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse({ 1 })),
-		this->m_handlerFactory.createRoomAdminRequestHandler(this->m_user, id)
+		RequestHandlerFactory::getInstance().createRoomAdminRequestHandler(this->m_user, id)
 	};
 }

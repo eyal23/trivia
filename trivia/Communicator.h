@@ -11,22 +11,31 @@
 
 using std::map;
 
+
 class Communicator
 {
 private:
 	map<SOCKET, IRequestHandler*> m_clients;
-	RequestHandlerFactory& m_handlerFactory;
 	SOCKET _listeningSocket;
 
 public:
-	Communicator(RequestHandlerFactory& handlerFactory);
-	~Communicator();
+	static Communicator& getInstance()
+	{
+		static Communicator instance;
+		return instance;
+	}
 
 	void startHandleRequests();
 	void removeClient(SOCKET clientSocket);
 	IRequestHandler*& operator[](const SOCKET& socket);
 
+	Communicator(Communicator const&) = delete;
+	void operator=(Communicator const&) = delete;
+
 private:
+	Communicator();
+	~Communicator();
+
 	void bindAndListen() const;
 	void handleNewClient(SOCKET clientSocket);
     SOCKET accept() const;

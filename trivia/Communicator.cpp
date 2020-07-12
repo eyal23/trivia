@@ -1,13 +1,10 @@
 #include <iostream>
 #include <exception>
 #include <thread>
-#include <ctime>
 #include <vector>
 
 #include "Communicator.h"
-#include "WSAInitializer.h"
 #include "IRequestHandler.h"
-#include "MenuRequestHandler.h"
 
 #define MAX_BYTES_AMOUNT 1024
 
@@ -17,7 +14,6 @@ using std::string;
 using std::cout;
 using std::endl;
 using std::ref;
-using std::time;
 using std::vector;
 
 static const unsigned short PORT = 8826;
@@ -29,8 +25,7 @@ static const unsigned int INTERFACE = 0;
 	in: the handler factory
 	out: no
 */
-Communicator::Communicator(RequestHandlerFactory& handlerFactory) :
-	m_handlerFactory(handlerFactory)
+Communicator::Communicator()
 {
 	this->_listeningSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -55,13 +50,9 @@ Communicator::~Communicator()
 }
 
 /*
-	this method sends the massage to the client (Hello) 
-	and receives a message back,
-	in case of an error in the process there's an exception 
-	that can be throne
-
-	input: the communicator and the client socket.
-	output: none.
+	usage: the thread handles with a specific client's requests
+	input: the communicator, the client socket
+	output: no
 */
 void clientThread(Communicator* communicator, SOCKET clientSocket)
 {
@@ -77,7 +68,7 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 			break;
 		}
 
-		RequestInfo requestInfo = { (MessageCode)buffer[0], time(nullptr), buffer };
+		RequestInfo requestInfo = { (MessageCode)buffer[0], buffer };
 		RequestResult requestResult = requestHandler->handleRequest(requestInfo);
 
 		if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
@@ -104,12 +95,9 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 }
 
 /*
-	this method starts the binding and listening process
-	and then she starts accepting clients by calling
-	the handleNewClient method.
-
-	input: none.
-	output: none.
+	usage: the method starts the handle-requests cicle
+	input: no
+	output: no
 */
 void Communicator::startHandleRequests()
 {
@@ -121,6 +109,11 @@ void Communicator::startHandleRequests()
 	}
 }
 
+/*
+	usage: the method removes a client from the server
+	in: the client socket
+	out: no
+*/
 void Communicator::removeClient(SOCKET clientSocket)
 {
 	this->m_clients.erase(clientSocket);
@@ -137,12 +130,9 @@ IRequestHandler*& Communicator::operator[](const SOCKET& socket)
 }
 
 /*
-	this method is meant for binding & listening procces.
-	the method starts with binding and then listening and 
-	if something went wrong then the an exception is being thrown.
-
-	input: none.
-	output: none.
+	usage: the method binds and start listening for new clients
+	input: no
+	output: no
 */
 void Communicator::bindAndListen() const
 {
@@ -163,27 +153,22 @@ void Communicator::bindAndListen() const
 }
 
 /*
-	this method gets the client socket and add the socket tot the 
-	map and creates a new thread & detaches him.
-
+	usage: the method handles a new client
 	input: the client socket.
 	output: none.
 */
 void Communicator::handleNewClient(SOCKET clientSocket) 
 {
-	this->m_clients[clientSocket] = this->m_handlerFactory.createLoginRequestHandler();
+	this->m_clients[clientSocket] = RequestHandlerFactory::getInstance().createLoginRequestHandler();
 
 	thread clientThread(clientThread, this, clientSocket);
 	clientThread.detach();
 }
 
 /*
-	this method accepts a new client and 
-	creates a socket for the client and 
-	returns the socket.
-
-	input: none
-	output: the client socket.
+	usage: the method accepts a new client
+	input: no
+	output: the client socket
 */
 SOCKET Communicator::accept() const
 {

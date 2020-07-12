@@ -1,10 +1,6 @@
 #include "GameManager.h"
+#include "sqliteDataBase.h"
 
-
-GameManager::GameManager(IDatabase& database) :
-    m_database(database)
-{
-}
 
 unsigned int GameManager::createGame(Room room)
 {
@@ -30,7 +26,7 @@ void GameManager::deleteGame(unsigned int gameId)
 
 	for (int i = 0; i < gameResults.size(); i++)
 	{
-		this->m_database.addStatistic(gameResults[i].username, gameResults[i].correctAnswersCount + gameResults[i].wrongAnswersCount, gameResults[i].correctAnswersCount, gameResults[i].averageAnswerTime * (gameResults[i].correctAnswersCount + gameResults[i].wrongAnswersCount));
+		 SqliteDatabase::getInstance().addStatistic(gameResults[i].username, gameResults[i].correctAnswersCount + gameResults[i].wrongAnswersCount, gameResults[i].correctAnswersCount, gameResults[i].averageAnswerTime * (gameResults[i].correctAnswersCount + gameResults[i].wrongAnswersCount));
 	}
 
 	this->m_games.erase(gameId);
