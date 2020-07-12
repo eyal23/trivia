@@ -12,7 +12,7 @@
 	out:no
 */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
-	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database))
+	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database)), m_gameManager(database)
 {
 }
 
@@ -56,6 +56,11 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 	return new RoomMemberRequestHandler(*this, roomId, loggedUser);
 }
 
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(Game game, LoggedUser loggedUser)
+{
+	return nullptr;
+}
+
 /*
 	usage: the method gets the login manager
 	in: no
@@ -84,4 +89,9 @@ RoomManager& RequestHandlerFactory::getRoomManager()
 StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 {
 	return this->m_statisticsManager;
+}
+
+GameManager& RequestHandlerFactory::getGameManager()
+{
+	return this->m_gameManager;
 }

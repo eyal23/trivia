@@ -5,6 +5,7 @@
 
 #include "IDatabase.h"
 #include "sqlite3.h"
+#include "Question.h"
 
 using std::string;
 using std::vector;
@@ -48,6 +49,8 @@ public:
 	int getNumOfTotalAnswers(string username) override;
 	int getNumOfPlayerGames(string username) override;
 	int* getTopScores(string username) override;
+	void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime) override;
+	vector<Question> getQuestions();
 
 private:
 	bool initDatabase();

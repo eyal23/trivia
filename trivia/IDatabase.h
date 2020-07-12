@@ -1,12 +1,10 @@
 #pragma once
 
 #include <iostream>
-#include <list>
 #include <vector>
 #include <map>
 
 using std::string;
-using std::list;
 using std::map;
 using std::vector;
 
@@ -21,5 +19,6 @@ public:
 	virtual int getNumOfTotalAnswers(string username) = 0;
 	virtual int getNumOfPlayerGames(string username) = 0;
 	virtual int* getTopScores(string username) = 0;
+	virtual void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime) = 0;
 };
 

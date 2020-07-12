@@ -17,7 +17,7 @@
 #define QUESTIONS_INCORRECT_ANSWER_1 "INCORRECT_ANSWER1"
 #define QUESTIONS_INCORRECT_ANSWER_2 "INCORRECT_ANSWER2"
 #define QUESTIONS_INCORRECT_ANSWER_3 "INCORRECT_ANSWER3"
-#define STATISTICS_GAME_ID "GAME_ID"
+#define STATISTICS_ID "ID"
 #define STATISTICS_USERNAME "USERNAME"
 #define STATISTICS_TOTAL_ANSWERS "TOTAL_ANSWERS"
 #define STATISTICS_CORRECT_ANSWERS "CORRECT_ANSWERS"
@@ -27,6 +27,7 @@ using std::exception;
 using std::vector;
 using std::map;
 using std::stoi;
+using std::to_string;
 
 
 /*
@@ -223,7 +224,7 @@ int SqliteDatabase::getNumOfPlayerGames(string username)
 	SelectQuery query = {
 		{ "STATISTICS" },
 		{},
-		{ string("COUNT(") + STATISTICS_TOTAL_ANSWERS + string(") AS PLAYER_GAMES") },
+		{ string("COUNT(") + STATISTICS_ID + string(") AS PLAYER_GAMES") },
 		{
 			{ STATISTICS_USERNAME, string("\"") + username + string("\"") }
 		}
@@ -284,6 +285,71 @@ int* SqliteDatabase::getTopScores(string username)
 }
 
 /*
+	usage: the method adds a new statistic to the database
+	in: the username, the total answers, the total correct answers, the total answer time
+	out: no
+*/
+void SqliteDatabase::addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime)
+{
+	InsertQuery query = {
+		"STATISTICS",
+		{
+			string("\"") + username + string("\""),
+			to_string(totalAnswers),
+			to_string(correctAnswers),
+			to_string(totalAnswerTime)
+		},
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), nullptr, nullptr, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+}
+
+/*
+	usage: the method gets the questions from the database
+	in: no
+	out: the questions
+*/
+vector<Question> SqliteDatabase::getQuestions()
+{
+	vector<map<string, string>> result;
+	SelectQuery query = {
+		{ "QUESTIONS" },
+		{},
+		{ 
+			QUESTIONS_QUESTION, 
+			QUESTIONS_CORRECT_ANSWER,
+			QUESTIONS_INCORRECT_ANSWER_1,
+			QUESTIONS_INCORRECT_ANSWER_2,
+			QUESTIONS_INCORRECT_ANSWER_3
+		},
+		{}
+	};
+
+	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
+	{
+		throw exception("could'nt access database");
+	}
+
+	vector<Question> questions;
+
+	for (int i = 0; i < result.size(); i++)
+	{
+		questions.push_back(Question(
+			result[i][QUESTIONS_QUESTION], 
+			{ 
+				result[i][QUESTIONS_CORRECT_ANSWER],
+				result[i][QUESTIONS_INCORRECT_ANSWER_1], 
+				result[i][QUESTIONS_INCORRECT_ANSWER_2], 
+				result[i][QUESTIONS_INCORRECT_ANSWER_3] 
+			}
+		));
+	}
+}
+
+/*
 	usage: the method initializes the database
 	in: no
 	out: if the initialization was succesful
@@ -293,7 +359,7 @@ bool SqliteDatabase::initDatabase()
 	const vector<const char*> tableQueries = {
 		"CREATE TABLE USERS (USERNAME TEXT PRIMARY KEY , PASSWORD TEXT NOT NULL , EMAIL TEXT NOT NULL);",
 		"CREATE TABLE QUESTIONS (ID INTEGER PRIMARY KEY AUTOINCREMENT , QUESTION TEXT NOT NULL , CORRECT_ANSWER TEXT NOT NULL , INCORRECT_ANSWER1 TEXT NOT NULL , INCORRECT_ANSWER2 TEXT NOT NULL , INCORRECT_ANSWER3 TEXT NOT NULL);",
-		"CREATE TABLE STATISTICS (USERNAME TEXT FOREIGON KEY REFERENCES USERS(USERNAME) , GAME_ID INTEGER NOT NULL , TOTAL_ANSWERS INTEGER NOT NULL , CORRECT_ANSWERS INTEGER NOT NULL , TOTAL_TIME REAL NOT NULL);"
+		"CREATE TABLE STATISTICS (ID INTEGER PRIMARY KEY AUTOINCREMENT , USERNAME TEXT FOREIGON KEY REFERENCES USERS(USERNAME) , TOTAL_ANSWERS INTEGER NOT NULL , CORRECT_ANSWERS INTEGER NOT NULL , TOTAL_TIME REAL NOT NULL);"
 	};
 
 	for (int i = 0; i < tableQueries.size(); i++)

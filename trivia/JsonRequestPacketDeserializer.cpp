@@ -16,8 +16,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["username"],
-		jsonData["password"]
+		jsonData["Username"],
+		jsonData["Password"]
 	};
 }
 
@@ -34,9 +34,9 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vect
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["username"],
-		jsonData["password"],
-		jsonData["email"]
+		jsonData["Username"],
+		jsonData["Password"],
+		jsonData["Email"]
 	};
 }
 
@@ -54,7 +54,7 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequ
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["roomid"]
+		jsonData["RoomId"]
 
 	};
 }
@@ -72,8 +72,8 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
 	json jsonData = json::from_bson(data);
 
-	return{
-		jsonData["roomid"]
+	return {
+		jsonData["RoomId"]
 	};
 }
 
@@ -91,9 +91,26 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["roomName"],
-		jsonData["maxUsers"],
-		jsonData["questionCount"],
-		jsonData["answerTimout"]
+		jsonData["RoomName"],
+		jsonData["MaxUsers"],
+		jsonData["QuestionCount"],
+		jsonData["AnswerTimout"]
+	};
+}
+
+/*
+	usage: the method deserializes a json-buffer into a submit answer object
+	in: the buffer
+	out: the submit answer object
+*/
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(const vector<uint8_t> buffer)
+{
+	int* dataSize = (int*)(&buffer[1]);
+	vector<uint8_t> data(buffer.begin() + 5, buffer.begin() + 5 + *dataSize);
+	json jsonData = json::from_bson(data);
+
+	return {
+		jsonData["AnswerId"],
+		jsonData["AnswerTime"]
 	};
 }
