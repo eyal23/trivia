@@ -3,18 +3,7 @@
 #include "MenuRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include "RoomAdminRequestHandler.h"
-#include "IDatabase.h"
 
-
-/*
-	usage: constructor
-	in: the database
-	out:no
-*/
-RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
-	m_loginManager(LoginManager(database)), m_statisticsManager(StatisticsManager(database)), m_gameManager(database)
-{
-}
 
 /*
 	usage: the method creates a login request handler
@@ -23,7 +12,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase& database) :
 */
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-	return new LoginRequestHandler(*this);
+	return new LoginRequestHandler();
 }
 
 /*
@@ -33,7 +22,7 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 */
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser loggedUser)
 {
-	return new MenuRequestHandler(*this, loggedUser);
+	return new MenuRequestHandler(loggedUser);
 }
 
 /*
@@ -43,7 +32,7 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser l
 */
 RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser loggedUser, int roomId)
 {
-	return new RoomAdminRequestHandler(*this, roomId, loggedUser);
+	return new RoomAdminRequestHandler(roomId, loggedUser);
 }
 
 /*
@@ -53,45 +42,10 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(Lo
 */
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser loggedUser, int roomId)
 {
-	return new RoomMemberRequestHandler(*this, roomId, loggedUser);
+	return new RoomMemberRequestHandler(roomId, loggedUser);
 }
 
 GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(Game game, LoggedUser loggedUser)
 {
 	return nullptr;
-}
-
-/*
-	usage: the method gets the login manager
-	in: no
-	out: the login manager
-*/
-LoginManager& RequestHandlerFactory::getLoginManager()
-{
-	return this->m_loginManager;
-}
-
-/*
-	usage: the method gets the room manager
-	in: no
-	out: the room manager
-*/
-RoomManager& RequestHandlerFactory::getRoomManager()
-{
-	return this->m_roomManager;
-}
-
-/*
-	usage: the method gets the statistics manager
-	in: no
-	out: the statistics manager
-*/
-StatisticsManager& RequestHandlerFactory::getStatisticsManager()
-{
-	return this->m_statisticsManager;
-}
-
-GameManager& RequestHandlerFactory::getGameManager()
-{
-	return this->m_gameManager;
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <ctime>
 #include <vector>
 
 #include "Constants.h"
@@ -8,10 +7,10 @@
 using std::vector;
 using std::uint8_t;
 
+
 typedef struct RequestInfo
 {
 	MessageCode id;
-	time_t recivalTime;
 	vector<uint8_t> buffer;
 } RequestInfo;
 

@@ -1,6 +1,8 @@
 #include "GameRequestHandler.h"
+#include "GameManager.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
+#include "RequestHandlerFactory.h"
 
 
 /*
@@ -8,8 +10,8 @@
 	in: the handler factory, the game id, the user
 	out: no
 */
-GameRequestHandler::GameRequestHandler(RequestHandlerFactory& handlerFactory, unsigned int gameId, LoggedUser user) :
-    m_handlerFactory(handlerFactory), m_gameId(gameId), m_user(user)
+GameRequestHandler::GameRequestHandler(unsigned int gameId, LoggedUser user) :
+    m_gameId(gameId), m_user(user)
 {
 }
 
@@ -36,7 +38,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 	if (!this->isRequestRelevant(requestInfo))
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Request is non-relevant" })),
 			nullptr
 		};
 	}
@@ -78,7 +80,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo requestInfo)
 */
 RequestResult GameRequestHandler::getQuestion()
 {
-	Question question = this->m_handlerFactory.getGameManager()[this->m_gameId].getQuestionForUser(this->m_user);
+	Question question = GameManager::getInstance()[this->m_gameId].getQuestionForUser(this->m_user);
 	map<unsigned int, string> answers = {
 		{ 0, question.getCorrectAnswer() },
 		{ 1, question.getAnswers()[0] },
@@ -101,7 +103,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 {
 	SubmitAnswerRequest submitAnswerRequest = JsonRequestPacketDeserializer::deserializerSubmitAnswerRequest(requestInfo.buffer);
 
-	this->m_handlerFactory.getGameManager()[this->m_gameId].submitAnswer(this->m_user, submitAnswerRequest.answerId, submitAnswerRequest.answerTime);
+	GameManager::getInstance()[this->m_gameId].submitAnswer(this->m_user, submitAnswerRequest.answerId, submitAnswerRequest.answerTime);
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse({ 1 })),
@@ -117,7 +119,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo requestInfo)
 RequestResult GameRequestHandler::getGameResults()
 {
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse({ 1, this->m_handlerFactory.getGameManager()[this->m_gameId].getGameResults() })),
+		JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse({ 1, GameManager::getInstance()[this->m_gameId].getGameResults() })),
 		this
 	};
 }
@@ -129,10 +131,10 @@ RequestResult GameRequestHandler::getGameResults()
 */
 RequestResult GameRequestHandler::leaveGame()
 {
-	this->m_handlerFactory.getGameManager()[this->m_gameId].removePlayer(this->m_user);
+	GameManager::getInstance()[this->m_gameId].removePlayer(this->m_user);
 
 	return {
 		JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse({ 1 })),
-		this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+		RequestHandlerFactory::getInstance().createMenuRequestHandler(this->m_user)
 	};
 }

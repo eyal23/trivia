@@ -1,16 +1,17 @@
+#include <exception>
+
 #include "Server.h"
 #include "WSAInitializer.h"
-#include "SqliteDatabase.h"
+
+using std::exception;
+
 
 int main()
 {
 	try
 	{
 		WSAInitializer wsaInit;
-		SqliteDatabase sqliteDatabase;
-		Server server(sqliteDatabase);
-
-		server.run();
+		Server::getInstance().run();
 	}
 	catch (const std::exception& e)
 	{

@@ -1,22 +1,25 @@
 #pragma once
 
-#include "RoomRequestHandler.h"
-#include "RequestHandlerFactory.h"
+#include "IRequestHandler.h"
+#include "LoggedUser.h"
 
 class RequestHandlerFactory;
 
-class RoomAdminRequestHandler: public RoomRequestHandler
+class RoomAdminRequestHandler: public IRequestHandler
 {
 private:
-	RequestHandlerFactory& m_handlerFactory;
+	int m_roomId;
+	LoggedUser m_user;
 
 public:
-	RoomAdminRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser);
+	RoomAdminRequestHandler(int roomId, LoggedUser loggedUser);
 
 	RequestResult handleRequest(RequestInfo requestInfo) override;
 	bool isRequestRelevant(RequestInfo requestInfo) const override;
 
 private:
 	RequestResult closeRoom();
+	RequestResult getRoomState();
+	RequestResult startGame();
 };
 

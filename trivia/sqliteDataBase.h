@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-#include "IDatabase.h"
 #include "sqlite3.h"
 #include "Question.h"
 
@@ -12,7 +11,7 @@ using std::vector;
 using std::pair;
 
 
-class SqliteDatabase: public IDatabase
+class SqliteDatabase
 {
 	typedef struct SelectQuery
 	{
@@ -38,21 +37,30 @@ private:
 	sqlite3* m_db;
 
 public:
+	static SqliteDatabase& getInstance()
+	{
+		static SqliteDatabase instance;
+		return instance;
+	}
+
+	bool doesUserExist(string username);
+	bool doesPasswordMatch(string username, string password);
+	void addNewUser(string username, string password, string email);
+	float getPlayerAverageAnswerTime(string username);
+	int getNumOfCorrectAnswers(string username);
+	int getNumOfTotalAnswers(string username);
+	int getNumOfPlayerGames(string username);
+	int* getTopScores(string username);
+	void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime);
+	vector<Question> getQuestions();
+
+	SqliteDatabase(SqliteDatabase const&) = delete;
+	void operator=(SqliteDatabase const&) = delete;
+
+private:
 	SqliteDatabase();
 	~SqliteDatabase();
 
-	bool doesUserExist(string username) override;
-	bool doesPasswordMatch(string username, string password) override;
-	void addNewUser(string username, string password, string email) override;
-	float getPlayerAverageAnswerTime(string username) override;
-	int getNumOfCorrectAnswers(string username) override;
-	int getNumOfTotalAnswers(string username) override;
-	int getNumOfPlayerGames(string username) override;
-	int* getTopScores(string username) override;
-	void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime) override;
-	vector<Question> getQuestions();
-
-private:
 	bool initDatabase();
 	static string constructQuery(SelectQuery query);
 	static string constructQuery(InsertQuery query);

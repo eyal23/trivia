@@ -1,17 +1,7 @@
 #include "LoginManager.h"
 #include "LoggedUser.h"
-#include "IDatabase.h"
+#include "sqliteDataBase.h"
 
-
-/*
-	usage: constructor
-	in: the database
-	out: no
-*/
-LoginManager::LoginManager(IDatabase& database) :
-	m_database(database)
-{
-}
 
 /*
 	usage: the method tries to sign up a user into the db
@@ -20,12 +10,12 @@ LoginManager::LoginManager(IDatabase& database) :
 */
 bool LoginManager::signup(const string username, const string password, const string email) const
 {
-	if (this->m_database.doesUserExist(username))
+	if (SqliteDatabase::getInstance().doesUserExist(username))
 	{
 		return false;
 	}
 
-	this->m_database.addNewUser(username, password, email);
+	SqliteDatabase::getInstance().addNewUser(username, password, email);
 
 	return true;
 }
@@ -37,7 +27,7 @@ bool LoginManager::signup(const string username, const string password, const st
 */
 bool LoginManager::login(const string username, const string password)
 {
-	if (!this->m_database.doesPasswordMatch(username, password))
+	if (!SqliteDatabase::getInstance().doesPasswordMatch(username, password))
 	{
 		return false;
 	}

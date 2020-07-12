@@ -2,12 +2,14 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "Room.h"
 #include "StatisticsManager.h"
 
 using std::string;
 using std::vector;
+using std::map;
 
 typedef struct LoginResponse
 {
