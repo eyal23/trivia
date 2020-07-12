@@ -85,7 +85,9 @@
                 Margin="507,0,0,69.02"
                 Width="100"
                 Height="40"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom"
+                Click="CreateRoomClick"
                 />
 
     </Grid>

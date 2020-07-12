@@ -29,7 +29,7 @@ namespace TriviaFront.Classes.Networking
         public string UserName { get; set; }
 
         private static Communicator instance = null;
-        private int port = Defs.Port;
+
         private string ip = Defs.Ip;
 
         private IPHostEntry hostEntry = null;
@@ -42,15 +42,17 @@ namespace TriviaFront.Classes.Networking
         {
             // Get host related information.
             hostEntry = Dns.GetHostEntry(this.ip);
+
             actions = new Dictionary<int, OnResponse>();
+
             // Loop through the AddressList to obtain the supported AddressFamily. This is to avoid
             // an exception that occurs when the host IP Address is not compatible with the address family
             // (typical in the IPv6 case).
             foreach (IPAddress address in hostEntry.AddressList)
             {
-                IPEndPoint ipe = new IPEndPoint(address, port);
-                Socket tempSocket =
-                    new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint ipe = new IPEndPoint(address, Defs.Port);
+
+                Socket tempSocket = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 tempSocket.Connect(ipe);
 
@@ -59,20 +61,14 @@ namespace TriviaFront.Classes.Networking
                     socket = tempSocket;
                     break;
                 }
+
                 else
-                {
                     continue;
-                }
             }
-            ListeningDelegate fetcher = new ListeningDelegate(
-                this.StartLising);
+
+            ListeningDelegate fetcher = new ListeningDelegate(this.StartLising);
 
             fetcher.BeginInvoke(null, null);
-            //Thread thread = new Thread();
-            //
-            //thread.SetApartmentState(ApartmentState.STA);
-            //
-            //thread.Start();
         }
 
         public void AddEvent(Enum code, OnResponse func)
@@ -90,9 +86,8 @@ namespace TriviaFront.Classes.Networking
             get
             {
                 if (instance == null)
-                {
                     instance = new Communicator();
-                }
+
                 return instance;
             }
         }
