@@ -12,6 +12,7 @@
     <None Remove="Assets\minimize-icon-23800.png" />
     <None Remove="Assets\return-button-png-34571.png" />
     <None Remove="Assets\shutdown-icon-11831.png" />
+    <None Remove="Assets\speaker.png" />
     <None Remove="Assets\Untitled.png" />
   </ItemGroup>
 
@@ -31,11 +32,18 @@
     <Resource Include="Assets\back-button-png-10-transparent.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\speaker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Untitled.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Assets\audio\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

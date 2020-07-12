@@ -1,0 +1,55 @@
+﻿<Page x:Class="TriviaGui.pages.StatisticsPgae"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TriviaGui.pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="410" 
+      d:DesignWidth="617"
+      Title="StatisticsPgae"
+      Background="Transparent">
+
+    <Grid>
+        <Button x:Name="personalStatistics"
+                Content="personal statistics"
+                FontFamily="Corbert"
+                FontWeight="UltraLight"
+                Foreground="Black"
+                Background="Transparent" 
+                BorderBrush="Black"
+                Opacity="0.5"
+                Margin="35,128,0,0" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Height="40"  
+                Width="240"/>
+
+        <Button x:Name="GameStatistics"
+                Content="game statistics"
+                FontFamily="Corbert"
+                FontWeight="UltraLight"
+                Foreground="Black"
+                Background="Transparent" 
+                BorderBrush="Black" 
+                Opacity="0.5"
+                Margin="0,128,35,0" 
+                VerticalAlignment="Top"
+                Height="40"
+                Width="240" 
+                HorizontalAlignment="Right"/>
+
+        <Button x:Name="HighScores"
+                Content="highest score"
+                FontFamily="Corbert"
+                FontWeight="UltraLight"
+                Foreground="Black"
+                Background="Transparent" 
+                BorderBrush="Black" 
+                Opacity="0.5"
+                Margin="188,262,189,0" 
+                VerticalAlignment="Top"
+                Height="40"/>
+
+    </Grid>
+</Page>

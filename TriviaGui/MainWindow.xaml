@@ -5,14 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TriviaGui"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="380"
-        AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" ResizeMode="NoResize"
+        Title="MainWindow" 
+        Height="450" 
+        Width="380"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
         MouseDown="MainWindow_OnMouseDown"
         Icon="Assets/Untitled.png">
 
     <Grid>
-        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="181*"/>
+            <RowDefinition Height="253*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.RowSpan="2">
 
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -106,7 +115,7 @@
                             BorderThickness="0" 
                             Padding="-4" 
                             Click="MinimizeButton_Click">
-                        
+
                         <StackPanel Height="25" Width="30">
                             <Image Source="Assets/minimize-icon-23800.png" 
                                    Height="25" 
@@ -122,7 +131,7 @@
                             BorderThickness="0" 
                             Padding="-4" 
                             Click="CloseButton_Click">
-                        
+
                         <StackPanel Height="20" Width="40">
                             <Image Source="Assets/shutdown-icon-11831.png" 
                                    Height="20" 
@@ -147,7 +156,7 @@
             </StackPanel>
 
         </Grid>
-        
+
     </Grid>
 
 </Window>

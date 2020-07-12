@@ -5,13 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TriviaGui"
         mc:Ignorable="d"
-        Title="minManu" Height="450" Width="800"
-        AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" ResizeMode="NoResize"
+        Title="minManu" 
+        Height="600" 
+        Width="1100"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
         MouseDown="mainManu_OnMouseDown"
         Icon="Assets/Untitled.png">
-    
+
+
+
     <Grid>
+
         <Border Grid.RowSpan="4" Grid.ColumnSpan="3">
             <Border.Background>
                 <LinearGradientBrush>
@@ -19,63 +27,51 @@
                     <GradientStop Color="Silver" Offset="0.7"/>
                 </LinearGradientBrush>
             </Border.Background>
+            
+            <Frame x:Name="frame1" 
+                   Margin="473,180,10,10" 
+                   NavigationUIVisibility="Hidden"/>
+
         </Border>
 
         <Button x:Name="CloseButton" 
-                Width="20" Height="20" 
+                Width="35" 
+                Height="35" 
                 Background="Transparent" 
                 BorderBrush="Transparent" 
                 BorderThickness="0" 
                 Padding="-4" 
                 Click="CloseButton_Click" 
-                Margin="10,16,0,0" 
+                Margin="10,9,0,0" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top">
 
-            <StackPanel Height="19" Width="19">
+            <StackPanel Height="30" Width="30">
                 <Image Source="Assets/shutdown-icon-11831.png" 
-                       Height="19" 
-                       Width="19"/>
+                       Height="30" 
+                       Width="30"/>
             </StackPanel>
         </Button>
 
         <Button x:Name="minButton" 
-                Width="20" 
-                Height="20" 
+                Width="35" 
+                Height="35" 
                 Background="Transparent" 
                 BorderBrush="Transparent" 
                 BorderThickness="0" 
                 Padding="-4" 
                 Click="MinimizeButton_Click" 
-                Margin="50,16,0,0" 
+                Margin="60,10,0,0" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" >
 
-            <StackPanel Height="20" Width="20">
+            <StackPanel Height="35" Width="35">
                 <Image Source="Assets/minimize-icon-23800.png" 
-                       Height="20" 
-                       Width="20"/>
+                       Height="35" 
+                       Width="35"/>
             </StackPanel>
         </Button>
 
-        <Button x:Name="maxemizeButton" 
-                Width="20" 
-                Height="20" 
-                Background="Transparent" 
-                BorderBrush="Transparent" 
-                BorderThickness="0" 
-                Padding="-4" 
-                Click="maxButton_Click" 
-                Margin="90,16,0,0" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top">
-
-            <StackPanel Height="20" Width="20">
-                <Image Source="Assets/max.png" 
-                       Height="20" 
-                       Width="20"/>
-            </StackPanel>
-        </Button>
 
         <TextBlock Text="menu"
                    FontWeight="UltraLight"
@@ -83,52 +79,78 @@
                    FontSize="100"
                    Foreground="Gainsboro"
                    HorizontalAlignment="Center" 
-                   Margin="0,24,0,247"/>
+                   Margin="0,24,0,436"/>
 
         <Button x:Name="JoinRoomButton" 
-                Foreground="White"
+                Foreground="Gainsboro"
                 FontWeight="UltraLight"
+                FontSize="40"
+                Height="50"
                 FontFamily="Corbert"
                 Content="join room " 
-                Width="300" 
-                Height="40" 
+                Width="450" 
                 Background="Transparent" 
-                BorderBrush="White" 
-                HorizontalAlignment="Center" 
+                BorderBrush="Gainsboro" 
+                HorizontalAlignment="Left" 
                 Padding="-4" 
                 Click="JoinRoomButton_Click" 
-                Margin="0,180,0,0" 
-                VerticalAlignment="Top"/>
-        
+                Margin="10,280,0,254"/>
+
         <Button x:Name="CreateRoomButton" 
-               FontFamily="Corbert"
-                Content="create room " 
-                Width="300" 
-                Height="40" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Content="create room" 
+                Width="450" 
                 Background="Transparent" 
                 FontWeight="UltraLight"
-                BorderBrush="White" 
-                Foreground="white"
-                HorizontalAlignment="Center" 
+                BorderBrush="Gainsboro" 
+                Foreground="Gainsboro"
+                HorizontalAlignment="Left" 
                 Padding="-4" 
                 Click="CreateRoomButton_Click" 
-                Margin="0,380,0,0" 
-                VerticalAlignment="Top"/>
-        
+                Margin="10,480,0,54"/>
+
         <Button x:Name="StatisticsButton" 
+                Foreground="Gainsboro"
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="40"
+                Height="50"
+                Content="statistics &amp; scores" 
+                Width="450" 
+                Background="Transparent" 
+                BorderBrush="Gainsboro" 
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="StatisticsButton_Click" 
+                Margin="10,380,0,154"/>
+
+        <Button x:Name="test" 
                 Foreground="White"
                 FontFamily="corbert"
                 FontWeight="UltraLight"
-                Content="statistics" 
-                Width="300" 
+                Width="40" 
                 Height="40" 
                 Background="Transparent" 
-                BorderBrush="White" 
-                HorizontalAlignment="Center" 
+                BorderBrush="Transparent" 
+                HorizontalAlignment="Left" 
                 Padding="-4" 
                 Click="StatisticsButton_Click" 
-                Margin="0,280,0,0" 
-                VerticalAlignment="Top"/>
+                Margin="1050,0,0,545" 
+                VerticalAlignment="Bottom">
+
+            <StackPanel Height="35" Width="35">
+                <Image Source="Assets/speaker.png" 
+                       Height="35" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Width="35"/>
+            </StackPanel>
+
+        </Button>
+
+
 
     </Grid>
 </Window>

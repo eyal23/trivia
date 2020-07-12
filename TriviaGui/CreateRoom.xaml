@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TriviaGui"
         mc:Ignorable="d"
-        Title="CreateRoom" Height="450" Width="800"
-        AllowsTransparency="True" Background="Transparent"
-        WindowStyle="None" ResizeMode="NoResize"
+        Title="CreateRoom" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
         MouseDown="CreateRoom_MouseDown"
         Icon="Assets/Untitled.png">
 

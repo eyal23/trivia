@@ -51,19 +51,6 @@ namespace TriviaGui
             }
         }
 
-        private void maxButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.WindowState = WindowState.Maximized;
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -83,19 +70,19 @@ namespace TriviaGui
 
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
+            frame1.NavigationService.RemoveBackEntry();
+            frame1.Navigate(new Uri("pages/StatisticsPgae.xaml", UriKind.RelativeOrAbsolute));
+
         }
 
         private void CreateRoomButton_Click(object sender, RoutedEventArgs e)
         {
             MediaPlayer m = new MediaPlayer();
-            CreateRoom cr = new CreateRoom();
 
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
 
             m.Play();
-            cr.Show();
-            this.Close();
-
+            frame1.Navigate(new Uri("pages/Page1.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void JoinRoomButton_Click(object sender, RoutedEventArgs e)
