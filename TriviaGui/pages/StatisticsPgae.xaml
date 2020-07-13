@@ -5,39 +5,85 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TriviaGui.pages"
       mc:Ignorable="d" 
-      d:DesignHeight="410" 
-      d:DesignWidth="617"
+      Height="410" 
+      Width="617"
       Title="StatisticsPgae"
-      Background="Transparent">
+      Background="White">
 
     <Grid>
-        <Button x:Name="personalStatistics"
-                Content="personal statistics"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black"
-                Opacity="0.5"
-                Margin="0,138,0,0" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Center"
-                Height="40"  
-                Width="240"
-                Click="personalStatistics_Click"/>
+        <TextBlock HorizontalAlignment="Left" 
+                   FontFamily="corbert"
+                   FontWeight="UltraLight"
+                   Foreground="Black"
+                   Opacity="0.5"
+                   Background="Transparent"
+                   Text="top 5 scores" 
+                   FontSize="40"
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="40" 
+                   Width="210" Margin="10,10,0,0"/>
 
-        <Button x:Name="HighScores"
-                Content="highest score"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black" 
-                Opacity="0.5"
-                Margin="188,225,189,0" 
-                VerticalAlignment="Top"
-                Height="40"
-                Click="HighScores_Click"/>
+        <Border Width="250"
+                Height="2"
+                Background="black"
+                Opacity="0.5" Margin="10,48,357,352"/>
+
+        <TextBlock HorizontalAlignment="Right" 
+                   FontFamily="corbert"
+                   FontWeight="UltraLight"
+                   Foreground="Black"
+                   Opacity="0.5"
+                   Background="Transparent"
+                   Text="personal statistics" 
+                   FontSize="40"
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="40" 
+                   Width="309"
+                   Margin="10,10,0,0"/>
+
+        <Border
+                Height="2"
+                Background="black"
+                Opacity="0.5" Margin="285,48,10,352"  />
+
+        <ListBox x:Name="ListBox"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 Width="190"
+                 Opacity="0.5"
+                 FontSize="17" 
+                 Margin="20,63,407,117">
+
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+        </ListBox>
+
+        <ListBox x:Name="ListBox1"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 Width="190"
+                 Opacity="0.5"
+                 FontSize="17" 
+                 Margin="308,63,119,117">
+
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+            <ListBoxItem FontSize="30"></ListBoxItem>
+        </ListBox>
+
+
+
+
 
     </Grid>
 </Page>
