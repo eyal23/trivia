@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,11 +25,11 @@ namespace TriviaGui
             InitializeComponent();
             PlayMusic();
         }
-
         private void PlayMusic()
         {
             player = new MediaPlayer();
-            player.Open(new Uri("../../Immanuel.mp3", UriKind.RelativeOrAbsolute));
+            string path = System.IO.Path.GetFullPath("Immanuel.mp3");
+            player.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             player.Play();
         }
         private void mainManu_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -67,8 +68,11 @@ namespace TriviaGui
         {
             MediaPlayer m = new MediaPlayer();
 
-            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            string path = System.IO.Path.GetFullPath("digi_plink.wav");
+
+            m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
+
             frame1.NavigationService.RemoveBackEntry();
             frame1.Navigate(new Uri("pages/StatisticsPgae.xaml", UriKind.RelativeOrAbsolute));
 
@@ -78,9 +82,11 @@ namespace TriviaGui
         {
             MediaPlayer m = new MediaPlayer();
 
-            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            string path = System.IO.Path.GetFullPath("digi_plink.wav");
 
+            m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
+
             frame1.Navigate(new Uri("pages/Page1.xaml", UriKind.RelativeOrAbsolute));
         }
 
@@ -88,8 +94,13 @@ namespace TriviaGui
         {
             MediaPlayer m = new MediaPlayer();
 
-            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            string path = System.IO.Path.GetFullPath("digi_plink.wav");
+
+            m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
+
+            frame1.Navigate(new Uri("pages/JoinRoomPage.xaml", UriKind.RelativeOrAbsolute));
+
         }
     }
 }

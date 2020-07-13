@@ -28,7 +28,6 @@ namespace TriviaGui
         public Page1()
         {
             InitializeComponent();
-            var communicator = Communicator.Instance;
         }
 
         private void NumberOfPlayers_GotFocus(object sender, RoutedEventArgs e)
@@ -55,9 +54,9 @@ namespace TriviaGui
 
         private void CreateRoomClick(object sender, RoutedEventArgs e)
         {
-            
+            /*
             var roomData = new Requests.CreateRoom();
-            Communicator communicator = Communicator.Instance;
+            Communicator communicator = new Communicator;
 
             roomData.roomName = this.RoomName.Text;
             try
@@ -72,6 +71,7 @@ namespace TriviaGui
             }
 
             communicator.TryToSend(roomData);
+            */
         }
     }
 }

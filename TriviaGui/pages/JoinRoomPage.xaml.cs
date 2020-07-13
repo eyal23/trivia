@@ -18,9 +18,18 @@ namespace TriviaGui.pages
     /// </summary>
     public partial class JoinRoomPage : Page
     {
+
         public JoinRoomPage()
         {
             InitializeComponent();
+
+        }
+
+        public void RoomName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox name = (TextBox)sender;
+            name.Text = string.Empty;
+            name.GotFocus -= RoomName_GotFocus;
         }
     }
 }

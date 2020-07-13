@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\audio\digi_plink.wav" />
+    <None Remove="Assets\audio\Immanuel.mp3" />
     <None Remove="Assets\back-button-png-10-transparent.png" />
     <None Remove="Assets\max.png" />
     <None Remove="Assets\minimize-icon-23800.png" />
@@ -17,6 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\audio\Immanuel.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\audio\digi_plink.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\max.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -36,10 +47,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Untitled.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Assets\audio\" />
   </ItemGroup>
 
   <ItemGroup>
