@@ -104,17 +104,17 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResp
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse getRoomsRes)
 {
-	vector<string> rooms;
-
-	for (int i = 0; i < getRoomsRes.rooms.size(); i++)
-	{
-		rooms.push_back(getRoomsRes.rooms[i].name);
-	}
 
 	json j = { 
 		{"Status", getRoomsRes.status}, 
-		{"Rooms", rooms } 
+		{"Rooms", json::array() } 
 	};
+
+	for (int i = 0; i < getRoomsRes.rooms.size(); i++)
+	{
+		j["Rooms"].push_back(json({ getRoomsRes.rooms[i].id, getRoomsRes.rooms[i].name }));
+	}
+
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
