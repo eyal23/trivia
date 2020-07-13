@@ -22,14 +22,19 @@ namespace TriviaGui
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private bool isOnRegister = false;
+        private Communicator communicator;
 
         public MainWindow()
         {
             InitializeComponent();
+            communicator = new Communicator();
+        }
 
-
+        public MainWindow(Communicator communicator)
+        {
+            InitializeComponent();
+            this.communicator = communicator;
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
@@ -45,15 +50,13 @@ namespace TriviaGui
             }
 
             string name = userName.Text;
-            string pass = password.Password;
-
-        {           
+            string pass = password.Password;        
             MediaPlayer m = new MediaPlayer();
 
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            mainManu main = new mainManu();
+            mainManu main = new mainManu(this.communicator);
             main.Show();
             this.Close();
             /*

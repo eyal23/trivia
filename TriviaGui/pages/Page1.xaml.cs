@@ -12,10 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TriviaFront.Classes;
-using TriviaFront.Classes.Networking;
-using Requests = TriviaFront.Classes.Networking.Requests;
-using Responses = TriviaFront.Classes.Networking.Responses;
 
 
 namespace TriviaGui
