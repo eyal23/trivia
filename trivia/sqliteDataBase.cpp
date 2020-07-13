@@ -82,9 +82,16 @@ bool SqliteDatabase::doesUserExist(string username)
 		}
 	};
 
+	this->m_userTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_userTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_userTableMutex.unlock();
 	}
 
 	return result.size() != 0;
@@ -108,9 +115,16 @@ bool SqliteDatabase::doesPasswordMatch(string username, string password)
 		}
 	};
 
+	this->m_userTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_userTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_userTableMutex.unlock();
 	}
 
 	return result.size() != 0;
@@ -132,9 +146,16 @@ void SqliteDatabase::addNewUser(string username, string password, string email)
 		},
 	};
 
+	this->m_userTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), nullptr, nullptr, nullptr) != SQLITE_OK)
 	{
+		this->m_userTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_userTableMutex.unlock();
 	}
 }
 
@@ -155,9 +176,16 @@ float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 		}
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.lock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.lock();
 	}
 
 	return result.size() > 0 ? stoi(result[0]["AVERAGE_ANSWER_TIME"]) : 0;
@@ -180,9 +208,16 @@ int SqliteDatabase::getNumOfCorrectAnswers(string username)
 		}
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.unlock();
 	}
 
 	return result.size() > 0 ? stoi(result[0]["TOTAL_CORRECT_ANSWERS"]) : 0;
@@ -205,9 +240,16 @@ int SqliteDatabase::getNumOfTotalAnswers(string username)
 		}
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.unlock();
 	}
 
 	return result.size() > 0 ? stoi(result[0]["TOTAL_TOTAL_ANSWERS"]) : 0;
@@ -230,9 +272,16 @@ int SqliteDatabase::getNumOfPlayerGames(string username)
 		}
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.unlock();
 	}
 
 	return result.size() > 0 ? stoi(result[0]["PLAYER_GAMES"]) : 0;
@@ -255,9 +304,16 @@ int* SqliteDatabase::getTopScores(string username)
 		}
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.unlock();
 	}
 
 	int topScores[5] = { 0, 0, 0, 0, 0 };
@@ -301,9 +357,16 @@ void SqliteDatabase::addStatistic(string username, unsigned int totalAnswers, un
 		},
 	};
 
+	this->m_statisticsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), nullptr, nullptr, nullptr) != SQLITE_OK)
 	{
+		this->m_statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_statisticsTableMutex.unlock();
 	}
 }
 
@@ -328,9 +391,16 @@ vector<Question> SqliteDatabase::getQuestions()
 		{}
 	};
 
+	this->m_questionsTableMutex.lock();
+
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
+		this->m_questionsTableMutex.unlock();
 		throw exception("could'nt access database");
+	}
+	else
+	{
+		this->m_questionsTableMutex.unlock();
 	}
 
 	vector<Question> questions;

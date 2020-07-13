@@ -90,6 +90,11 @@ RequestResult RoomMemberRequestHandler::getRoomState()
 {
 	RoomState roomState = RoomManager::getInstance().getRoomState(this->m_roomId);
 
+	if (!roomState.isRoomOpen)
+	{
+		RoomManager::getInstance().tryDeleteRoom(this->m_roomId, this->m_user);
+	}
+
 	vector<LoggedUser> roomUsers;
 	vector<string> stringUsers = RoomManager::getInstance()[this->m_roomId].getAllUsers();
 
