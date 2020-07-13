@@ -39,37 +39,28 @@ namespace TriviaGui
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            Communicator communicator = null;
-            try
-            {
-            }
-            catch (System.Net.Sockets.SocketException)
-            {
-                MessageBox.Show("Can't connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
-
-            string name = userName.Text;
-            string pass = password.Password;        
             MediaPlayer m = new MediaPlayer();
 
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            mainManu main = new mainManu(this.communicator);
-            main.Show();
-            this.Close();
-            /*
-            var logRe = 0;
-            if (logRe != null && logRe.status == 1)
+            if (userName.Text == null || password.Password == null || (userName.Text == "user name" && password.Password == "password"))
             {
-
+                //TODO: IMPLEMENT MESSAGE BOX   
             }
             else
             {
-                MessageBox.Show("Can't login", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                Responses.Login loginResponse = this.communicator.submitRequest<Requests.Login, Responses.Login>(new Requests.Login(userName.Text, password.Password), (int)Defs.Codes.LOGIN_REQUEST);
+
+                if (loginResponse.status == 0)
+                {
+                    //TODO: IMPLEMENT MESSAGE BOX   
+                }
+
+                mainManu main = new mainManu(this.communicator);
+                main.Show();
+                this.Close();
             }
-           */ 
         }
 
         private void signUp_Click(object sender, RoutedEventArgs e)
@@ -79,19 +70,23 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (isOnRegister)
-                MessageBox.Show($"send: {userName.Text} {password.Password}");
+            if (userName.Text == null || password.Password == null || (userName.Text == "user name" && password.Password == "password")) //TODO: add email statement
+            {
+                //TODO: IMPLEMENT MESSAGE BOX 
+            }
 
+            Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, "aaa"), (int)Defs.Codes.SIGN_UP_REQUEST); //TODO: chnage email
 
+            if (signupResponse.status == 0)
+            {
+                //TODO: IMPLEMENT MESSAGE BOX 
+            }
             else
-                MessageBox.Show($"send: {userName.Text} {password.Password}");
+            {
+                MessageBox.Show($"send: {userName.Text} {password.Password} aaa@gmail.com"); //TODO: chnage email
+            }
         }
 
-        private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -118,6 +113,14 @@ namespace TriviaGui
             }
         }
 
+        private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
         private void userName_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox uname = (TextBox)sender;
@@ -130,6 +133,11 @@ namespace TriviaGui
             PasswordBox password = (PasswordBox)sender;
             password.Password = string.Empty;
             password.GotFocus -= password_GotFocus;
+        }
+
+        private void Email_GotFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
