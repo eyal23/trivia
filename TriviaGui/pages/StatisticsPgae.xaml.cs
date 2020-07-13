@@ -18,18 +18,27 @@ namespace TriviaGui.pages
     /// </summary>
     public partial class StatisticsPgae : Page
     {
-        public StatisticsPgae()
+        private Communicator communicator;
+
+        public StatisticsPgae(Communicator communicator)
         {
             InitializeComponent();
+            this.communicator = communicator;
         }
 
         private void HighScores_Click(object sender, RoutedEventArgs e)
         {
-            HighScore Hs = new HighScore();
+            HighScore Hs = new HighScore(this.communicator);
+
             if(Hs.IsInitialized)
             {
             }
             Hs.Show();
+        }
+
+        private void personalStatistics_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

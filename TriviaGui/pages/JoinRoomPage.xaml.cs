@@ -18,11 +18,12 @@ namespace TriviaGui.pages
     /// </summary>
     public partial class JoinRoomPage : Page
     {
+        private Communicator communicator;
 
-        public JoinRoomPage()
+        public JoinRoomPage(Communicator communicator)
         {
             InitializeComponent();
-
+            this.communicator = communicator;
         }
 
         public void RoomName_GotFocus(object sender, RoutedEventArgs e)

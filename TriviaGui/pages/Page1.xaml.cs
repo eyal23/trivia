@@ -12,18 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TriviaGui.Responses;
 
-
-namespace TriviaGui
+namespace TriviaGui.pages
 {
     /// <summary>
     /// Interaction logic for Page1.xaml 
     /// </summary>
     public partial class Page1 : Page
     {
-        public Page1()
+        private Communicator communicator;
+        private mainManu mainMenuWindow;
+
+        public Page1(Communicator communicator, mainManu mainMenuWindow)
         {
             InitializeComponent();
+            this.communicator = communicator;
+            this.mainMenuWindow = mainMenuWindow;
         }
 
         private void NumberOfPlayers_GotFocus(object sender, RoutedEventArgs e)
@@ -50,24 +55,25 @@ namespace TriviaGui
 
         private void CreateRoomClick(object sender, RoutedEventArgs e)
         {
-            /*
-            var roomData = new Requests.CreateRoom();
-            Communicator communicator = new Communicator;
-
-            roomData.roomName = this.RoomName.Text;
-            try
+            if (RoomName.Text == string.Empty || QuestionTime.Text == string.Empty || MaxOfPlayers.Text == string.Empty || QuestionCount.Text == string.Empty || RoomName.Text == "room name" || QuestionTime.Text == "time for each question" || MaxOfPlayers.Text == "number of players in room" || QuestionCount.Text == "question count")
             {
-                roomData.answerTimeout = Int32.Parse(this.QustienTime.Text);
-                roomData.maxUsers = Int32.Parse(this.NumberOfPlayers.Text);
+                //TODO: implement message box
             }
-            catch (FormatException)
+            else
             {
-                MessageBox.Show($"Pl", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
+                Responses.CreateRoom createRoomResponse = this.communicator.submitRequest<Requests.CreateRoom, Responses.CreateRoom>(new Requests.CreateRoom(RoomName.Text, int.Parse(MaxOfPlayers.Text), int.Parse(QuestionCount.Text), int.Parse(QuestionCount.Text)), (int)Defs.Codes.CREATE_ROOM_REQUEST);
 
-            communicator.TryToSend(roomData);
-            */
+                if (createRoomResponse.status == 0)
+                {
+                    //TODO: implement message box
+                }
+                else
+                {
+                    RoomWindow roomWindow = new RoomWindow(this.communicator);
+                    roomWindow.Show();
+                    this.mainMenuWindow.Close();
+                }
+            }
         }
     }
 }

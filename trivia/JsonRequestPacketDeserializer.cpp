@@ -73,7 +73,7 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["RoomId"]
+		jsonData["roomId"]
 	};
 }
 
@@ -91,10 +91,10 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["RoomName"],
-		jsonData["MaxUsers"],
-		jsonData["QuestionCount"],
-		jsonData["AnswerTimout"]
+		jsonData["roomName"],
+		jsonData["maxUsers"],
+		jsonData["questionCount"],
+		jsonData["answerTimeout"]
 	};
 }
 
@@ -110,7 +110,7 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializerSubmitAnswerReque
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["AnswerId"],
-		jsonData["AnswerTime"]
+		jsonData["answerId"],
+		jsonData["answerTime"]
 	};
 }

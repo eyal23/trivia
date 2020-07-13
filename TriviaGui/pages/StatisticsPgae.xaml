@@ -19,25 +19,12 @@
                 Background="Transparent" 
                 BorderBrush="Black"
                 Opacity="0.5"
-                Margin="35,128,0,0" 
+                Margin="0,138,0,0" 
                 VerticalAlignment="Top"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Center"
                 Height="40"  
-                Width="240"/>
-
-        <Button x:Name="GameStatistics"
-                Content="game statistics"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black" 
-                Opacity="0.5"
-                Margin="0,128,35,0" 
-                VerticalAlignment="Top"
-                Height="40"
-                Width="240" 
-                HorizontalAlignment="Right"/>
+                Width="240"
+                Click="personalStatistics_Click"/>
 
         <Button x:Name="HighScores"
                 Content="highest score"
@@ -47,7 +34,7 @@
                 Background="Transparent" 
                 BorderBrush="Black" 
                 Opacity="0.5"
-                Margin="188,262,189,0" 
+                Margin="188,225,189,0" 
                 VerticalAlignment="Top"
                 Height="40"
                 Click="HighScores_Click"/>

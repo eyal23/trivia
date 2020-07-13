@@ -17,9 +17,12 @@ namespace TriviaGui
     /// </summary>
     public partial class HighScore : Window
     {
-        public HighScore()
+        private Communicator communicator;
+
+        public HighScore(Communicator communicator)
         {
             InitializeComponent();
+            this.communicator = communicator;
         }
 
         private void mainManu_OnMouseDown(object sender, MouseButtonEventArgs e)

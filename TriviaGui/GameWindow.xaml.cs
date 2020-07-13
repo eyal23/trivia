@@ -21,9 +21,12 @@ namespace TriviaGui
     {
         DispatcherTimer _timer;
         TimeSpan _time;
-        public GameWindow()
+        private Communicator communicator;
+
+        public GameWindow(Communicator communicator)
         {
             InitializeComponent();
+            this.communicator = communicator;
 
             _time = TimeSpan.FromSeconds(10);
 

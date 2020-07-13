@@ -17,9 +17,12 @@ namespace TriviaGui
     /// </summary>
     public partial class RoomWindow : Window
     {
-        public RoomWindow()
+        private Communicator communicator;
+
+        public RoomWindow(Communicator communicator)
         {
             InitializeComponent();
+            this.communicator = communicator;
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
