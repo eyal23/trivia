@@ -49,7 +49,8 @@
                 Opacity="0.5"
                 Margin="188,262,189,0" 
                 VerticalAlignment="Top"
-                Height="40"/>
+                Height="40"
+                Click="HighScores_Click"/>
 
     </Grid>
 </Page>

@@ -32,25 +32,27 @@ namespace TriviaGui
             InitializeComponent();
         }
 
-        private void login_Click(Responses.Login req)
-        {
+        private void login_Click(object sender, RoutedEventArgs e)
+        {           
+            MediaPlayer m = new MediaPlayer();
+
+            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+            m.Play();
+
+            mainManu main = new mainManu();
+            main.Show();
+            this.Close();
+            /*
             var logRe = 0;
             if (logRe != null && logRe.status == 1)
             {
-                MediaPlayer m = new MediaPlayer();
 
-                m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
-                m.Play();
-
-                mainManu main = new mainManu();
-                main.Show();
-                this.Close();
             }
             else
             {
                 MessageBox.Show("Can't login", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-
+           */ 
         }
 
         private void signUp_Click(object sender, RoutedEventArgs e)
