@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
-using TriviaFront.Classes.Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using System.Windows;
@@ -15,9 +14,9 @@ using System.IO;
 using System.Windows.Threading;
 using System.Windows.Interop;
 
-namespace TriviaFront.Classes.Networking
+namespace TriviaGui
 {
-    class Communicator
+    public class Communicator
     {
         private TcpClient client = new TcpClient();
 

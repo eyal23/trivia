@@ -10,9 +10,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Requests = TriviaFront.Classes.Networking.Requests;
-using Responses = TriviaFront.Classes.Networking.Responses;
-using Communicat = TriviaFront.Classes.Networking.Communicator;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,15 +22,31 @@ namespace TriviaGui
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private bool isOnRegister = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
+
         }
 
-        private void login_Click(Responses.Login req)
+        private void login_Click(object sender, RoutedEventArgs e)
         {
+            Communicator communicator = null;
+            try
+            {
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                MessageBox.Show("Can't connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            string name = userName.Text;
+            string pass = password.Password;
+
             var logRe = 0;
             if (logRe != null && logRe.status == 1)
             {

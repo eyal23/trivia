@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TriviaFront.Classes.Networking
+namespace TriviaGui
 {
     public static class Defs
     {
