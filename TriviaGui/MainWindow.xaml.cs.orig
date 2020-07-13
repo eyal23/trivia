@@ -33,6 +33,7 @@ namespace TriviaGui
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
+<<<<<<< HEAD
         {
             Communicator communicator = null;
             try
@@ -47,6 +48,7 @@ namespace TriviaGui
             string name = userName.Text;
             string pass = password.Password;
 
+=======
         {           
             MediaPlayer m = new MediaPlayer();
 
@@ -57,6 +59,7 @@ namespace TriviaGui
             main.Show();
             this.Close();
             /*
+>>>>>>> b7cf6d60b6e0c2636c7bd84cc951f406d9877f04
             var logRe = 0;
             if (logRe != null && logRe.status == 1)
             {
