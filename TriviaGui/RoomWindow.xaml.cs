@@ -8,28 +8,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TriviaGui.pages
+namespace TriviaGui
 {
     /// <summary>
-    /// Interaction logic for StatisticsPgae.xaml
+    /// Interaction logic for RoomWindow.xaml
     /// </summary>
-    public partial class StatisticsPgae : Page
+    public partial class RoomWindow : Window
     {
-        public StatisticsPgae()
+        public RoomWindow()
         {
             InitializeComponent();
         }
 
-        private void HighScores_Click(object sender, RoutedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            HighScore Hs = new HighScore();
-            if(Hs.IsInitialized)
-            {
-            }
-            Hs.Show();
+
         }
     }
 }

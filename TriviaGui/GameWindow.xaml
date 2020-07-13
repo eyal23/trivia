@@ -15,7 +15,7 @@
         ResizeMode="NoResize"
         MouseDown="mainManu_OnMouseDown"
         Icon="Assets/Untitled.png">
-    
+
     <Grid>
         <Border Grid.RowSpan="4" Grid.ColumnSpan="3">
             <Border.Background>
@@ -24,9 +24,125 @@
                     <GradientStop Color="Silver" Offset="0.7"/>
                 </LinearGradientBrush>
             </Border.Background>
-
-
+            <Image Source="Assets/minimize-icon-23800.png" 
+                       Margin="10,10,1055,539"/>
         </Border>
+
+        <TextBox x:Name="Question"
+                 Text="TextBox"
+                 HorizontalContentAlignment="Center"
+                 FontFamily="Corbert"   
+                 FontWeight="UltraLight"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 Opacity="0.8"
+                 FontSize="60"
+                 Height="70"
+                 Width="600" 
+                 Margin="250,81,250,433"/>
+
+        <TextBlock Name="tbTime" 
+                   FontFamily="Corbert"   
+                   FontWeight="UltraLight"
+                   Background="Transparent"                
+                   Height="70"
+                   Width="70" 
+                   Margin="1020,46,10,468"/>
+
+        <Button x:Name="minButton" 
+                Width="35" 
+                Height="35" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="MinimizeButton_Click" 
+                Margin="10,10,1055,539" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" >
+        </Button>
+
+        <Button x:Name="Q4"
+                Content="Button" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="70"
+                Foreground="Black"
+                Opacity="0.8"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                HorizontalAlignment="Left"
+                Height="70"
+                Width="400"
+                Margin="10,222,0,0" 
+                VerticalAlignment="Top"
+                Click="Q4_Click"/>
+
+        <Button x:Name="Q3"
+                Content="Button" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="70"
+                Foreground="Black"
+                Opacity="0.8"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                HorizontalAlignment="Left"
+                Height="70"
+                Width="400"
+                VerticalAlignment="Top" 
+                Margin="690,217,0,0"
+                Click="Q3_Click"/>
+
+        <Button x:Name="Q2"
+                Content="Button" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="70"
+                Foreground="Black"
+                Opacity="0.8"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                HorizontalAlignment="Left"
+                Height="70"
+                Width="400"
+                VerticalAlignment="Top" 
+                Margin="10,427,0,0"
+                Click="Q2_Click"/>
+
+        <Button x:Name="Q1"
+                Content="Button" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="70"
+                Foreground="Black"
+                Opacity="0.8"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                HorizontalAlignment="Left"
+                Height="70"
+                Width="400"
+                VerticalAlignment="Top" 
+                Margin="690,427,0,0"
+                Click="Q1_Click"/>
+
+        <TextBox HorizontalAlignment="Left" 
+                 Height="40"
+                 Width="210"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 FontSize="40"
+                 Foreground="Black"
+                 Opacity="0.8"
+                 Background="Transparent"
+                 BorderBrush="Transparent"                   
+                 Margin="10,46,0,0" 
+                 Text="score:" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 />
+
+
 
     </Grid>
 </Window>
