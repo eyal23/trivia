@@ -44,9 +44,9 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (userName.Text == null || password.Password == null || (userName.Text == "user name" && password.Password == "password"))
+            if (userName.Text == null || password.Password == null || userName.Text == "user name" || password.Password == "password")
             {
-                //TODO: IMPLEMENT MESSAGE BOX   
+                MessageBox.Show($"Please enter user name and password...");
             }
             else
             {
@@ -54,7 +54,7 @@ namespace TriviaGui
 
                 if (loginResponse.status == 0)
                 {
-                    //TODO: IMPLEMENT MESSAGE BOX   
+                    MessageBox.Show($"Login faild...");
                 }
 
                 mainManu main = new mainManu(this.communicator);
@@ -70,20 +70,20 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (userName.Text == null || password.Password == null || (userName.Text == "user name" && password.Password == "password")) //TODO: add email statement
+            if (userName.Text == null || password.Password == null || Email.Text == null || userName.Text == "user name" || password.Password == "password" || Email.Text == "email")
             {
-                //TODO: IMPLEMENT MESSAGE BOX 
+                MessageBox.Show($"Please enter user name and password...");
             }
 
-            Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, "aaa"), (int)Defs.Codes.SIGN_UP_REQUEST); //TODO: chnage email
+            Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, Email.Text), (int)Defs.Codes.SIGN_UP_REQUEST);
 
             if (signupResponse.status == 0)
             {
-                //TODO: IMPLEMENT MESSAGE BOX 
+                MessageBox.Show($"Signup faild...");
             }
             else
             {
-                MessageBox.Show($"send: {userName.Text} {password.Password} aaa@gmail.com"); //TODO: chnage email
+                MessageBox.Show($"send: {userName.Text} {password.Password} {Email.Text}");
             }
         }
 
@@ -137,7 +137,9 @@ namespace TriviaGui
 
         private void Email_GotFocus(object sender, RoutedEventArgs e)
         {
-
+            TextBox email = (TextBox)sender;
+            email.Text = string.Empty;
+            email.GotFocus -= Email_GotFocus;
         }
     }
 }
