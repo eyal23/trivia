@@ -27,7 +27,6 @@ namespace TriviaGui
 
         private void PlayMusic()
         {
-
             player = new MediaPlayer();
             player.Open(new Uri("../../Immanuel.mp3", UriKind.RelativeOrAbsolute));
             player.Play();

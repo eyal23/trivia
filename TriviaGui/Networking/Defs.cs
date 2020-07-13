@@ -9,7 +9,7 @@ namespace TriviaFront.Classes.Networking
     public static class Defs
     {
         public const int Port = 8826;
-        public const string Ip = "127.0.0.1";
+        public const string Ip = "localhost";
 
         public enum Codes : int
         {

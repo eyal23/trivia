@@ -9,117 +9,78 @@ namespace TriviaFront.Classes.Networking
 {
     namespace Requests
     {
-        public interface IRequest
+        public struct Signup
         {
-            [JsonIgnore]
-            byte Code
+            public Signup(string username, string password, string email)
             {
-                get;
+                this.username = username;
+                this.password = password;
+                this.email = email;
             }
-        }
 
-        public class Login : IRequest
-        {
-            public string username;
-            public string password;
-
-            byte IRequest.Code => 0;
-        }
-
-        public class Signup : IRequest
-        {
             public string username;
             public string password;
             public string email;
-
-            byte IRequest.Code => 1;
         }
 
-        public class Logout : IRequest
+        public struct Login
         {
-            byte IRequest.Code => 0;
+            public Login(string username, string password)
+            {
+                this.username = username;
+                this.password = password;
+            }
+
+            public string username;
+            public string password;
         }
 
-        public class GetRooms : IRequest
+        public struct CreateRoom
         {
-            byte IRequest.Code => 1;
-        }
+            public CreateRoom(string roomName, int maxUsers, int questionCount, int answerTimeout)
+            {
+                this.roomName = roomName;
+                this.maxUsers = maxUsers;
+                this.questionCount = questionCount;
+                this.answerTimeout = answerTimeout;
+            }
 
-        public class GetPlayersInRoom : IRequest
-        {
             public string roomName;
-
-            byte IRequest.Code => 2;
+            public int maxUsers;
+            public int questionCount;
+            public int answerTimeout;
         }
 
-        public class GetTop : IRequest
+        public struct GetPlayersInRoom
         {
-            public int maxUsers = 0;
+            public GetPlayersInRoom(int roomId)
+            {
+                this.roomId = roomId;
+            }
 
-            byte IRequest.Code => 3;
+            public int roomId;
         }
 
-        public class GetUserStats : IRequest
+        public struct JoinRoom
         {
-            public string userName = "";
+            public JoinRoom(int roomId)
+            {
+                this.roomId = roomId;
+            }
 
-            byte IRequest.Code => 4;
+            public int roomId;
         }
 
-        public class JoinRoom : IRequest
+        public struct SubmitAnswer
         {
-            public string roomName;
+            public SubmitAnswer(int answerId, float answerTime)
+            {
+                this.answerId = answerId;
+                this.answerTime = answerTime;
+            }
 
-            byte IRequest.Code => 5;
-        }
-
-        public class CreateRoom : IRequest
-        {
-            public string roomName;
-            public int maxUsers = 0;
-            public int questionCount = 0;
-            public int answerTimeout = 0;
-
-            byte IRequest.Code => 6;
-        }
-
-        public class ExitRoom : IRequest
-        {
-            public string roomName;
-
-            byte IRequest.Code => 0;
-        }
-
-        public class StartGame : IRequest
-        {
-            public int status;
-
-            byte IRequest.Code => 1;
-        }
-
-        /*public class GetRoomState : IRequest  // unuseful?
-        {
-            public int status = 0;
-            public bool hasGameBegun;
-            public List<string> players;
-            public int questionCount = 0;
-            public int answerAnswer = 0;
-
-            byte IRequest.Code => 0;
-        }*/
-
-        public class SubmitAnswer : IRequest
-        {
-            public string answer;
-
-            byte IRequest.Code => 0;
-        }
-
-        public class LeaveGameReq : IRequest
-        {
-            public int status;
-
-            byte IRequest.Code => 1;
+            public int answerId;
+            public float answerTime;
         }
     }
 }

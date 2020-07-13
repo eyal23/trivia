@@ -10,7 +10,8 @@ using Newtonsoft.Json;
 using System.Windows;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
-using System.Windows.Threading; // For Dispatcher.
+using System.IO;
+using System.Windows.Threading;
 
 using System.Collections.Generic;
 
@@ -18,168 +19,104 @@ using System.Windows.Interop;
 
 namespace TriviaFront.Classes.Networking
 {
-    internal class Communicator
+    class Communicator
     {
-        public delegate void OnResponse(Response response);
+        private TcpClient client = new TcpClient();
 
-        private delegate void ListeningDelegate();
-
-        public Dictionary<int, OnResponse> actions;
-
-        public string UserName { get; set; }
-
-        private static Communicator instance = null;
-
-        private string ip = Defs.Ip;
-
-        private IPHostEntry hostEntry = null;
-        private Socket socket = null;
-
-        private DispatcherOperation LastInvoke;
-        private byte LastbyteCode;
-
-        private Communicator()
+        public Communicator()
         {
-            // Get host related information.
-            hostEntry = Dns.GetHostEntry(this.ip);
+            StreamReader clientIn;
+            StreamWriter clientOut;
 
-            actions = new Dictionary<int, OnResponse>();
+            client.BeginConnect(Defs.Ip, Defs.Port, null, null);
 
-            // Loop through the AddressList to obtain the supported AddressFamily. This is to avoid
-            // an exception that occurs when the host IP Address is not compatible with the address family
-            // (typical in the IPv6 case).
-            foreach (IPAddress address in hostEntry.AddressList)
+            if (client.Connected)
             {
-                IPEndPoint ipe = new IPEndPoint(address, Defs.Port);
+                clientIn = new StreamReader(client.GetStream());
+                clientOut = new StreamWriter(client.GetStream());
 
-                Socket tempSocket = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-                tempSocket.Connect(ipe);
-
-                if (tempSocket.Connected)
-                {
-                    socket = tempSocket;
-                    break;
-                }
-
-                else
-                    continue;
-            }
-
-            ListeningDelegate fetcher = new ListeningDelegate(this.StartLising);
-
-            fetcher.BeginInvoke(null, null);
-        }
-
-        public void AddEvent(Enum code, OnResponse func)
-        {
-            this.actions[Convert.ToInt32(code)] = func;
-        }
-
-        public void RemoveEvent(Enum code)
-        {
-            this.actions.Remove(Convert.ToInt32(code));
-        }
-
-        public static Communicator Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new Communicator();
-
-                return instance;
+                clientOut.AutoFlush = true;
             }
         }
 
-        private byte[] MsgToByte(string msg, byte code)
+        public Responses.Signup submitSignupRequest(Requests.Signup signupRequest)
         {
-            byte[] bytesCode = new byte[1];
-            bytesCode[0] = code;
-            byte[] byteSize = BitConverter.GetBytes((int)msg.Length);
-            byte[] byteMsg = Encoding.ASCII.GetBytes(msg);
-
-            byte[] rv = Combine(bytesCode, byteSize, byteMsg);
-
-            return rv;
+            return new Responses.Signup(1);
         }
 
-        private static byte[] Combine(params byte[][] arrays)
+        public Responses.Login submitLoginRequest(Requests.Login loginRequest)
         {
-            byte[] rv = new byte[arrays.Sum(a => a.Length)];
-            int offset = 0;
-            foreach (byte[] array in arrays)
-            {
-                System.Buffer.BlockCopy(array, 0, rv, offset, array.Length);
-                offset += array.Length;
-            }
-            return rv;
+            return new Responses.Login(1);
         }
 
-        public byte[] Receive()
+        public Responses.Logout submitLogoutRequest()
         {
-            int recv;
-            byte[] data = new byte[1024];
-            byte[] returnMsg = new byte[0];
-            while (true)
-            {
-                recv = socket.Receive(data);
-                returnMsg = Combine(returnMsg, data);
-                if (recv != 1024) break;
-            }
-
-            return returnMsg;
+            return new Responses.Logout(1);
         }
 
-        private void StartLising()
+        public Responses.CreateRoom submitCreateRoomRequest(Requests.CreateRoom createRoomRequest)
         {
-            while (true)
-            {
-                byte[] retrunBytes;
-                retrunBytes = Receive();
-                var res = new Response(retrunBytes);
-                OnResponse function = null;
-                try
-                {
-                    if (this.actions.TryGetValue(res.code, out function))
-                    {
-                        var a = Application.Current.Dispatcher;
-
-                        if (this.LastbyteCode == res.code)
-                        {
-                            this.LastInvoke.Wait();
-                        }
-
-                        this.LastbyteCode = res.code;
-                        this.LastInvoke = a.BeginInvoke(
-                        System.Windows.Threading.DispatcherPriority.Normal,
-                        function,
-                        res);
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
+            return new Responses.CreateRoom(1);
         }
 
-        public void Send(object msg, byte code)
+        public Responses.GetRooms submitGetRoomsRequest()
         {
-            socket.Send(MsgToByte(JsonConvert.SerializeObject(msg), code));
+            return new Responses.GetRooms(1, new List<string>(new string[] { "room1", "room2", "room3", "room4" }));
         }
 
-        public bool TryToSend(Requests.IRequest msg)
+        public Responses.GetPlayersInRoom submitGetPlayersInRoomRequest(Requests.GetPlayersInRoom getPlayersInRoomRequest)
         {
-            try
-            {
-                Send(msg, msg.Code);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return new Responses.GetPlayersInRoom(1, new List<string>(new string[] { "player1", "player2", "player3", "player4" }));
+        }
+
+        public Responses.JoinRoom submitJoinRoomRequest(Requests.JoinRoom joinRoomRequest)
+        {
+            return new Responses.JoinRoom(1);
+        }
+
+        public Responses.GetStatistics submitGetStatisticsRequest()
+        {
+            return new Responses.GetStatistics(1, (float)5.5, 67, 123, 20, new List<int>(new int[] { 100, 75, 74, 69, 62 }));
+        }
+
+        public Responses.CloseRoom submitCloseRoomRequest()
+        {
+            return new Responses.CloseRoom(1);
+        }
+
+        public Responses.StartGame submitStartGameRequest()
+        {
+            return new Responses.StartGame(1);
+        }
+
+        public Responses.GetRoomState submitGetRoomStateRequest()
+        {
+            return new Responses.GetRoomState(1, false, new List<string>(new string[] { "player1", "player2", "player3", "player4" }), 10, 10);
+        }
+
+        public Responses.LeaveRoom submitLeaveRoomRequest()
+        {
+            return new Responses.LeaveRoom(1);
+        }
+
+        public Responses.LeaveGame submitLeaveGameRequest()
+        {
+            return new Responses.LeaveGame(1);
+        }
+
+        public Responses.GetQuestion submitGetQuestionRequest()
+        {
+            return new Responses.GetQuestion(1, "whats up???", new Dictionary<int, string> { { 0, "asnwer1" }, { 1, "answer2" }, { 2, "answer3" }, { 3, "answer4" } });
+        }
+
+        public Responses.SubmitAnswer submitSubmitAnswerRequest(Requests.SubmitAnswer submitAnswerRequest)
+        {
+            return new Responses.SubmitAnswer(1);
+        }
+
+        public Responses.GetGameResults submitGetGameResultsRequest()
+        {
+            return new Responses.GetGameResults(1, new List<Responses.PlayerResult>(new Responses.PlayerResult[] { new Responses.PlayerResult("user1", 6, 4, (float)5.6), new Responses.PlayerResult("user2", 6, 4, (float)5.6), new Responses.PlayerResult("user3", 6, 4, (float)5.6), new Responses.PlayerResult("user4", 6, 4, (float)5.6) }));
         }
     }
 }
