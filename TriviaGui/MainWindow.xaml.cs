@@ -10,6 +10,9 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using Requests = TriviaFront.Classes.Networking.Requests;
+using Responses = TriviaFront.Classes.Networking.Responses;
+using Communicat = TriviaFront.Classes.Networking.Communicator;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -29,24 +32,25 @@ namespace TriviaGui
             InitializeComponent();
         }
 
-        private void login_Click(object sender, RoutedEventArgs e)
+        private void login_Click(Responses.Login req)
         {
-            MediaPlayer m = new MediaPlayer();
+            var logRe = 0;
+            if (logRe != null && logRe.status == 1)
+            {
+                MediaPlayer m = new MediaPlayer();
 
-            m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
-            m.Play();
+                m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
+                m.Play();
 
-            isOnRegister = !isOnRegister;
-            var temp = login.Content;
-            login.Content = (string)signup.Content;
-            signup.Content = temp;
+                mainManu main = new mainManu();
+                main.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Can't login", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
 
-            userName.Text = "";
-            password.Password = "";
-
-            mainManu main = new mainManu();
-            main.Show();
-            this.Close();
         }
 
         private void signUp_Click(object sender, RoutedEventArgs e)
@@ -97,16 +101,16 @@ namespace TriviaGui
 
         private void userName_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
-            tb.Text = string.Empty;
-            tb.GotFocus -= userName_GotFocus;
+            TextBox uname = (TextBox)sender;
+            uname.Text = string.Empty;
+            uname.GotFocus -= userName_GotFocus;
         }
 
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
-            PasswordBox tb = (PasswordBox)sender;
-            tb.Password = string.Empty;
-            tb.GotFocus -= password_GotFocus;
+            PasswordBox password = (PasswordBox)sender;
+            password.Password = string.Empty;
+            password.GotFocus -= password_GotFocus;
         }
     }
 }
