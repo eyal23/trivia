@@ -66,7 +66,9 @@ namespace TriviaGui
 
         private Response parseResponse<Response>(byte[] bsonResponse)
         {
-            using (MemoryStream ms = new MemoryStream(bsonResponse.Skip(5).Take(bsonResponse.Length - 5).ToArray()))
+            int dataSize = BitConverter.ToInt16(bsonResponse.Take(5).ToArray(), 1);
+
+            using (MemoryStream ms = new MemoryStream(bsonResponse.Skip(5).Take(dataSize).ToArray()))
             using (BsonDataReader reader = new BsonDataReader(ms))
             {
                 JsonSerializer serializer = new JsonSerializer();

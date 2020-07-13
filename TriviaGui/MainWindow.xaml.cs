@@ -44,7 +44,7 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (userName.Text == null || password.Password == null || userName.Text == "user name" || password.Password == "password")
+            if (userName.Text == string.Empty || password.Password == string.Empty || userName.Text == "user name" || password.Password == "password")
             {
                 MessageBox.Show($"Please enter user name and password...");
             }
@@ -56,10 +56,12 @@ namespace TriviaGui
                 {
                     MessageBox.Show($"Login faild...");
                 }
-
-                mainManu main = new mainManu(this.communicator);
-                main.Show();
-                this.Close();
+                else
+                {
+                    mainManu main = new mainManu(this.communicator);
+                    main.Show();
+                    this.Close();
+                }
             }
         }
 
@@ -70,20 +72,25 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (userName.Text == null || password.Password == null || Email.Text == null || userName.Text == "user name" || password.Password == "password" || Email.Text == "email")
+            if (userName.Text == string.Empty || password.Password == string.Empty || Email.Text == string.Empty || userName.Text == "user name" || password.Password == "password" || Email.Text == "email")
             {
                 MessageBox.Show($"Please enter user name and password...");
             }
-
-            Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, Email.Text), (int)Defs.Codes.SIGN_UP_REQUEST);
-
-            if (signupResponse.status == 0)
-            {
-                MessageBox.Show($"Signup faild...");
-            }
             else
             {
-                MessageBox.Show($"send: {userName.Text} {password.Password} {Email.Text}");
+                Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, Email.Text), (int)Defs.Codes.SIGN_UP_REQUEST);
+
+                if (signupResponse.status == 0)
+                {
+                    MessageBox.Show($"Signup faild...");
+                }
+                else
+                {
+                    MessageBox.Show($"send: {userName.Text} {password.Password} {Email.Text}");
+                    mainManu main = new mainManu(this.communicator);
+                    main.Show();
+                    this.Close();
+                }
             }
         }
 

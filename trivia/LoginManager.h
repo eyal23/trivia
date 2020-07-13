@@ -1,19 +1,17 @@
 #pragma once
 
 #include <vector>
-#include <mutex>
 
 #include "LoggedUser.h"
 
 using std::vector;
 using std::string;
-using std::mutex;
+
 
 class LoginManager
 {
 private:
 	vector<LoggedUser> m_loggedUsers;
-	mutex m_loggedUsersMutex;
 
 public:
 	static LoginManager& getInstance()

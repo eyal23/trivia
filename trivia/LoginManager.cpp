@@ -1,8 +1,13 @@
+#include <mutex>
+
 #include "LoginManager.h"
 #include "LoggedUser.h"
 #include "sqliteDataBase.h"
 
+using std::mutex;
 using std::lock_guard;
+
+static mutex loggedUsersMutex;
 
 
 /*
@@ -34,7 +39,7 @@ bool LoginManager::login(const string username, const string password)
 		return false;
 	}
 
-	lock_guard<mutex> guard(this->m_loggedUsersMutex);
+	lock_guard<mutex> guard(loggedUsersMutex);
 
 	for (int i = 0; i < this->m_loggedUsers.size(); i++)
 	{
@@ -56,7 +61,7 @@ bool LoginManager::login(const string username, const string password)
 */
 bool LoginManager::logout(const string username)
 {
-	lock_guard<mutex> guard(this->m_loggedUsersMutex);
+	lock_guard<mutex> guard(loggedUsersMutex);
 
 	for (int i = 0; i < this->m_loggedUsers.size(); i++)
 	{

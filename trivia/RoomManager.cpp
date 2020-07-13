@@ -1,12 +1,16 @@
 #include <vector>
 #include <map>
+#include <mutex>
 
 #include "RoomManager.h"
 #include "Room.h"
 
 using std::vector;
 using std::map;
+using std::mutex;
 using std::lock_guard;
+
+static mutex roomsMutex;
 
 
 /*
@@ -18,10 +22,10 @@ int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 {
 	roomData.id = this->getNextRoomId();
 
-	this->m_roomsMutex.lock();
+	roomsMutex.lock();
 	this->m_rooms[roomData.id] = Room(roomData);
 	this->m_rooms[roomData.id].addUser(loggedUser);
-	this->m_roomsMutex.unlock();
+	roomsMutex.unlock();
 
 	return roomData.id;
 }
@@ -33,9 +37,9 @@ int RoomManager::createRoom(LoggedUser loggedUser, RoomData roomData)
 */
 void RoomManager::closeRoom(int id)
 {
-	this->m_roomsMutex.lock();
+	roomsMutex.lock();
 	this->m_rooms[id].closeRoom();
-	this->m_roomsMutex.unlock();
+	roomsMutex.unlock();
 }
 
 /*
@@ -45,7 +49,7 @@ void RoomManager::closeRoom(int id)
 */
 bool RoomManager::tryDeleteRoom(int id, LoggedUser loggedUser)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 
 	this->m_rooms[id].removeUser(loggedUser);
 
@@ -65,7 +69,7 @@ bool RoomManager::tryDeleteRoom(int id, LoggedUser loggedUser)
 */
 bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 
 	if (this->m_rooms.count(id) == 0)
 	{
@@ -82,7 +86,7 @@ bool RoomManager::joinRoom(int id, LoggedUser loggedUser)
 */
 RoomState RoomManager::getRoomState(int id)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 	RoomData metadata = this->m_rooms[id].getMetadata();
 
 	return {
@@ -104,7 +108,7 @@ vector<RoomData> RoomManager::getRooms()
 	vector<RoomData> rooms;
 	map<int, Room>::iterator i;
 
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 
 	for (auto const& room : this->m_rooms)
 	{
@@ -121,7 +125,7 @@ vector<RoomData> RoomManager::getRooms()
 */
 vector<string> RoomManager::getPlayersInRoom(int id)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 	return this->m_rooms[id].getAllUsers();
 }
 
@@ -132,7 +136,7 @@ vector<string> RoomManager::getPlayersInRoom(int id)
 */
 bool RoomManager::isRoomOpen(int id)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 	return this->m_rooms[id].getMetadata().isOpen;
 }
 
@@ -143,7 +147,7 @@ bool RoomManager::isRoomOpen(int id)
 */
 Room RoomManager::operator[](int id)
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 	return this->m_rooms[id];
 }
 
@@ -154,7 +158,7 @@ Room RoomManager::operator[](int id)
 */
 int RoomManager::getNextRoomId()
 {
-	lock_guard<mutex> guard(this->m_roomsMutex);
+	lock_guard<mutex> guard(roomsMutex);
 	for (int i = 0; true; i++)
 	{
 		if (!this->m_rooms.count(i))

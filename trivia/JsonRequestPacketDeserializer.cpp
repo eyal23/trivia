@@ -16,8 +16,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const vector
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["Username"],
-		jsonData["Password"]
+		jsonData["username"],
+		jsonData["password"]
 	};
 }
 
@@ -34,9 +34,9 @@ SignUpRequest JsonRequestPacketDeserializer::deserializeSignUpRequest(const vect
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["Username"],
-		jsonData["Password"],
-		jsonData["Email"]
+		jsonData["username"],
+		jsonData["password"],
+		jsonData["email"]
 	};
 }
 
@@ -54,7 +54,7 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequ
 	json jsonData = json::from_bson(data);
 
 	return {
-		jsonData["RoomId"]
+		jsonData["roomId"]
 
 	};
 }

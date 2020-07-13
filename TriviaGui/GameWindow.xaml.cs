@@ -37,11 +37,6 @@ namespace TriviaGui
             _timer.Start();
         }
 
-        private void mainManu_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
 
         private void Q4_Click(object sender, RoutedEventArgs e)
         {
@@ -61,6 +56,26 @@ namespace TriviaGui
         private void Q1_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        private void mainManu_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

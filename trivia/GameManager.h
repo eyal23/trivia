@@ -2,21 +2,20 @@
 
 #include <map>
 #include <vector>
-#include <mutex>
 
 #include "Game.h"
 #include "Room.h"
 
 using std::map;
 using std::vector;
-using std::mutex;
+
 
 
 class GameManager
 {
 private:
 	map<unsigned int, Game> m_games;
-	mutex m_gamesMutex;
+	
 
 public:
 	static GameManager& getInstance()

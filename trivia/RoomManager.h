@@ -3,7 +3,6 @@
 #include <map>
 #include <vector>
 #include <iostream>
-#include <mutex>
 
 #include "Room.h"
 #include "LoggedUser.h"
@@ -11,7 +10,6 @@
 using std::map;
 using std::vector;
 using std::string;
-using std::mutex;
 
 
 typedef struct RoomState
@@ -27,7 +25,6 @@ class RoomManager
 {
 private:
 	map<int, Room> m_rooms;
-	mutex m_roomsMutex;
 
 public:
 	static RoomManager& getInstance()
