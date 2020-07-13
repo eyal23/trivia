@@ -43,11 +43,6 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo requestInfo)
 		};
 	}
 
-	if (!RoomManager::getInstance().isRoomOpen(this->m_roomId))
-	{
-		return this->leaveRoom();
-	}
-
 	try
 	{
 		switch (requestInfo.id)
@@ -106,14 +101,14 @@ RequestResult RoomMemberRequestHandler::getRoomState()
 	if (roomState.hasGameBegun)
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
+			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.isRoomOpen, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
 			RequestHandlerFactory::getInstance().createGameRequestHandler(Game(roomUsers, SqliteDatabase::getInstance().getQuestions()), this->m_user)
 		};
 	}
 	else
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
+			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.isRoomOpen, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
 			this
 		};
 	}

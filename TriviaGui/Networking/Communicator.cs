@@ -7,14 +7,12 @@ using System.Net.Sockets;
 using System.Net;
 using TriviaFront.Classes.Networking;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using System.Windows;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.IO;
 using System.Windows.Threading;
-
-using System.Collections.Generic;
-
 using System.Windows.Interop;
 
 namespace TriviaFront.Classes.Networking
@@ -39,84 +37,61 @@ namespace TriviaFront.Classes.Networking
             }
         }
 
-        public Responses.Signup submitSignupRequest(Requests.Signup signupRequest)
+        private byte[] constructRequest<Request>(Request request, byte code)
         {
-            return new Responses.Signup(1);
+            using (MemoryStream ms = new MemoryStream())
+            using (BsonDataWriter datawriter = new BsonDataWriter(ms))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(datawriter, request);
+                byte[] bson = ms.ToArray();
+
+                byte[] dataSize = BitConverter.GetBytes(bson.Length);
+
+                byte[] bsonRequest = new byte[5 + bson.Length];
+
+                bsonRequest[0] = code;
+                System.Buffer.BlockCopy(dataSize, 0, bsonRequest, 1, 4);
+                System.Buffer.BlockCopy(bson, 0, bsonRequest, 5, bson.Length);
+
+                return bsonRequest;
+            }
         }
 
-        public Responses.Login submitLoginRequest(Requests.Login loginRequest)
+        private byte[] constructRequest(byte code)
         {
-            return new Responses.Login(1);
+            byte[] bsonRequest = new byte[] { code, 0, 0, 0, 0 };
+
+            return bsonRequest;
         }
 
-        public Responses.Logout submitLogoutRequest()
+        private Response parseResponse<Response>(byte[] bsonResponse)
         {
-            return new Responses.Logout(1);
+            using (MemoryStream ms = new MemoryStream(bsonResponse.Skip(5).Take(bsonResponse.Length - 5).ToArray()))
+            using (BsonDataReader reader = new BsonDataReader(ms))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return serializer.Deserialize<Response>(reader);
+            }
         }
 
-        public Responses.CreateRoom submitCreateRoomRequest(Requests.CreateRoom createRoomRequest)
+        private byte[] sendAndRecive(byte[] bsonRequest)
         {
-            return new Responses.CreateRoom(1);
+            client.GetStream().Write(bsonRequest, 0, bsonRequest.Length);
+            byte[] bsonResponse = new byte[client.ReceiveBufferSize];
+            client.GetStream().Read(bsonResponse, 0, client.ReceiveBufferSize);
+
+            return bsonResponse;
         }
 
-        public Responses.GetRooms submitGetRoomsRequest()
+        public Response submitRequest<Request, Response>(Request request, int code)
         {
-            return new Responses.GetRooms(1, new List<string>(new string[] { "room1", "room2", "room3", "room4" }));
+            return parseResponse<Response>(sendAndRecive(constructRequest<Request>(request, (byte)code)));
         }
 
-        public Responses.GetPlayersInRoom submitGetPlayersInRoomRequest(Requests.GetPlayersInRoom getPlayersInRoomRequest)
+        public Response submitRequest<Response>(int code)
         {
-            return new Responses.GetPlayersInRoom(1, new List<string>(new string[] { "player1", "player2", "player3", "player4" }));
-        }
-
-        public Responses.JoinRoom submitJoinRoomRequest(Requests.JoinRoom joinRoomRequest)
-        {
-            return new Responses.JoinRoom(1);
-        }
-
-        public Responses.GetStatistics submitGetStatisticsRequest()
-        {
-            return new Responses.GetStatistics(1, (float)5.5, 67, 123, 20, new List<int>(new int[] { 100, 75, 74, 69, 62 }));
-        }
-
-        public Responses.CloseRoom submitCloseRoomRequest()
-        {
-            return new Responses.CloseRoom(1);
-        }
-
-        public Responses.StartGame submitStartGameRequest()
-        {
-            return new Responses.StartGame(1);
-        }
-
-        public Responses.GetRoomState submitGetRoomStateRequest()
-        {
-            return new Responses.GetRoomState(1, false, new List<string>(new string[] { "player1", "player2", "player3", "player4" }), 10, 10);
-        }
-
-        public Responses.LeaveRoom submitLeaveRoomRequest()
-        {
-            return new Responses.LeaveRoom(1);
-        }
-
-        public Responses.LeaveGame submitLeaveGameRequest()
-        {
-            return new Responses.LeaveGame(1);
-        }
-
-        public Responses.GetQuestion submitGetQuestionRequest()
-        {
-            return new Responses.GetQuestion(1, "whats up???", new Dictionary<int, string> { { 0, "asnwer1" }, { 1, "answer2" }, { 2, "answer3" }, { 3, "answer4" } });
-        }
-
-        public Responses.SubmitAnswer submitSubmitAnswerRequest(Requests.SubmitAnswer submitAnswerRequest)
-        {
-            return new Responses.SubmitAnswer(1);
-        }
-
-        public Responses.GetGameResults submitGetGameResultsRequest()
-        {
-            return new Responses.GetGameResults(1, new List<Responses.PlayerResult>(new Responses.PlayerResult[] { new Responses.PlayerResult("user1", 6, 4, (float)5.6), new Responses.PlayerResult("user2", 6, 4, (float)5.6), new Responses.PlayerResult("user3", 6, 4, (float)5.6), new Responses.PlayerResult("user4", 6, 4, (float)5.6) }));
+            return parseResponse<Response>(sendAndRecive(constructRequest((byte)code)));
         }
     }
 }

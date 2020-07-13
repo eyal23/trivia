@@ -76,6 +76,7 @@ RoomState RoomManager::getRoomState(int id)
 	RoomData metadata = this->m_rooms[id].getMetadata();
 
 	return {
+		metadata.isOpen,
 		metadata.isActive,
 		this->m_rooms[id].getAllUsers(),
 		metadata.questionsCount,

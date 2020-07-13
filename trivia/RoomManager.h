@@ -14,6 +14,7 @@ using std::string;
 
 typedef struct RoomState
 {
+	bool isRoomOpen;
 	bool hasGameBegun;
 	vector<string> players;
 	unsigned int questionsCount;
