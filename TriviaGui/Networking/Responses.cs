@@ -5,7 +5,7 @@ using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TriviaFront.Classes.Networking
+namespace TriviaGui
 {
     namespace Responses
     {

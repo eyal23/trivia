@@ -19,11 +19,13 @@ namespace TriviaGui
     public partial class mainManu : Window
     {
         private MediaPlayer player;
+        private Communicator communicator;
 
-        public mainManu()
+        public mainManu(Communicator communicator)
         {
             InitializeComponent();
             PlayMusic();
+            this.communicator = communicator;
         }
         private void PlayMusic()
         {
