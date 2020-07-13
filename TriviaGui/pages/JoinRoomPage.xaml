@@ -5,10 +5,83 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TriviaGui.pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      Height="410" 
+      Width="617"
+      Background="Transparent"
       Title="JoinRoomPage">
 
     <Grid>
-        
+        <Grid x:Name="Grid1"
+              Width="597" 
+              Height="300"
+              Margin="10,10,10,0"  
+              VerticalAlignment="Top"
+              Background="Transparent">
+
+            <ListView Margin="1" Background="Transparent" BorderBrush="Black" Opacity="0.5">
+                <ListViewItem FontFamily="corbert"
+                              FontWeight="UltraLight"
+                              Foreground="Black"
+                              Background="Transparent"
+                              Opacity="4">room name</ListViewItem>
+
+                <ListViewItem FontFamily="corbert"
+                              FontWeight="UltraLight"
+                              Foreground="Black"
+                              Background="Transparent"
+                              Opacity="4">--------------------- > > ></ListViewItem>
+
+                <ListViewItem FontFamily="corbert"
+                              FontWeight="UltraLight"
+                              Foreground="Black"
+                              Background="Transparent"
+                              Opacity="4">room id</ListViewItem>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Top"
+                                    Height="40"
+                                    Width="597">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
+
+        <TextBox x:Name="RoomName"
+                 FontFamily="Corbert"
+                 FontWeight="UltraLight"
+                 Text="room id"
+                 FontSize="20"
+                 Foreground="Black"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 Width="235"
+                 Height="30"
+                 Opacity="0.5" 
+                 Margin="10,334,372,46"
+                 GotFocus="RoomName_GotFocus"/>
+
+        <Border Width="400"
+                Height="2"
+                Background="black"
+                Opacity="0.5" 
+                Margin="10,362,270,46"/>
+
+        <Button x:Name="JoinRoomButton"
+                Content="join room" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="Black"
+                Opacity="0.5"
+                HorizontalAlignment="Left" 
+                Width="150"
+                Height="50"
+                Margin="457,338,0,0" 
+                VerticalAlignment="Top"/>
+
     </Grid>
 </Page>
