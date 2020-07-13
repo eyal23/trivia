@@ -54,17 +54,17 @@ Communicator::~Communicator()
 	input: the communicator, the client socket
 	output: no
 */
-void clientThread(Communicator* communicator, SOCKET clientSocket)
+void clientThread(SOCKET clientSocket)
 {
 	while (true)
 	{
-		IRequestHandler* requestHandler = (*communicator)[clientSocket];
+		IRequestHandler* requestHandler = Communicator::getInstance()[clientSocket];
 		vector<uint8_t> buffer(MAX_BYTES_AMOUNT + 1);
 
 		if (recv(clientSocket, (char*)buffer.data(), MAX_BYTES_AMOUNT, 0) == INVALID_SOCKET)
 		{
-			delete (*communicator)[clientSocket];
-			communicator->removeClient(clientSocket);
+			delete Communicator::getInstance()[clientSocket];
+			Communicator::getInstance().removeClient(clientSocket);
 			break;
 		}
 
@@ -73,24 +73,24 @@ void clientThread(Communicator* communicator, SOCKET clientSocket)
 
 		if (send(clientSocket, (char*)requestResult.buffer.data(), requestResult.buffer.size(), 0) == INVALID_SOCKET)
 		{
-			delete (*communicator)[clientSocket];
-			communicator->removeClient(clientSocket);
+			delete Communicator::getInstance()[clientSocket];
+			Communicator::getInstance().removeClient(clientSocket);
 			break;
 		}
 
 		if (requestResult.newHandler == nullptr)
 		{
-			delete (*communicator)[clientSocket];
-			communicator->removeClient(clientSocket);
+			Communicator::getInstance()[clientSocket];
+			Communicator::getInstance().removeClient(clientSocket);
 			break;
 		}
 
-		if ((*communicator)[clientSocket] != requestResult.newHandler)
+		if (Communicator::getInstance()[clientSocket] != requestResult.newHandler)
 		{
-			delete (*communicator)[clientSocket];
+			delete Communicator::getInstance()[clientSocket];
 		}
 		
-		(*communicator)[clientSocket] = requestResult.newHandler;
+		Communicator::getInstance()[clientSocket] = requestResult.newHandler;
 	}
 }
 
@@ -161,7 +161,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	this->m_clients[clientSocket] = RequestHandlerFactory::getInstance().createLoginRequestHandler();
 
-	thread clientThread(clientThread, this, clientSocket);
+	thread clientThread(clientThread, clientSocket);
 	clientThread.detach();
 }
 

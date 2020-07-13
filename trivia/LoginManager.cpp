@@ -2,6 +2,8 @@
 #include "LoggedUser.h"
 #include "sqliteDataBase.h"
 
+using std::lock_guard;
+
 
 /*
 	usage: the method tries to sign up a user into the db
@@ -32,6 +34,8 @@ bool LoginManager::login(const string username, const string password)
 		return false;
 	}
 
+	lock_guard<mutex> guard(this->m_loggedUsersMutex);
+
 	for (int i = 0; i < this->m_loggedUsers.size(); i++)
 	{
 		if (this->m_loggedUsers[i].getUsername() == username)
@@ -52,6 +56,8 @@ bool LoginManager::login(const string username, const string password)
 */
 bool LoginManager::logout(const string username)
 {
+	lock_guard<mutex> guard(this->m_loggedUsersMutex);
+
 	for (int i = 0; i < this->m_loggedUsers.size(); i++)
 	{
 		if (this->m_loggedUsers[i].getUsername() == username)

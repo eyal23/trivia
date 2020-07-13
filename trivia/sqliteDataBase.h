@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <mutex>
 
 #include "sqlite3.h"
 #include "Question.h"
@@ -9,6 +10,7 @@
 using std::string;
 using std::vector;
 using std::pair;
+using std::mutex;
 
 
 class SqliteDatabase
@@ -35,6 +37,9 @@ class SqliteDatabase
 
 private:
 	sqlite3* m_db;
+	mutex m_userTableMutex;
+	mutex m_questionsTableMutex;
+	mutex m_statisticsTableMutex;
 
 public:
 	static SqliteDatabase& getInstance()
