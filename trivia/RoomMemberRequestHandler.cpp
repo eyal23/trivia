@@ -1,6 +1,9 @@
 #include "RoomMemberRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
+#include "RoomManager.h"
+#include "RequestHandlerFactory.h"
+#include "sqliteDataBase.h"
 
 
 /*
@@ -8,8 +11,8 @@
     in: the handler factory, the room id, the logged user
     out: no
 */
-RoomMemberRequestHandler::RoomMemberRequestHandler(RequestHandlerFactory& handlerFactory, int roomId, LoggedUser loggedUser) :
-    RoomRequestHandler(roomId, loggedUser, handlerFactory.getRoomManager()), m_handlerFactory(handlerFactory)
+RoomMemberRequestHandler::RoomMemberRequestHandler(int roomId, LoggedUser loggedUser) :
+	m_roomId(roomId), m_user(loggedUser)
 {
 }
 
@@ -35,24 +38,15 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo requestInfo)
 	if (!this->isRequestRelevant(requestInfo))
 	{
 		return {
-			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "ERROR" })),
+			JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Request is non-relevant" })),
 			nullptr
 		};
-	}
-
-	if (!this->m_roomManager.isRoomOpen(this->m_roomId))
-	{
-		return this->leaveRoom();
 	}
 
 	try
 	{
 		switch (requestInfo.id)
 		{
-		case START_GAME_REQUEST:
-			return this->startGame();
-			break;
-
 		case GET_ROOM_STATE_REQUEST:
 			return this->getRoomState();
 			break;
@@ -79,10 +73,48 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo requestInfo)
 */
 RequestResult RoomMemberRequestHandler::leaveRoom()
 {
-    this->m_roomManager.tryDeleteRoom(this->m_roomId, this->m_user);
+	RoomManager::getInstance().tryDeleteRoom(this->m_roomId, this->m_user);
 
     return {
         JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse({ 1 })),
-        this->m_handlerFactory.createMenuRequestHandler(this->m_user)
+        RequestHandlerFactory::getInstance().createMenuRequestHandler(this->m_user)
     };
+}
+
+/*
+	usage: the method gets a room's state
+	in: no
+	out: the request result
+*/
+RequestResult RoomMemberRequestHandler::getRoomState()
+{
+	RoomState roomState = RoomManager::getInstance().getRoomState(this->m_roomId);
+
+	if (!roomState.isRoomOpen)
+	{
+		RoomManager::getInstance().tryDeleteRoom(this->m_roomId, this->m_user);
+	}
+
+	vector<LoggedUser> roomUsers;
+	vector<string> stringUsers = RoomManager::getInstance()[this->m_roomId].getAllUsers();
+
+	for (int i = 0; i < stringUsers.size(); i++)
+	{
+		roomUsers.push_back(LoggedUser(stringUsers[i]));
+	}
+
+	if (roomState.hasGameBegun)
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.isRoomOpen, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
+			RequestHandlerFactory::getInstance().createGameRequestHandler(Game(roomUsers, SqliteDatabase::getInstance().getQuestions()), this->m_user)
+		};
+	}
+	else
+	{
+		return {
+			JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.isRoomOpen, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
+			this
+		};
+	}
 }

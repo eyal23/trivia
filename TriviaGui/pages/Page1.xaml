@@ -1,4 +1,4 @@
-﻿<Page x:Class="TriviaGui.Page1"
+﻿<Page x:Class="TriviaGui.pages.Page1"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,16 +23,16 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="106,2,121,128"
+                 Margin="184,104,199,266"
                  GotFocus="RoomName_GotFocus"/>
 
         <Border Width="250"
                 Height="2"
                 Background="black"
                 Opacity="0.5" 
-                Margin="106,22,107,146"/>
+                Margin="183,122,184,286"/>
 
-        <TextBox x:Name="QustienTime"
+        <TextBox x:Name="QuestionTime"
                  FontFamily="Corbert"
                  FontWeight="UltraLight"
                  Text="time for each question"
@@ -43,19 +43,19 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="106,68,121,62"
+                 Margin="184,168,199,202"
                  GotFocus="QustienTime_GotFocus"/>
 
         <Border Width="250"
                 Height="2"
                 Background="black"
                 Opacity="0.5" 
-                Margin="106,88,107,80" />
+                Margin="183,186,184,222" />
 
-        <TextBox x:Name="NumberOfPlayers"
+        <TextBox x:Name="MaxOfPlayers"
                  FontFamily="Corbert"
                  FontWeight="UltraLight"
-                 Text="number of players in room"
+                 Text="max players in room"
                  FontSize="20"
                  Foreground="Black"
                  Background="Transparent"
@@ -63,7 +63,7 @@
                  Width="235"
                  Height="40"
                  Opacity="0.5" 
-                 Margin="106,138,121,-8" 
+                 Margin="183,233,199,137" 
                  GotFocus="NumberOfPlayers_GotFocus"/>
 
 
@@ -71,7 +71,28 @@
                 Height="2"
                 Background="black"
                 Opacity="0.5" 
-                Margin="106,158,107,10" />
+                Margin="183,253,184,155" />
+
+        <TextBox x:Name="QuestionCount"
+                 FontFamily="Corbert"
+                 FontWeight="UltraLight"
+                 Text="question count"
+                 FontSize="20"
+                 Foreground="Black"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 Width="235"
+                 Height="40"
+                 Opacity="0.5" 
+                 Margin="184,301,198,69" 
+                 GotFocus="NumberOfPlayers_GotFocus"/>
+
+
+        <Border Width="250"
+                Height="2"
+                Background="black"
+                Opacity="0.5" 
+                Margin="183,319,184,89" />
 
         <Button x:Name="CreateRoomButton"
                 Content="go" 
@@ -85,7 +106,9 @@
                 Margin="507,0,0,69.02"
                 Width="100"
                 Height="40"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom"
+                Click="CreateRoomClick"
                 />
 
     </Grid>

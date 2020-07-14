@@ -1,7 +1,11 @@
 #pragma once
 
-#include "IDatabase.h"
+#include <vector>
+
 #include "LoggedUser.h"
+
+using std::vector;
+
 
 typedef struct Statistics
 {
@@ -9,17 +13,24 @@ typedef struct Statistics
 	int numberOfCorrectAnswers;
 	int numberOfTotalAnswers;
 	int numberOfPlayerGames;
-	int* topScores;
+	vector<int> topScores;
 } Statistics;
 
 class StatisticsManager
 {
-private:
-	IDatabase& m_database;
-
 public:
-	StatisticsManager(IDatabase& database);
+	static StatisticsManager& getInstance()
+	{
+		static StatisticsManager instance;
+		return instance;
+	}
 
 	Statistics getStatistics(LoggedUser loggedUser);
+
+	StatisticsManager(StatisticsManager const&) = delete;
+	void operator=(StatisticsManager const&) = delete;
+
+private:
+	StatisticsManager() {}
 };
 

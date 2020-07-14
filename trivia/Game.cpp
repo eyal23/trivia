@@ -53,3 +53,8 @@ vector<PlayerResults> Game::getGameResults()
 
 	return gameResults;
 }
+
+bool Game::isGameOver()
+{
+	return this->m_players.size() == 0;
+}

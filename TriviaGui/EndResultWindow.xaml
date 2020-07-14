@@ -1,0 +1,122 @@
+﻿<Window x:Class="TriviaGui.EndResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TriviaGui"
+        mc:Ignorable="d"
+        Title="EndResultWindow" 
+        Height="600" 
+        Width="1100"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
+        MouseDown="mainManu_OnMouseDown"
+        Icon="Assets/Untitled.png"      
+        >
+    <Grid>
+        <Border Grid.RowSpan="4" Grid.ColumnSpan="3">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="DarkSeaGreen" Offset="0.0"/>
+                    <GradientStop Color="Silver" Offset="0.7"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <ListViewItem FontFamily="corbert"
+                        FontSize="40"
+                        FontWeight="UltraLight"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderBrush="Black"
+                        VerticalContentAlignment="Top"
+                        Opacity="0.7" 
+                        Content="" 
+                        Margin="10,138,640,109" 
+                        Selected="ListViewItem_Selected"/>
+
+        <TextBox HorizontalAlignment="Right" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Width="450" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Black" 
+                Opacity="0.5"
+                Margin="0,68,10,0" 
+                Text="personal score" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top"/>
+
+        <TextBox HorizontalAlignment="Left" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Width="450" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Black" 
+                Foreground="Black" 
+                Opacity="0.5"                 
+                Margin="640,138,0,0" 
+                Text="TextBox" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top"/>
+
+        <TextBox HorizontalAlignment="Left" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Width="450" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Black"   
+                Opacity="0.5"
+                Margin="10,68,0,0" 
+                Text="players score" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" />
+
+        <Button x:Name="minButton" 
+                Width="35" 
+                Height="35" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="MinimizeButton_Click" 
+                Margin="10,10,1055,539" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" >
+
+            <StackPanel Height="35" Width="35">
+                <Image Source="Assets/minimize-icon-23800.png" 
+                       Height="35" 
+                       Width="35"/>
+            </StackPanel>
+        </Button>
+
+        <Button Content="continue" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Width="200" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Black" 
+                Foreground="Black"   
+                Opacity="0.5"                
+                HorizontalAlignment="Left" 
+                Margin="765,425,0,0" 
+                VerticalAlignment="Top"/>
+
+
+
+    </Grid>
+</Window>

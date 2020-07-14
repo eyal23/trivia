@@ -16,7 +16,7 @@ using std::vector;
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const ErrorResponse errorRes)
 {
-	json j = { {"Message", errorRes.message } };
+	json j = { {"message", errorRes.message } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -38,7 +38,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const Error
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LoginResponse loginRes)
 {
-	json j = { {"Status", loginRes.status } };
+	json j = { {"status", loginRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -60,7 +60,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const Login
 */
 std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SignupResponse signRes)
 {
-	json j = { {"Status", signRes.status } };
+	json j = { {"status", signRes.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -82,7 +82,7 @@ std::vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const Signu
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResponse logoutRes)
 {
-	json j = { {"Status", logoutRes.status } };
+	json j = { {"status", logoutRes.status } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -104,18 +104,21 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LogoutResp
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse getRoomsRes)
 {
-	vector<string> rooms;
+
+	json j = { 
+		{"status", getRoomsRes.status}, 
+		{"rooms", json::array() } 
+	};
 
 	for (int i = 0; i < getRoomsRes.rooms.size(); i++)
 	{
-		rooms.push_back(getRoomsRes.rooms[i].name);
+		j["rooms"].push_back(json({ 
+			{ "id", getRoomsRes.rooms[i].id },
+			{ "name", getRoomsRes.rooms[i].name }
+		}));
 	}
 
-	json j = { 
-		{"Status", getRoomsRes.status}, 
-		{"Rooms", rooms } 
-	};
-	vector<uint8_t> bson = json::to_bson(j);
+	vector<uint8_t> bson = json::to_bson(j); 
 
 	int dataSize = bson.size();
 	vector<uint8_t> message = { GET_ROOMS_RESPONSE };
@@ -137,8 +140,8 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsRe
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse getPlayersInRoomRes)
 {
 	json j = {
-		{"Status", getPlayersInRoomRes.status},
-		{"PlayersInRoom", getPlayersInRoomRes.players } 
+		{"status", getPlayersInRoomRes.status},
+		{"playersInRoom", getPlayersInRoomRes.players } 
 	};
 	vector<uint8_t> bson = json::to_bson(j);
 
@@ -161,7 +164,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetPlayers
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse joinRoomRes)
 {
-	json j = { {"Status", joinRoomRes.status } };
+	json j = { {"status", joinRoomRes.status } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -183,7 +186,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const JoinRoomRe
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse createRoomRes)
 {
-	json j = { {"Status", createRoomRes.status } };
+	json j = { {"status", createRoomRes.status } };
 	vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -206,19 +209,26 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CreateRoom
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatisticsResponse getStatisticsRes)
 {
 	json j = { 
-		{ "Status", getStatisticsRes.status },
-		{ "UserStatistics", { 
-				{ "AverageAnswerTime", getStatisticsRes.statitstics.averageAnswerTime },
-				{ "NumberOfCorrectAnswers", getStatisticsRes.statitstics.numberOfCorrectAnswers },
-				{ "NumberOfTotalAnswers", getStatisticsRes.statitstics.numberOfTotalAnswers },
-				{ "NumberOfPlayerGames", getStatisticsRes.statitstics.numberOfPlayerGames } }
+		{ "status", getStatisticsRes.status },
+		{ "userStatistics", { 
+				{ "averageAnswerTime", getStatisticsRes.statitstics.averageAnswerTime },
+				{ "numberOfCorrectAnswers", getStatisticsRes.statitstics.numberOfCorrectAnswers },
+				{ "numberOfTotalAnswers", getStatisticsRes.statitstics.numberOfTotalAnswers },
+				{ "numberOfPlayerGames", getStatisticsRes.statitstics.numberOfPlayerGames } }
 		},
-		{ "HighScores", json::array() }
+		{ "highScores", json::array() }
 	};
 
 	for (int i = 0; i < 5; i++)
 	{
-		j["HighScores"].push_back(getStatisticsRes.statitstics.topScores[i]);
+		if (i < getStatisticsRes.statitstics.topScores.size())
+		{
+			j["highScores"].push_back(getStatisticsRes.statitstics.topScores[i]);
+		}
+		else
+		{
+			j["highScores"].push_back(0);
+		}
 	}
 
 	vector<uint8_t> bson = json::to_bson(j);
@@ -241,7 +251,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse closeRoomResponse)
 {
-	json j = { {"Status", closeRoomResponse.status } };
+	json j = { {"status", closeRoomResponse.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -262,7 +272,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const CloseRoomR
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameResponse startGameResponse)
 {
-	json j = { {"Status", startGameResponse.status } };
+	json j = { {"status", startGameResponse.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -284,11 +294,11 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const StartGameR
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse getRoomStateResponse)
 {
 	json j = { 
-		{"Status", getRoomStateResponse.status },
-		{"HasGameBegun", getRoomStateResponse.hasGameBegun },
-		{"Players", getRoomStateResponse.players },
-		{"QuestionsCount", getRoomStateResponse.questionsCount },
-		{"AnswerTimeout", getRoomStateResponse.answerTimeout },
+		{"status", getRoomStateResponse.status },
+		{"hasGameBegun", getRoomStateResponse.hasGameBegun },
+		{"players", getRoomStateResponse.players },
+		{"questionsCount", getRoomStateResponse.questionsCount },
+		{"answerTimeout", getRoomStateResponse.answerTimeout },
 	};
 
 	std::vector<uint8_t> bson = json::to_bson(j);
@@ -311,7 +321,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomSta
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse leaveRoomResponse)
 {
-	json j = { {"Status", leaveRoomResponse.status } };
+	json j = { {"status", leaveRoomResponse.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -333,17 +343,17 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveRoomR
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameResultsResponse getGameResultsResponse)
 {
 	json j = { 
-		{"Status", getGameResultsResponse.status },
-		{"Results", json::array()}
+		{"status", getGameResultsResponse.status },
+		{"results", json::array()}
 	};
 
 	for (int i = 0; i < getGameResultsResponse.results.size(); i++)
 	{
-		j["Results"].push_back(json({
-			{ "Username", getGameResultsResponse.results[i].username },
-			{ "CorrectAnswersCount", getGameResultsResponse.results[i].correctAnswersCount },
-			{ "WrongAnswersCount", getGameResultsResponse.results[i].wrongAnswersCount },
-			{ "AverageAnswerTime", getGameResultsResponse.results[i].averageAnswerTime }
+		j["results"].push_back(json({
+			{ "username", getGameResultsResponse.results[i].username },
+			{ "correctAnswersCount", getGameResultsResponse.results[i].correctAnswersCount },
+			{ "wrongAnswersCount", getGameResultsResponse.results[i].wrongAnswersCount },
+			{ "averageAnswerTime", getGameResultsResponse.results[i].averageAnswerTime }
 			})
 		);
 	}
@@ -368,7 +378,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetGameRes
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse submitAnswersResponse)
 {
-	json j = { {"Status", submitAnswersResponse.status } };
+	json j = { {"status", submitAnswersResponse.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();
@@ -390,9 +400,9 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const SubmitAnsw
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestionResponse)
 {
 	json j = { 
-		{"Status", getQuestionResponse.status },
-		{ "Question", getQuestionResponse.question },
-		{ "Answers", {
+		{"status", getQuestionResponse.status },
+		{ "question", getQuestionResponse.question },
+		{ "answers", {
 			{ 0, getQuestionResponse.answers[0] },
 			{ 1, getQuestionResponse.answers[1] },
 			{ 2, getQuestionResponse.answers[2] },
@@ -419,7 +429,7 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(GetQuestionRespo
 */
 vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse leaveGameResponse)
 {
-	json j = { {"Status", leaveGameResponse.status } };
+	json j = { {"status", leaveGameResponse.status } };
 	std::vector<uint8_t> bson = json::to_bson(j);
 
 	int dataSize = bson.size();

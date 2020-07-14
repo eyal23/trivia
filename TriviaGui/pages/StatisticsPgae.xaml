@@ -5,51 +5,65 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TriviaGui.pages"
       mc:Ignorable="d" 
-      d:DesignHeight="410" 
-      d:DesignWidth="617"
+      Height="410" 
+      Width="617"
       Title="StatisticsPgae"
       Background="Transparent">
 
     <Grid>
-        <Button x:Name="personalStatistics"
-                Content="personal statistics"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black"
-                Opacity="0.5"
-                Margin="35,128,0,0" 
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                Height="40"  
-                Width="240"/>
+        <TextBlock HorizontalAlignment="Left" 
+                   FontFamily="corbert"
+                   FontWeight="UltraLight"
+                   Foreground="Black"
+                   Opacity="0.5"
+                   Background="Transparent"
+                   Text="top 5 scores" 
+                   FontSize="40"
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="40" 
+                   Width="210" Margin="10,10,0,0"/>
 
-        <Button x:Name="GameStatistics"
-                Content="game statistics"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black" 
-                Opacity="0.5"
-                Margin="0,128,35,0" 
-                VerticalAlignment="Top"
-                Height="40"
-                Width="240" 
-                HorizontalAlignment="Right"/>
+        <Border Width="250"
+                Height="2"
+                Background="black"
+                Opacity="0.5" Margin="10,48,357,352"/>
 
-        <Button x:Name="HighScores"
-                Content="highest score"
-                FontFamily="Corbert"
-                FontWeight="UltraLight"
-                Foreground="Black"
-                Background="Transparent" 
-                BorderBrush="Black" 
-                Opacity="0.5"
-                Margin="188,262,189,0" 
-                VerticalAlignment="Top"
-                Height="40"/>
+        <TextBlock HorizontalAlignment="Right" 
+                   FontFamily="corbert"
+                   FontWeight="UltraLight"
+                   Foreground="Black"
+                   Opacity="0.5"
+                   Background="Transparent"
+                   Text="personal statistics" 
+                   FontSize="40"
+                   TextWrapping="Wrap" 
+                   VerticalAlignment="Top" 
+                   Height="40" 
+                   Width="309"
+                   Margin="10,10,0,0"/>
 
+        <Border
+                Height="2"
+                Background="black"
+                Opacity="0.5" Margin="285,48,10,352"  />
+
+        <ListBox x:Name="ListBox"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 FontSize="30"
+                 Opacity="0.5"
+                 Margin="10,63,407,117"/>
+
+        <ListBox x:Name="ListBox1"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 Opacity="0.5"
+                 FontSize="30" 
+                 Margin="278,63,0,117"/>
     </Grid>
 </Page>

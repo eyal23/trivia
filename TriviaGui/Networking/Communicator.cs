@@ -5,186 +5,94 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
-using TriviaFront.Classes.Networking;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using System.Windows;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
-using System.Windows.Threading; // For Dispatcher.
-
-using System.Collections.Generic;
-
+using System.IO;
+using System.Windows.Threading;
 using System.Windows.Interop;
 
-namespace TriviaFront.Classes.Networking
+namespace TriviaGui
 {
-    internal class Communicator
+    public class Communicator
     {
-        public delegate void OnResponse(Response response);
+        private TcpClient client = new TcpClient();
 
-        private delegate void ListeningDelegate();
-
-        public Dictionary<int, OnResponse> actions;
-
-        public string UserName { get; set; }
-
-        private static Communicator instance = null;
-        private int port = Defs.Port;
-        private string ip = Defs.Ip;
-
-        private IPHostEntry hostEntry = null;
-        private Socket socket = null;
-
-        private DispatcherOperation LastInvoke;
-        private byte LastbyteCode;
-
-        private Communicator()
+        public Communicator()
         {
-            // Get host related information.
-            hostEntry = Dns.GetHostEntry(this.ip);
-            actions = new Dictionary<int, OnResponse>();
-            // Loop through the AddressList to obtain the supported AddressFamily. This is to avoid
-            // an exception that occurs when the host IP Address is not compatible with the address family
-            // (typical in the IPv6 case).
-            foreach (IPAddress address in hostEntry.AddressList)
+            StreamReader clientIn;
+            StreamWriter clientOut;
+
+            client.BeginConnect(Defs.Ip, Defs.Port, null, null);
+
+            if (client.Connected)
             {
-                IPEndPoint ipe = new IPEndPoint(address, port);
-                Socket tempSocket =
-                    new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                clientIn = new StreamReader(client.GetStream());
+                clientOut = new StreamWriter(client.GetStream());
 
-                tempSocket.Connect(ipe);
-
-                if (tempSocket.Connected)
-                {
-                    socket = tempSocket;
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            ListeningDelegate fetcher = new ListeningDelegate(
-                this.StartLising);
-
-            fetcher.BeginInvoke(null, null);
-            //Thread thread = new Thread();
-            //
-            //thread.SetApartmentState(ApartmentState.STA);
-            //
-            //thread.Start();
-        }
-
-        public void AddEvent(Enum code, OnResponse func)
-        {
-            this.actions[Convert.ToInt32(code)] = func;
-        }
-
-        public void RemoveEvent(Enum code)
-        {
-            this.actions.Remove(Convert.ToInt32(code));
-        }
-
-        public static Communicator Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Communicator();
-                }
-                return instance;
+                clientOut.AutoFlush = true;
             }
         }
 
-        private byte[] MsgToByte(string msg, byte code)
+        private byte[] constructRequest<Request>(Request request, byte code)
         {
-            byte[] bytesCode = new byte[1];
-            bytesCode[0] = code;
-            byte[] byteSize = BitConverter.GetBytes((int)msg.Length);
-            byte[] byteMsg = Encoding.ASCII.GetBytes(msg);
-
-            byte[] rv = Combine(bytesCode, byteSize, byteMsg);
-
-            return rv;
-        }
-
-        private static byte[] Combine(params byte[][] arrays)
-        {
-            byte[] rv = new byte[arrays.Sum(a => a.Length)];
-            int offset = 0;
-            foreach (byte[] array in arrays)
+            using (MemoryStream ms = new MemoryStream())
+            using (BsonDataWriter datawriter = new BsonDataWriter(ms))
             {
-                System.Buffer.BlockCopy(array, 0, rv, offset, array.Length);
-                offset += array.Length;
-            }
-            return rv;
-        }
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(datawriter, request);
+                byte[] bson = ms.ToArray();
 
-        public byte[] Receive()
-        {
-            int recv;
-            byte[] data = new byte[1024];
-            byte[] returnMsg = new byte[0];
-            while (true)
-            {
-                recv = socket.Receive(data);
-                returnMsg = Combine(returnMsg, data);
-                if (recv != 1024) break;
-            }
+                byte[] dataSize = BitConverter.GetBytes(bson.Length);
 
-            return returnMsg;
-        }
+                byte[] bsonRequest = new byte[5 + bson.Length];
 
-        private void StartLising()
-        {
-            while (true)
-            {
-                byte[] retrunBytes;
-                retrunBytes = Receive();
-                var res = new Response(retrunBytes);
-                OnResponse function = null;
-                try
-                {
-                    if (this.actions.TryGetValue(res.code, out function))
-                    {
-                        var a = Application.Current.Dispatcher;
+                bsonRequest[0] = code;
+                System.Buffer.BlockCopy(dataSize, 0, bsonRequest, 1, 4);
+                System.Buffer.BlockCopy(bson, 0, bsonRequest, 5, bson.Length);
 
-                        if (this.LastbyteCode == res.code)
-                        {
-                            this.LastInvoke.Wait();
-                        }
-
-                        this.LastbyteCode = res.code;
-                        this.LastInvoke = a.BeginInvoke(
-                        System.Windows.Threading.DispatcherPriority.Normal,
-                        function,
-                        res);
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+                return bsonRequest;
             }
         }
 
-        public void Send(object msg, byte code)
+        private byte[] constructRequest(byte code)
         {
-            socket.Send(MsgToByte(JsonConvert.SerializeObject(msg), code));
+            byte[] bsonRequest = new byte[] { code, 0, 0, 0, 0 };
+
+            return bsonRequest;
         }
 
-        public bool TryToSend(Requests.IRequest msg)
+        private Response parseResponse<Response>(byte[] bsonResponse)
         {
-            try
+            int dataSize = BitConverter.ToInt16(bsonResponse.Take(5).ToArray(), 1);
+
+            using (MemoryStream ms = new MemoryStream(bsonResponse.Skip(5).Take(dataSize).ToArray()))
+            using (BsonDataReader reader = new BsonDataReader(ms))
             {
-                Send(msg, msg.Code);
-                return true;
+                JsonSerializer serializer = new JsonSerializer();
+                return serializer.Deserialize<Response>(reader);
             }
-            catch (Exception)
-            {
-                return false;
-            }
+        }
+
+        private byte[] sendAndRecive(byte[] bsonRequest)
+        {
+            client.GetStream().Write(bsonRequest, 0, bsonRequest.Length);
+            byte[] bsonResponse = new byte[client.ReceiveBufferSize];
+            client.GetStream().Read(bsonResponse, 0, client.ReceiveBufferSize);
+
+            return bsonResponse;
+        }
+
+        public Response submitRequest<Request, Response>(Request request, int code)
+        {
+            return parseResponse<Response>(sendAndRecive(constructRequest<Request>(request, (byte)code)));
+        }
+
+        public Response submitRequest<Response>(int code)
+        {
+            return parseResponse<Response>(sendAndRecive(constructRequest((byte)code)));
         }
     }
 }

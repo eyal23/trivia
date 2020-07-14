@@ -1,30 +1,40 @@
 #pragma once
 
 #include <map>
+#include <vector>
 
-#include "IDatabase.h"
 #include "Game.h"
 #include "Room.h"
-#include "JsonResponsePacketSerializer.h"
 
 using std::map;
+using std::vector;
+
 
 
 class GameManager
 {
 private:
-	IDatabase& m_database;
 	map<unsigned int, Game> m_games;
+	
 
 public:
-	GameManager(IDatabase& database);
+	static GameManager& getInstance()
+	{
+		static GameManager instance;
+		return instance;
+	}
 
 	unsigned int createGame(Room room);
 	void deleteGame(unsigned int gameId);
 
 	Game& operator[](unsigned int id);
 
+	GameManager(GameManager const&) = delete;
+	void operator=(GameManager const&) = delete;
+
 private:
-	unsigned int getNextGameId() const;
+	GameManager() {}
+
+	unsigned int getNextGameId();
 };
 

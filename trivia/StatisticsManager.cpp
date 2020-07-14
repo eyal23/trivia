@@ -3,20 +3,11 @@
 #include <iostream>
 
 #include "StatisticsManager.h"
+#include "sqliteDataBase.h"
 
 using std::string;
 using std::map;
 using std::vector;
-
-/*
-	usage: constructor
-	in: the database
-	out: no
-*/
-StatisticsManager::StatisticsManager(IDatabase& database) :
-	m_database(database)
-{
-}
 
 /*
 	usage: the method gets the statistics of an user
@@ -26,10 +17,10 @@ StatisticsManager::StatisticsManager(IDatabase& database) :
 Statistics StatisticsManager::getStatistics(LoggedUser loggedUser)
 {
 	return {
-		this->m_database.getPlayerAverageAnswerTime(loggedUser.getUsername()),
-		this->m_database.getNumOfCorrectAnswers(loggedUser.getUsername()),
-		this->m_database.getNumOfTotalAnswers(loggedUser.getUsername()),
-		this->m_database.getNumOfPlayerGames(loggedUser.getUsername()),
-		this->m_database.getTopScores(loggedUser.getUsername())
+		SqliteDatabase::getInstance().getPlayerAverageAnswerTime(loggedUser.getUsername()),
+		SqliteDatabase::getInstance().getNumOfCorrectAnswers(loggedUser.getUsername()),
+		SqliteDatabase::getInstance().getNumOfTotalAnswers(loggedUser.getUsername()),
+		SqliteDatabase::getInstance().getNumOfPlayerGames(loggedUser.getUsername()),
+		SqliteDatabase::getInstance().getTopScores(loggedUser.getUsername())
 	};
 }

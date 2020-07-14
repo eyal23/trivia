@@ -33,5 +33,6 @@ public:
 	void submitAnswer(LoggedUser loggedUser, unsigned int answerId, float answerTime);
 	void removePlayer(LoggedUser loggedUser);
 	vector<PlayerResults> getGameResults();
+	bool isGameOver();
 };
 

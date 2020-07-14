@@ -5,10 +5,55 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TriviaGui.pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      Height="410" 
+      Width="617"
+      Background="Transparent"
       Title="JoinRoomPage">
 
     <Grid>
-        
+        <ListBox x:Name="ListBox"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 Opacity="0.5"
+                 FontSize="15" 
+                 Margin="10,10,10,97"/>
+
+        <TextBox x:Name="RoomName"
+                 FontFamily="Corbert"
+                 FontWeight="UltraLight"
+                 Text="room id"
+                 FontSize="20"
+                 Foreground="Black"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 Width="235"
+                 Height="30"
+                 Opacity="0.5" 
+                 Margin="10,334,372,46"
+                 GotFocus="RoomName_GotFocus"/>
+
+        <Border Width="400"
+                Height="2"
+                Background="black"
+                Opacity="0.5" 
+                Margin="10,362,270,46"/>
+
+        <Button x:Name="JoinRoomButton"
+                Content="join room" 
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="Black"
+                Opacity="0.5"
+                HorizontalAlignment="Left" 
+                Width="150"
+                Height="50"
+                Margin="457,338,0,0" 
+                VerticalAlignment="Top"
+                Click="JoinRoomButton_Click"/>
+
     </Grid>
 </Page>

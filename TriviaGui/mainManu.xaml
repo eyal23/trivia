@@ -27,7 +27,7 @@
                     <GradientStop Color="Silver" Offset="0.7"/>
                 </LinearGradientBrush>
             </Border.Background>
-            
+
             <Frame x:Name="frame1" 
                    Margin="473,180,10,10" 
                    NavigationUIVisibility="Hidden"/>
@@ -110,6 +110,22 @@
                 Padding="-4" 
                 Click="CreateRoomButton_Click" 
                 Margin="10,480,0,54"/>
+
+        <Button x:Name="LogOutButton" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Content="logout" 
+                Width="150" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Gainsboro"
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="LogOutButton_Click" 
+                Margin="900,0,0,540" 
+                VerticalAlignment="Bottom"/>
 
         <Button x:Name="StatisticsButton" 
                 Foreground="Gainsboro"

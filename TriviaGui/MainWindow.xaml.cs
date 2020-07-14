@@ -23,10 +23,18 @@ namespace TriviaGui
     public partial class MainWindow : Window
     {
         private bool isOnRegister = false;
+        private Communicator communicator;
 
         public MainWindow()
         {
             InitializeComponent();
+            communicator = new Communicator();
+        }
+
+        public MainWindow(Communicator communicator)
+        {
+            InitializeComponent();
+            this.communicator = communicator;
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
@@ -36,17 +44,25 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            isOnRegister = !isOnRegister;
-            var temp = login.Content;
-            login.Content = (string)signup.Content;
-            signup.Content = temp;
+            if (userName.Text == string.Empty || password.Password == string.Empty || userName.Text == "user name" || password.Password == "password")
+            {
+                MessageBox.Show($"Please enter user name and password...");
+            }
+            else
+            {
+                Responses.Login loginResponse = this.communicator.submitRequest<Requests.Login, Responses.Login>(new Requests.Login(userName.Text, password.Password), (int)Defs.Codes.LOGIN_REQUEST);
 
-            userName.Text = "";
-            password.Password = "";
-
-            mainManu main = new mainManu();
-            main.Show();
-            this.Close();
+                if (loginResponse.status == 0)
+                {
+                    MessageBox.Show($"Login faild...");
+                }
+                else
+                {
+                    mainManu main = new mainManu(this.communicator);
+                    main.Show();
+                    this.Close();
+                }
+            }
         }
 
         private void signUp_Click(object sender, RoutedEventArgs e)
@@ -56,19 +72,28 @@ namespace TriviaGui
             m.Open(new Uri("../../digi_plink.wav", UriKind.RelativeOrAbsolute));
             m.Play();
 
-            if (isOnRegister)
-                MessageBox.Show($"send: {userName.Text} {password.Password}");
-
-
+            if (userName.Text == string.Empty || password.Password == string.Empty || Email.Text == string.Empty || userName.Text == "user name" || password.Password == "password" || Email.Text == "email")
+            {
+                MessageBox.Show($"Please enter user name and password...");
+            }
             else
-                MessageBox.Show($"send: {userName.Text} {password.Password}");
+            {
+                Responses.Signup signupResponse = this.communicator.submitRequest<Requests.Signup, Responses.Signup>(new Requests.Signup(userName.Text, password.Password, Email.Text), (int)Defs.Codes.SIGN_UP_REQUEST);
+
+                if (signupResponse.status == 0)
+                {
+                    MessageBox.Show($"Signup faild...");
+                }
+                else
+                {
+                    MessageBox.Show($"send: {userName.Text} {password.Password} {Email.Text}");
+                    mainManu main = new mainManu(this.communicator);
+                    main.Show();
+                    this.Close();
+                }
+            }
         }
 
-        private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if(e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -95,18 +120,33 @@ namespace TriviaGui
             }
         }
 
+        private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
         private void userName_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
-            tb.Text = string.Empty;
-            tb.GotFocus -= userName_GotFocus;
+            TextBox uname = (TextBox)sender;
+            uname.Text = string.Empty;
+            uname.GotFocus -= userName_GotFocus;
         }
 
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
-            PasswordBox tb = (PasswordBox)sender;
-            tb.Password = string.Empty;
-            tb.GotFocus -= password_GotFocus;
+            PasswordBox password = (PasswordBox)sender;
+            password.Password = string.Empty;
+            password.GotFocus -= password_GotFocus;
+        }
+
+        private void Email_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox email = (TextBox)sender;
+            email.Text = string.Empty;
+            email.GotFocus -= Email_GotFocus;
         }
     }
 }

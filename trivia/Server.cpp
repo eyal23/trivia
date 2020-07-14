@@ -2,8 +2,7 @@
 #include <thread>
 
 #include "Server.h"
-#include "IDatabase.h"
-#include "RequestHandlerFactory.h"
+#include "Communicator.h"
 
 using std::string;
 using std::thread;
@@ -13,39 +12,23 @@ using std::cin;
 
 
 /*
-	this function calls the startHandleRequests method
-	from the Communicator class.
-
-	input: the communicator.
-	output: none.
+	usage: the function calls the startHandleRequests method from the Communicator class
+	input: the communicator
+	output: no
 */
-void communicatorThread(Communicator& communicator)
+void communicatorThread()
 {
-	communicator.startHandleRequests();
+	Communicator::getInstance().startHandleRequests();
 }
 
 /*
-	usage: constructor
-	in: the database
-	out: no
-*/
-Server::Server(IDatabase& database) :
-	m_handlerFactory(RequestHandlerFactory(database)), m_communicator(Communicator(this->m_handlerFactory))
-{
-}
-
-/*
-	this method starts with creating & detaching a thread that will 
-	start the Communicator who will be listening and accepting clients.
-	the code steps into a while loop and unless the word exit was not typed in
-	then the code keeps on runing.
-	
-	input: none.
-	output: none.
+	usage: the method starts the server
+	input: no
+	output: no
 */
 void Server::run()
 {
-	thread communicatorThread(communicatorThread, ref(this->m_communicator));
+	thread communicatorThread(communicatorThread);
 	communicatorThread.detach();
 
 	string command;

@@ -1,18 +1,19 @@
 #pragma once
 
-#include "Communicator.h"
-#include "IDatabase.h"
-#include "RequestHandlerFactory.h"
-
 class Server
 {
-private:
-	Communicator m_communicator;
-	RequestHandlerFactory m_handlerFactory;
-
 public:
-	Server(IDatabase& database);
+    static Server& getInstance()
+    {
+        static Server instance;
+        return instance;
+    }
 
-	void run();
+    void run();
+
+    Server(Server const&) = delete;
+    void operator=(Server const&) = delete;
+
+private:
+    Server() {}
 };
-

@@ -91,7 +91,27 @@
                 <Border Width="250"
                         Height="2"
                         Background="black"
+                        Margin="0,0,0,20"
                         Opacity="0.5"/>
+                
+                <TextBox x:Name="Email"
+                         FontFamily="Corbert"
+                         FontWeight="UltraLight"
+                         Text="email"
+                         FontSize="20"
+                         Foreground="Black"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Width="255"
+                         HorizontalContentAlignment="Left"
+                         Opacity="0.5"
+                         Height="25"         
+                         GotFocus="Email_GotFocus"/>
+                
+                <Border Width="250"
+                       Height="2"
+                       Background="black"
+                       Opacity="0.5"/>
 
                 <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
                     <Button x:Name="login"

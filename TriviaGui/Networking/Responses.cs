@@ -1,142 +1,238 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TriviaFront.Classes.Networking
+namespace TriviaGui
 {
     namespace Responses
     {
-        public class Login
+        public struct Signup
         {
-            public int status = 0;
+            public Signup(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class Logout
+        public struct Login
         {
-            public int status = 0;
+            public Login(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class Signup
+        public struct Logout
         {
-            public int status = 0;
-            public int value = 0;
+            public Logout(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class Error
+        public struct CreateRoom
         {
-            public string message;
+            public CreateRoom(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class GetRooms
+        public struct GetPlayersInRoom
         {
-            public List<string> roomNames;
-        }
+            public GetPlayersInRoom(int status, List<string> players)
+            {
+                this.status = status;
+                this.players = players;
+            }
 
-        public class GetPlayersInRoom
-        {
+            public int status;
             public List<string> players;
-            public string roomName;
         }
 
-        public class Score
+        public struct Room
         {
-            public string username;
-            public float score;
+            public Room(int id, string name)
+            {
+                this.id = id;
+                this.name = name;
+            }
+
+            public int id;
+            public string name;
         }
 
-        public class GetTop
+        public struct GetRooms
         {
-            public List<Score> tops;
+            public GetRooms(int status, List<Room> rooms)
+            {
+                this.status = status;
+                this.rooms = rooms;
+            }
+
+            public int status;
+            public List<Room> rooms;
         }
 
-        public class GetUserStats
+        public struct JoinRoom
         {
-            public string userName;
-            public int numOfGame = 0;
-            public int numWrongAns = 0;
-            public int numRightAns = 0;
-            public float avrageTimeToAns = 0;
+            public JoinRoom(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class JoinRoom
+        public struct GetStatistics
         {
-            public int status = 0;
+            public GetStatistics(int status, float averageAnswerTime, int numberOfCorrectAnswers, int numberOfTotalAnswers, int numberOfPLayerGames, List<int> highScores)
+            {
+                this.status = status;
+                this.averageAnswerTime = averageAnswerTime;
+                this.numberOfCorrectAnswers = numberOfCorrectAnswers;
+                this.numberOfTotalAnswers = numberOfTotalAnswers;
+                this.numberOfPlayerGames = numberOfPLayerGames;
+                this.highScores = highScores;
+            }
+
+            public int status;
+            public float averageAnswerTime;
+            public int numberOfCorrectAnswers;
+            public int numberOfTotalAnswers;
+            public int numberOfPlayerGames;
+            public List<int> highScores;
+        }
+
+        public struct CloseRoom
+        {
+            public CloseRoom(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
+        }
+
+        public struct StartGame
+        {
+            public StartGame(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
+        }
+
+        public struct GetRoomState
+        {
+            public GetRoomState(int status, bool hasGameBegun, List<string> players, int questionCount, int answerTimeout)
+            {
+                this.status = status;
+                this.hasGameBegun = hasGameBegun;
+                this.players = players;
+                this.questionCount = questionCount;
+                this.answerTimeout = answerTimeout;
+            }
+
+            public int status;
+            public bool hasGameBegun;
             public List<string> players;
-            public Requests.CreateRoom roomData;
+            public int questionCount;
+            public int answerTimeout;
         }
 
-        public class CloseRoom
+        public struct LeaveRoom
         {
-            public int status = 0;
+            public LeaveRoom(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class CreateRoom
+        public struct LeaveGame
         {
-            public int status = 0;
-            public Requests.CreateRoom roomData;
+            public LeaveGame(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class ExitRoom
+        public struct GetQuestion
         {
-            public int status = 0;
-        }
+            public GetQuestion(int status, string question, Dictionary<int, string> answers)
+            {
+                this.status = status;
+                this.question = question;
+                this.answers = answers;
+            }
 
-        public class UserLeave
-        {
-            public string username;
-        }
-
-        public class UserJoin
-        {
-            public string username;
-        }
-
-        public class StartGamedata
-        {
-            public string gameName;
-            public int questionNum = 0;
-            public float timePerquestion = 0;
-        }
-
-        public class GetQuestion
-        {
-            public int status = 0;
+            public int status;
             public string question;
-            public List<string> answers;
+            public Dictionary<int, string> answers;
         }
 
-        public class updateRightAnswer
+        public struct SubmitAnswer
         {
-            public string rightAnswer;
-            public float currentScore = 0;
+            public SubmitAnswer(int status)
+            {
+                this.status = status;
+            }
+
+            public int status;
         }
 
-        public class SubmitAnswer
+        public struct PlayerResult
         {
-            public int status = 0;
-            public string Answer;
-        }
+            public PlayerResult(string username, int correctAnswersCount, int wrongAnswersCount, float averageAnswerTime)
+            {
+                this.username = username;
+                this.correctAnswersCount = correctAnswersCount;
+                this.wrongAnswersCount = wrongAnswersCount;
+                this.averageAnswerTime = averageAnswerTime;
+            }
 
-        public class PlayerResults
-        {
             public string username;
-            public float finalResult = 0;
-            public int correctAnswerCount = 0;
-            public int wrongAnswerCount = 0;
-            public float averageAnswerTime = 0;
+            public int correctAnswersCount;
+            public int wrongAnswersCount;
+            public float averageAnswerTime;
         }
 
-        public class GetGameResults
+        public struct GetGameResults
         {
-            public int status = 0;
-            public List<PlayerResults> results;
+            public GetGameResults(int status, List<PlayerResult> results)
+            {
+                this.status = status;
+                this.results = results;
+            }
+
+            public int status;
+            public List<PlayerResult> results;
         }
 
-        public class LeaveGame
+        public struct Error
         {
-            public int status = 0;
+            public Error(string message)
+            {
+                this.message = message;
+            }
+
+            public string message;
         }
     }
 }
