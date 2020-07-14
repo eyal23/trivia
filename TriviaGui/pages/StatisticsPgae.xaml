@@ -8,7 +8,7 @@
       Height="410" 
       Width="617"
       Title="StatisticsPgae"
-      Background="White">
+      Background="Transparent">
 
     <Grid>
         <TextBlock HorizontalAlignment="Left" 
@@ -53,37 +53,17 @@
                  BorderBrush="Transparent"
                  FontFamily="corbert"
                  FontWeight="UltraLight"
-                 Width="190"
+                 FontSize="30"
                  Opacity="0.5"
-                 FontSize="17" 
-                 Margin="20,63,407,117">
-
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-        </ListBox>
+                 Margin="10,63,407,117"/>
 
         <ListBox x:Name="ListBox1"
                  Background="Transparent"
                  BorderBrush="Transparent"
                  FontFamily="corbert"
                  FontWeight="UltraLight"
-                 Width="190"
                  Opacity="0.5"
-                 FontSize="17" 
-                 Margin="308,63,119,117">
-
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-            <ListBoxItem FontSize="30"></ListBoxItem>
-        </ListBox>
-
-
-
-
-
+                 FontSize="30" 
+                 Margin="278,63,0,117"/>
     </Grid>
 </Page>

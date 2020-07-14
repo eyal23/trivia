@@ -133,6 +133,11 @@ RequestResult GameRequestHandler::leaveGame()
 {
 	GameManager::getInstance()[this->m_gameId].removePlayer(this->m_user);
 
+	if (GameManager::getInstance()[this->m_gameId].isGameOver())
+	{
+		GameManager::getInstance().deleteGame(this->m_gameId);
+	}
+
 	return {
 		JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse({ 1 })),
 		RequestHandlerFactory::getInstance().createMenuRequestHandler(this->m_user)

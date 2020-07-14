@@ -186,12 +186,12 @@ float SqliteDatabase::getPlayerAverageAnswerTime(string username)
 
 	if (sqlite3_exec(this->m_db, SqliteDatabase::constructQuery(query).c_str(), callback, &result, nullptr) != SQLITE_OK)
 	{
-		statisticsTableMutex.lock();
+		statisticsTableMutex.unlock();
 		throw exception("could'nt access database");
 	}
 	else
 	{
-		statisticsTableMutex.lock();
+		statisticsTableMutex.unlock();
 	}
 
 	return result.size() > 0 ? stoi(result[0]["AVERAGE_ANSWER_TIME"]) : 0;
@@ -298,7 +298,7 @@ int SqliteDatabase::getNumOfPlayerGames(string username)
 	in: the username
 	out: the user's top scores
 */
-int* SqliteDatabase::getTopScores(string username)
+vector<int> SqliteDatabase::getTopScores(string username)
 {
 	vector<map<string, string>> result;
 	SelectQuery query = {
@@ -322,7 +322,7 @@ int* SqliteDatabase::getTopScores(string username)
 		statisticsTableMutex.unlock();
 	}
 
-	int topScores[5] = { 0, 0, 0, 0, 0 };
+	vector<int> topScores = { 0, 0, 0, 0, 0 };
 
 	for (int i = 0; i < result.size(); i++)
 	{
@@ -674,12 +674,15 @@ int SqliteDatabase::callback(void* data, int argc, char** argv, char** azColName
 	vector<map<string, string>>* pData = (vector<map<string, string>>*)data;
 	map<string, string> column;
 
-	for (int i = 0; i < argc; i++)
+	if (*argv != NULL)
 	{
-		column[azColName[i]] = argv[i];
-	}
+		for (int i = 0; i < argc; i++)
+		{
+			column[azColName[i]] = argv[i];
+		}
 
-	pData->push_back(column);
+		pData->push_back(column);
+	}
 
 	return 0;
 }

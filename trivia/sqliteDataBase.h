@@ -50,7 +50,7 @@ public:
 	int getNumOfCorrectAnswers(string username);
 	int getNumOfTotalAnswers(string username);
 	int getNumOfPlayerGames(string username);
-	int* getTopScores(string username);
+	vector<int> getTopScores(string username);
 	void addStatistic(string username, unsigned int totalAnswers, unsigned int correctAnswers, float totalAnswerTime);
 	vector<Question> getQuestions();
 

@@ -5,6 +5,7 @@
 
 #include "Communicator.h"
 #include "IRequestHandler.h"
+#include "LoginManager.h"
 
 #define MAX_BYTES_AMOUNT 1024
 

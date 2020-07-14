@@ -18,27 +18,19 @@ namespace TriviaGui.pages
     /// </summary>
     public partial class StatisticsPgae : Page
     {
-        private Communicator communicator;
-
-        public StatisticsPgae(Communicator communicator)
+        public StatisticsPgae(Responses.GetStatistics getStatisticsResponse)
         {
             InitializeComponent();
-            this.communicator = communicator;
-        }
 
-        private void HighScores_Click(object sender, RoutedEventArgs e)
-        {
-            HighScore Hs = new HighScore(this.communicator);
-
-            if(Hs.IsInitialized)
+            for (int i = 0; i < getStatisticsResponse.highScores.Count; i++)
             {
+                ListBox.Items.Add($"{i + 1}.    {getStatisticsResponse.highScores[i]}");
             }
-            Hs.Show();
-        }
 
-        private void personalStatistics_Click(object sender, RoutedEventArgs e)
-        {
-
+            ListBox1.Items.Add($"Correct answers: {getStatisticsResponse.numberOfCorrectAnswers}");
+            ListBox1.Items.Add($"Total answers: {getStatisticsResponse.numberOfTotalAnswers}");
+            ListBox1.Items.Add($"Games played: {getStatisticsResponse.numberOfPlayerGames}");
+            ListBox1.Items.Add($"Average answer time: {getStatisticsResponse.averageAnswerTime}");
         }
     }
 }

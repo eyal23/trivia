@@ -218,7 +218,14 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetStatist
 
 	for (int i = 0; i < 5; i++)
 	{
-		j["highScores"].push_back(getStatisticsRes.statitstics.topScores[i]);
+		if (i < getStatisticsRes.statitstics.topScores.size())
+		{
+			j["highScores"].push_back(getStatisticsRes.statitstics.topScores[i]);
+		}
+		else
+		{
+			j["highScores"].push_back(0);
+		}
 	}
 
 	vector<uint8_t> bson = json::to_bson(j);

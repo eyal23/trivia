@@ -63,7 +63,9 @@ namespace TriviaGui
             m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
 
-            pages.StatisticsPgae statPage = new pages.StatisticsPgae(this.communicator);
+            Responses.GetStatistics getStatisticsResponse = this.communicator.submitRequest<Responses.GetStatistics>((int)Defs.Codes.GET_STATISTICS_REQUEST);
+
+            pages.StatisticsPgae statPage = new pages.StatisticsPgae(getStatisticsResponse);
             frame1.NavigationService.Navigate(statPage);
         }
 

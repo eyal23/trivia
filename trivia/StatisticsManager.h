@@ -1,6 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "LoggedUser.h"
+
+using std::vector;
 
 
 typedef struct Statistics
@@ -9,7 +13,7 @@ typedef struct Statistics
 	int numberOfCorrectAnswers;
 	int numberOfTotalAnswers;
 	int numberOfPlayerGames;
-	int* topScores;
+	vector<int> topScores;
 } Statistics;
 
 class StatisticsManager
