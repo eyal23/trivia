@@ -63,7 +63,7 @@ namespace TriviaGui
             m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
 
-            Responses.GetStatistics getStatisticsResponse = this.communicator.submitRequest<Responses.GetStatistics>((int)Defs.Codes.GET_STATISTICS_REQUEST);
+            Responses.GetStatistics getStatisticsResponse = new Responses.GetStatistics(0, (float)0, 0, 0, 0, new List<int> { 0, 0, 0, 0, 0 });
 
             pages.StatisticsPgae statPage = new pages.StatisticsPgae(getStatisticsResponse);
             frame1.NavigationService.Navigate(statPage);
@@ -91,8 +91,17 @@ namespace TriviaGui
             m.Open(new Uri(path, UriKind.RelativeOrAbsolute));
             m.Play();
 
-            pages.JoinRoomPage joinRoomPage = new pages.JoinRoomPage(this.communicator);
-            frame1.NavigationService.Navigate(joinRoomPage);
+            Responses.GetRooms getRoomsResponse = this.communicator.submitRequest<Responses.GetRooms>((int)Defs.Codes.GET_ROOMS_REQUEST);
+
+            if (getRoomsResponse.status == 0)
+            {
+                MessageBox.Show($"Get rooms faild...");
+            }
+            else
+            {
+                pages.JoinRoomPage joinRoomPage = new pages.JoinRoomPage(this.communicator, getRoomsResponse, this);
+                frame1.NavigationService.Navigate(joinRoomPage);
+            }
         }
 
         private void PlayMusic()
@@ -111,7 +120,18 @@ namespace TriviaGui
 
         private void LogOutButton_Click(object sender, RoutedEventArgs e)
         {
+            Responses.Logout logoutResponse = this.communicator.submitRequest<Responses.Logout>((int)Defs.Codes.LOGOUT_REQUEST);
 
+            if (logoutResponse.status == 0)
+            {
+                MessageBox.Show($"Logout faild...");
+            }
+            else
+            {
+                MainWindow mainWindow = new MainWindow(this.communicator);
+                mainWindow.Show();
+                this.Close();
+            }
         }
     }
 }

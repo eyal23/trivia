@@ -11,43 +11,14 @@
       Title="JoinRoomPage">
 
     <Grid>
-        <Grid x:Name="Grid1"
-              Width="597" 
-              Height="300"
-              Margin="10,10,10,0"  
-              VerticalAlignment="Top"
-              Background="Transparent">
-
-            <ListView Margin="1" Background="Transparent" BorderBrush="Black" Opacity="0.5">
-                <ListViewItem FontFamily="corbert"
-                              FontWeight="UltraLight"
-                              Foreground="Black"
-                              Background="Transparent"
-                              Opacity="4">room name</ListViewItem>
-
-                <ListViewItem FontFamily="corbert"
-                              FontWeight="UltraLight"
-                              Foreground="Black"
-                              Background="Transparent"
-                              Opacity="4">--------------------- > > ></ListViewItem>
-
-                <ListViewItem FontFamily="corbert"
-                              FontWeight="UltraLight"
-                              Foreground="Black"
-                              Background="Transparent"
-                              Opacity="4">room id</ListViewItem>
-
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" 
-                                    VerticalAlignment="Top"
-                                    Height="40"
-                                    Width="597">
-                        </StackPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
-        </Grid>
+        <ListBox x:Name="ListBox"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 Opacity="0.5"
+                 FontSize="15" 
+                 Margin="10,10,10,97"/>
 
         <TextBox x:Name="RoomName"
                  FontFamily="Corbert"
@@ -81,7 +52,8 @@
                 Width="150"
                 Height="50"
                 Margin="457,338,0,0" 
-                VerticalAlignment="Top"/>
+                VerticalAlignment="Top"
+                Click="JoinRoomButton_Click"/>
 
     </Grid>
 </Page>

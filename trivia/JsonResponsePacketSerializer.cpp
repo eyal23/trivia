@@ -112,10 +112,13 @@ vector<uint8_t> JsonResponsePacketSerializer::serializeResponse(const GetRoomsRe
 
 	for (int i = 0; i < getRoomsRes.rooms.size(); i++)
 	{
-		j["rooms"].push_back(json({ getRoomsRes.rooms[i].id, getRoomsRes.rooms[i].name }));
+		j["rooms"].push_back(json({ 
+			{ "id", getRoomsRes.rooms[i].id },
+			{ "name", getRoomsRes.rooms[i].name }
+		}));
 	}
 
-	vector<uint8_t> bson = json::to_bson(j);
+	vector<uint8_t> bson = json::to_bson(j); 
 
 	int dataSize = bson.size();
 	vector<uint8_t> message = { GET_ROOMS_RESPONSE };

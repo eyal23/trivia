@@ -61,16 +61,28 @@ namespace TriviaGui
             public List<string> players;
         }
 
+        public struct Room
+        {
+            public Room(int id, string name)
+            {
+                this.id = id;
+                this.name = name;
+            }
+
+            public int id;
+            public string name;
+        }
+
         public struct GetRooms
         {
-            public GetRooms(int status, List<string> rooms)
+            public GetRooms(int status, List<Room> rooms)
             {
                 this.status = status;
                 this.rooms = rooms;
             }
 
             public int status;
-            public List<string> rooms;
+            public List<Room> rooms;
         }
 
         public struct JoinRoom
