@@ -108,6 +108,11 @@ namespace TriviaGui
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

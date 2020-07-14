@@ -24,42 +24,18 @@
                     <GradientStop Color="Silver" Offset="0.7"/>
                 </LinearGradientBrush>
             </Border.Background>
-            
-            <ListView Background="Transparent" 
-                      BorderBrush="Transparent" 
-                      Opacity="0.5" 
-                      SelectionChanged="ListView_SelectionChanged" 
-                      HorizontalAlignment="Left" 
-                      Width="500" 
-                      Margin="10,74,0,10">
 
-
-
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" 
-                                    VerticalAlignment="Top"
-                                    Height="500"
-                                    Width="500"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-
-                <ListViewItem FontFamily="corbert"
-                              Width="500"
-                              FontWeight="UltraLight"
-                              Foreground="Black"
-                              Background="Transparent"
-                              VerticalContentAlignment="Top"
-                              Opacity="4" 
-                              Content="room name"/>
-            </ListView>
+            <ListViewItem FontFamily="corbert"
+                        FontSize="40"
+                        FontWeight="UltraLight"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderBrush="Black"
+                        VerticalContentAlignment="Top"
+                        Opacity="0.7" 
+                        Content="players in room:" 
+                        Margin="550,50,50,197"/>
         </Border>
-
-        <Grid x:Name="Grid1"
-              Width="500" 
-              Height="500"
-              VerticalAlignment="Top"
-              Background="Transparent"/>
 
         <Button x:Name="minButton" 
                 Width="35" 
@@ -78,8 +54,76 @@
                        Height="35" 
                        Width="35"/>
             </StackPanel>
-
         </Button>
+
+        <Button x:Name="ExitButton"
+                Content="exit room" 
+                VerticalContentAlignment="Center"
+                FontFamily="Corbert"
+                FontSize="50"
+                Height="50"
+                Width="200"
+                Opacity="0.5"
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Black"                    
+                HorizontalAlignment="Left" 
+                Margin="10,524,0,0" 
+                VerticalAlignment="Top"
+                Click="ExitButton_Click"/>
+
+        <Button x:Name="StartName"
+                Content="start" 
+                HorizontalAlignment="Left" 
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Margin="890,524,0,0" 
+                FontFamily="Corbert"
+                FontSize="50"
+                Height="50"
+                Width="200"
+                Opacity="0.5"
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Black"                    
+                VerticalAlignment="Top"
+                Click="StartName_Click"/>
+
+        <Button x:Name="CloseRoomButton"
+                Content="close room" 
+                VerticalContentAlignment="Center"
+                FontFamily="Corbert"
+                FontSize="50"
+                Height="50"
+                Width="280"
+                Opacity="0.5"
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Black"                
+                HorizontalAlignment="Center" 
+                Margin="0,524,0,0" 
+                VerticalAlignment="Top"
+                Click="CloseRoomButton_Click"/>
+
+        <TextBox HorizontalAlignment="Left"
+                 VerticalContentAlignment="Top"
+                 HorizontalContentAlignment="Left"
+                 FontFamily="corbert"
+                 FontWeight="UltraLight"
+                 FontSize="80"
+                 Opacity="0.5"
+                 BorderBrush="Transparent"
+                 Background="Transparent"
+                 Foreground="Black"
+                 Margin="10,50,0,0" 
+                 Text="welcome to: {room name here}" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 Width="450"
+                 Height="400"/>
 
     </Grid>
 </Window>

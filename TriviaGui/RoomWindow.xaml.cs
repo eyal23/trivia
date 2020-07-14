@@ -48,5 +48,20 @@ namespace TriviaGui
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StartName_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseRoomButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
