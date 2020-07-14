@@ -8,7 +8,7 @@
       Height="410" 
       Width="617"
       Title="StatisticsPgae"
-      Background="White">
+      Background="Transparent">
 
     <Grid>
         <TextBlock HorizontalAlignment="Left" 
