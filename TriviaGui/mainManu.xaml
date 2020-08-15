@@ -1,0 +1,172 @@
+﻿<Window x:Class="TriviaGui.mainManu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TriviaGui"
+        mc:Ignorable="d"
+        Title="minManu" 
+        Height="600" 
+        Width="1100"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        ResizeMode="NoResize"
+        MouseDown="mainManu_OnMouseDown"
+        Icon="Assets/Untitled.png">
+
+
+
+    <Grid>
+
+        <Border Grid.RowSpan="4" Grid.ColumnSpan="3">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="DarkSeaGreen" Offset="0.0"/>
+                    <GradientStop Color="Silver" Offset="0.7"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Frame x:Name="frame1" 
+                   Margin="473,180,10,10" 
+                   NavigationUIVisibility="Hidden"/>
+
+        </Border>
+
+        <Button x:Name="CloseButton" 
+                Width="35" 
+                Height="35" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="CloseButton_Click" 
+                Margin="10,9,0,0" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top">
+
+            <StackPanel Height="30" Width="30">
+                <Image Source="Assets/shutdown-icon-11831.png" 
+                       Height="30" 
+                       Width="30"/>
+            </StackPanel>
+        </Button>
+
+        <Button x:Name="minButton" 
+                Width="35" 
+                Height="35" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                BorderThickness="0" 
+                Padding="-4" 
+                Click="MinimizeButton_Click" 
+                Margin="60,10,0,0" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" >
+
+            <StackPanel Height="35" Width="35">
+                <Image Source="Assets/minimize-icon-23800.png" 
+                       Height="35" 
+                       Width="35"/>
+            </StackPanel>
+        </Button>
+
+
+        <TextBlock Text="menu"
+                   FontWeight="UltraLight"
+                   FontFamily="Corbert"
+                   FontSize="100"
+                   Foreground="Gainsboro"
+                   HorizontalAlignment="Center" 
+                   Margin="0,24,0,436"/>
+
+        <Button x:Name="JoinRoomButton" 
+                Foreground="Gainsboro"
+                FontWeight="UltraLight"
+                FontSize="40"
+                Height="50"
+                FontFamily="Corbert"
+                Content="join room " 
+                Width="450" 
+                Background="Transparent" 
+                BorderBrush="Gainsboro" 
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="JoinRoomButton_Click" 
+                Margin="10,280,0,254"/>
+
+        <Button x:Name="CreateRoomButton" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Content="create room" 
+                Width="450" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Gainsboro" 
+                Foreground="Gainsboro"
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="CreateRoomButton_Click" 
+                Margin="10,480,0,54"/>
+
+        <Button x:Name="LogOutButton" 
+                FontFamily="Corbert"
+                FontSize="40"
+                Height="50"
+                Content="logout" 
+                Width="150" 
+                Background="Transparent" 
+                FontWeight="UltraLight"
+                BorderBrush="Transparent" 
+                Foreground="Gainsboro"
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="LogOutButton_Click" 
+                Margin="900,0,0,540" 
+                VerticalAlignment="Bottom"/>
+
+        <Button x:Name="StatisticsButton" 
+                Foreground="Gainsboro"
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                FontSize="40"
+                Height="50"
+                Content="statistics &amp; scores" 
+                Width="450" 
+                Background="Transparent" 
+                BorderBrush="Gainsboro" 
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="StatisticsButton_Click" 
+                Margin="10,380,0,154"/>
+
+        <Button x:Name="test" 
+                Foreground="White"
+                FontFamily="corbert"
+                FontWeight="UltraLight"
+                Width="40" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="Transparent" 
+                HorizontalAlignment="Left" 
+                Padding="-4" 
+                Click="StatisticsButton_Click" 
+                Margin="1050,0,0,545" 
+                VerticalAlignment="Bottom">
+
+            <StackPanel Height="35" Width="35">
+                <Image Source="Assets/speaker.png" 
+                       Height="35" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Width="35"/>
+            </StackPanel>
+
+        </Button>
+
+
+
+    </Grid>
+</Window>
