@@ -97,7 +97,7 @@ RequestResult RoomAdminRequestHandler::getRoomState()
 	RoomState roomState = RoomManager::getInstance().getRoomState(this->m_roomId);
 
 	return {
-		JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
+		JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse({ 1, roomState.hasGameBegun, roomState.isRoomOpen, roomState.players, roomState.questionsCount, roomState.answerTimeout })),
 		this
 	};
 }
